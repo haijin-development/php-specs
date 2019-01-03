@@ -211,6 +211,61 @@ $spec->describe( "When formatting a user's full name", function() {
 <a name="c-2-6"></a>
 ### Defining custom expectations
 
+Expectation definitions have 4 parts, each defined with a closure.
+
+The first one is the `$this->before($closure)` closure. This closure is evaluated before evaluating an expectation on a value. This block is optional but it can be used to perform complex calculations needed by the expectations for both the assertive and the negated closures.
+
+The second one is the `$this->assert_with($closure)` closure. This closure is evaluated to evaluate a possitive expectation on a value.
+
+The third one is the `$this->negate_with($closure)` closure. This closure is evaluated to evaluate a nagated expectation on a value.
+
+The fouth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an ExpectationError was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
+
+To get the actual_value being evaluated, use `$this->actual_value`.
+
+The parameters of the 3 closure are the ones passed to the expectation in the Spec. For instance, if the spec is declared as
+
+```php
+$this->expect( 1 ) ->not() ->to() ->equal( 2 );
+```
+
+the parameters for the 3 closures of the the `equal` expectation will be the value `2`.
+
+To raise an expectation error use `$this->raise_error( $error_message )`.
+
+Here is a complete example:
+
+```php
+
+Expectations::define_expectation( "equal", function() {
+
+    $this->before( function($expected_value) {
+        $this->got_expected_value = $expected_value == $this->actual_value;
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->got_expected_value ) {
+            return;
+        }
+
+        $this->raise_error(
+            "Expected value to equal {$expected_value}, got {$this->actual_value}."
+        );
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->got_expected_value ) {
+            return;
+        }
+
+        $this->raise_error(
+            "Expected value not to equal {$expected_value}, got {$this->actual_value}."
+        );
+    });
+});
+```
 <a name="c-3"></a>
 ## Running the specs
 

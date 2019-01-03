@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ExpectationError extends \Exception
+class ExpectationDefinitionError extends \Exception
 {
     public function get_message()
     {

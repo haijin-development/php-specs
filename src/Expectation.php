@@ -4,13 +4,16 @@ namespace Haijin\Specs;
 
 class Expectation
 {
+    /// Class methods
+
     static public function on($value)
     {
         return new self( $value );
     }
 
+    /// Instance methods
+
     protected $value;
-    protected $expected_value;
     protected $negated;
 
     /// Accessors
@@ -18,7 +21,6 @@ class Expectation
     public function __construct($value)
     {
         return $this->value = $value;
-        return $this->expected_value = null;
         return $this->negated = false;
     }
 
@@ -36,31 +38,27 @@ class Expectation
         return $this;
     }
 
-    public function equal($expected_value)
+    public function __call($method_name, $params)
     {
-        $this->expected_value = $expected_value;
+        $definition = Expectations::definition_at( $method_name );
 
-        if( $this->negated ) {
+        $evaluation = new ExpectationEvaluation( $this->value );
 
-            if( $this->expected_value  != $this->value ) {
-                return;
-            }
-
-            return $this->raise_expectation_error();            
-
-        } else {
-
-            if( $this->expected_value  == $this->value ) {
-                return;
-            }
-
-            return $this->raise_expectation_error();            
-
-        }
+        $this->evaluate_expectation_definition_with( $definition, $evaluation, $params );
     }
 
-    public function raise_expectation_error()
+    public function evaluate_expectation_definition_with($definition, $evaluation, $params)
     {
-        throw new ExpectationError();
+        $definition->evaluate_before_closure_with( $evaluation, $params );
+
+        try {
+            if( ! $this->negated ) {
+                $definition->evaluate_assertion_closure_with( $evaluation, $params );
+            } else {
+                $definition->evaluate_negation_closure_with( $evaluation, $params );
+            }
+        } finally {
+            $definition->evaluate_after_closure_with( $evaluation, $params );
+        }
     }
 }
