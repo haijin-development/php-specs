@@ -23,6 +23,11 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
     4. [Evaluating code before and after running expectations](#c-2-4)
     5. [Defining values with ->let(...)](#c-2-5)
     6. [Defining custom expectations](#c-2-6)
+        1. [Expectation definition structure](#c-2-6-1)
+        2. [Getting the value being validated](#c-2-6-2)
+        3. [Parameters of the definition closures](#c-2-6-3)
+        4. [Raising expectation errors](#c-2-6-4)
+        5. [Complete example](#c-2-6-5)
 3. [Running the specs](#c-3)
 
 <a name="c-1"></a>
@@ -211,6 +216,9 @@ $spec->describe( "When formatting a user's full name", function() {
 <a name="c-2-6"></a>
 ### Defining custom expectations
 
+<a name="c-2-6-1"></a>
+#### Expectation definition structure
+
 Expectation definitions have 4 parts, each defined with a closure.
 
 The first one is the `$this->before($closure)` closure. This closure is evaluated before evaluating an expectation on a value. This block is optional but it can be used to perform complex calculations needed by the expectations for both the assertive and the negated closures.
@@ -219,21 +227,47 @@ The second one is the `$this->assert_with($closure)` closure. This closure is ev
 
 The third one is the `$this->negate_with($closure)` closure. This closure is evaluated to evaluate a nagated expectation on a value.
 
-The fouth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an ExpectationError was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
+The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an ExpectationError was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
 
-To get the actual_value being evaluated, use `$this->actual_value`.
+<a name="c-2-6-2"></a>
+#### Getting the value being validated
 
-The parameters of the 3 closure are the ones passed to the expectation in the Spec. For instance, if the spec is declared as
+To get the actual value being validated, use `$this->actual_value`.
+
+<a name="c-2-6-3"></a>
+#### Parameters of the definition closures
+
+The parameters of the 4 closures are the ones passed to the expectation in the Spec. For instance, if the spec is declared as
 
 ```php
 $this->expect( 1 ) ->not() ->to() ->equal( 2 );
 ```
 
-the parameters for the 3 closures of the the `equal` expectation will be the value `2`.
+the parameters for the 4 closures of the the `equal` expectation will be the expected value `2`:
+
+```php
+$this->before( function($expected_value) {
+});
+
+$this->assert_with( function($expected_value) {
+});
+
+$this->negate_with( function($expected_value) {
+});
+
+$this->after( function($expected_value) {
+});
+```
+
+<a name="c-2-6-4"></a>
+#### Raising expectation errors
 
 To raise an expectation error use `$this->raise_error( $error_message )`.
 
-Here is a complete example:
+<a name="c-2-6-5"></a>
+#### Complete example
+
+Here is a complete example of a custom validation:
 
 ```php
 
@@ -263,6 +297,9 @@ Expectations::define_expectation( "equal", function() {
         $this->raise_error(
             "Expected value not to equal {$expected_value}, got {$this->actual_value}."
         );
+    });
+
+    $this->after( function($expected_value) {
     });
 });
 ```
