@@ -4,24 +4,19 @@ namespace Haijin\Specs;
 
 class Expectation
 {
-    /// Class methods
-
-    static public function on($value)
-    {
-        return new self( $value );
-    }
-
     /// Instance methods
 
+    protected $description;
     protected $value;
     protected $negated;
 
     /// Accessors
 
-    public function __construct($value)
+    public function __construct($description, $value)
     {
-        return $this->value = $value;
-        return $this->negated = false;
+        $this->description = $description;
+        $this->value = $value;
+        $this->negated = false;
     }
 
     ///  DSL
@@ -42,7 +37,7 @@ class Expectation
     {
         $definition = Expectations::definition_at( $method_name );
 
-        $evaluation = new ExpectationEvaluation( $this->value );
+        $evaluation = new ExpectationEvaluation( $this->description, $this->value );
 
         $this->evaluate_expectation_definition_with( $definition, $evaluation, $params );
     }

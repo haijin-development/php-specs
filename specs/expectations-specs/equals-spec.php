@@ -4,7 +4,7 @@ $spec->describe( "When expecting a value for equality", function() {
 
     $this->it( "the spec passes if values are equal", function() {
 
-        $this->expect( 1 ) ->to() ->equal( 1 );
+        $this->expect( 1 ) ->to() ->equal( 2 );
 
     });
 
@@ -14,11 +14,11 @@ $spec->describe( "When expecting a value for equality", function() {
 
         try {
             $this->expect( 1 ) ->to() ->equal( 2 );
-        } catch( \Haijin\Specs\ExpectationError $e ) {
+        } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
             $error_raised = true;
 
             $this->expect( $e->get_message() )
-                ->to() ->equal( "Expected value to equal 2, got 1." );
+                ->to() ->equal( "Expected value to equal '2', got '1'." );
         }
 
         if( $error_raised === false ) {
@@ -40,11 +40,11 @@ $spec->describe( "When expecting a value for equality", function() {
 
             try {
                 $this->expect( 1 ) ->not() ->to() ->equal( 1 );
-            } catch( \Haijin\Specs\ExpectationError $e ) {
+            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
-                    ->to() ->equal( "Expected value not to equal 1, got 1." );
+                    ->to() ->equal( "Expected value not to equal '1', got '1'." );
             }
 
             if( $error_raised === false ) {

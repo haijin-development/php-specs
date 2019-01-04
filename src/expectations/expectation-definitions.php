@@ -15,7 +15,7 @@ Expectations::define_expectation( "equal", function() {
         }
 
         $this->raise_error(
-            "Expected value to equal {$expected_value}, got {$this->actual_value}."
+            "Expected value to equal '{$expected_value}', got '{$this->actual_value}'."
         );
     });
 
@@ -26,7 +26,7 @@ Expectations::define_expectation( "equal", function() {
         }
 
         $this->raise_error(
-            "Expected value not to equal {$expected_value}, got {$this->actual_value}."
+            "Expected value not to equal '{$expected_value}', got '{$this->actual_value}'."
         );
     });
 });

@@ -227,7 +227,7 @@ The second one is the `$this->assert_with($closure)` closure. This closure is ev
 
 The third one is the `$this->negate_with($closure)` closure. This closure is evaluated to evaluate a nagated expectation on a value.
 
-The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an ExpectationError was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
+The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an ExpectationFailure was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
 
 <a name="c-2-6-2"></a>
 #### Getting the value being validated
