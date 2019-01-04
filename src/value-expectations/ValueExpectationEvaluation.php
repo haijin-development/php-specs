@@ -17,4 +17,13 @@ class ValueExpectationEvaluation
     {
         throw new ExpectationFailureSignal( $error_message, $this->description );
     }
+
+    public function value_string($value)
+    {
+        if( is_string( $value ) ) {
+            return "\"" . (string) $value . "\"";
+        }
+
+        return (string) $value;
+    }
 }

@@ -18,7 +18,7 @@ $spec->describe( "When expecting a value for equality", function() {
             $error_raised = true;
 
             $this->expect( $e->get_message() )
-                ->to() ->equal( "Expected value to equal '2', got '1'." );
+                ->to() ->equal( "Expected value to equal 2, got 1." );
         }
 
         if( $error_raised === false ) {
@@ -44,7 +44,7 @@ $spec->describe( "When expecting a value for equality", function() {
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
-                    ->to() ->equal( "Expected value not to equal '1', got '1'." );
+                    ->to() ->equal( "Expected value not to equal 1, got 1." );
             }
 
             if( $error_raised === false ) {

@@ -111,7 +111,7 @@ $this->expect( $value ) ->to() ->be_string();
 $this->expect( $value ) ->to() ->be_int();
 $this->expect( $value ) ->to() ->be_double();
 $this->expect( $value ) ->to() ->be_number();
-$this->expect( $value ) ->to() ->be_kind_of( SomeClass::class );
+$this->expect( $value ) ->to() ->be_a( SomeClass::class );
 $this->expect( $value ) ->to() ->be_instance_of( SomeClass::class );
 $this->expect( $value ) ->to() ->be_true();
 $this->expect( $value ) ->to() ->be_false();

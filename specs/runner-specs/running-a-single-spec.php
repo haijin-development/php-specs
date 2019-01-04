@@ -17,7 +17,7 @@ $spec->describe( "When running a single spec from a file", function() {
             $failed_expectations = $spec_runner->get_invalid_expectations();
 
             $this->expect( $failed_expectations[0]->get_message() )
-                ->to() ->equal("Expected value to equal '2', got '1'.");
+                ->to() ->equal("Expected value to equal 2, got 1.");
 
         });
 
