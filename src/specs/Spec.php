@@ -61,7 +61,7 @@ class Spec
 
     public function expect($value)
     {
-        return new Expectation( $this->get_full_description(), $value );
+        return new ValueExpectation( $this->get_full_description(), $value );
     }
 
     public function eval($closure)

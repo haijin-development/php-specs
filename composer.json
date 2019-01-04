@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Haijin\\Specs\\": ["src/errors", "src/expectations", "src/runners", "src/specs", "src/failures", "src/report-renderers"]
+            "Haijin\\Specs\\": ["src/errors", "src/value-expectations", "src/runners", "src/specs", "src/failures", "src/report-renderers"]
         }
     },
     "scripts": {

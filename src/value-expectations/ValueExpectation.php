@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Expectation
+class ValueExpectation
 {
     /// Instance methods
 
@@ -35,9 +35,9 @@ class Expectation
 
     public function __call($method_name, $params)
     {
-        $definition = Expectations::definition_at( $method_name );
+        $definition = ValueExpectations::definition_at( $method_name );
 
-        $evaluation = new ExpectationEvaluation( $this->description, $this->value );
+        $evaluation = new ValueExpectationEvaluation( $this->description, $this->value );
 
         $this->evaluate_expectation_definition_with( $definition, $evaluation, $params );
     }

@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Expectations
+class ValueExpectations
 {
     static protected $expectation_definitions = [];
 
@@ -10,7 +10,7 @@ class Expectations
 
     static public function define_expectation($method_name, $closure)
     {
-        $definition = new ExpectationDefinition($method_name);
+        $definition = new ValueExpectationDefinition($method_name);
         $definition->define( $closure );
 
         self::$expectation_definitions[ $method_name ] = $definition;
@@ -33,4 +33,4 @@ class Expectations
     }
 }
 
-require_once __DIR__ . "/expectation-definitions.php";
+require_once __DIR__ . "/value-expectation-definitions.php";

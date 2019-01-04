@@ -1,8 +1,8 @@
 <?php
 
-use Haijin\Specs\Expectations;
+use Haijin\Specs\ValueExpectations;
 
-Expectations::define_expectation( "equal", function() {
+ValueExpectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
         $this->got_expected_value = $expected_value == $this->actual_value;

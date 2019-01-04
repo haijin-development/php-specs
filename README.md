@@ -125,14 +125,14 @@ $this->expect( $string_value ) ->to() ->match( $regexp );
 
 // Exceptions
 
-$this->expect_closure( function() {
+$this->expect( function() {
 
     throw Exception();
 
 }) ->to_raise( Exception::class );
 
 
-$this->expect_closure( function() {
+$this->expect( function() {
 
         throw Exception( "Some message." );
 
@@ -152,7 +152,7 @@ $this->expect( $value ) ->not() ->to() ->equal( $another_value );
 
 // Exceptions
 
-$this->expect_closure( function() {
+$this->expect( function() {
 
     throw Exception();
 
@@ -271,7 +271,7 @@ Here is a complete example of a custom validation:
 
 ```php
 
-Expectations::define_expectation( "equal", function() {
+ValueExpectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
         $this->got_expected_value = $expected_value == $this->actual_value;

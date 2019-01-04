@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ExpectationDefinition
+class ValueExpectationDefinition
 {
     public $expectation_name;
     public $before_closure;

@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ExpectationEvaluation
+class ValueExpectationEvaluation
 {
     protected $description;
     public $actual_value;

@@ -53,7 +53,7 @@ class ExpectationFailure
         foreach( $this->stack_trace as $i => $stack_frame) {
             if( $stack_frame[ "function" ] == "evaluate_expectation_definition_with"
                 && 
-                $stack_frame[ "class" ] == "Haijin\Specs\Expectation"
+                $stack_frame[ "class" ] == "Haijin\Specs\ValueExpectation"
             ) 
             {
                 return $this->stack_trace[ $i + 1 ];
