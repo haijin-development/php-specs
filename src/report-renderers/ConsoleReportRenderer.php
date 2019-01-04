@@ -59,7 +59,7 @@ class ConsoleReportRenderer
 
         $this->cr();
 
-        $this->output->lightBlueBackground()->render( $invalid_expectation->get_file(), false );
+        $this->output->lightBlueBackground()->render( $invalid_expectation->get_file_name(), false );
         $this->output->render( ":", false );
         $this->output->lightBlueBackground()->render( $invalid_expectation->get_line() );
     }

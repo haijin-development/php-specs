@@ -26,8 +26,18 @@ class SpecsRunner
     {
         $spec_files = $this->collect_spec_files_in( $folder );
 
-        $this->run_spec_files( $spec_files );
+        $specs = $this->collect_specs_from_files( $spec_files );
+
+        $this->evaluate_specs( $specs );
     }
+
+    public function run_spec_file($file)
+    {
+        $specs = $this->collect_specs_from_file( $file );
+
+        $this->evaluate_specs( $specs );
+    }
+
 
     public function collect_spec_files_in($folder)
     {
@@ -48,19 +58,37 @@ class SpecsRunner
         return $files;
     }
 
-    public function run_spec_files($spec_files)
+    public function collect_specs_from_files($spec_files)
     {
-        foreach( $spec_files as $each_spec_file ) {
-            $this->run_spec_file( $each_spec_file );
+        $specs = [];
+
+        foreach( $spec_files as $file) {
+            $specs = array_merge( $specs, $this->collect_specs_from_file( $file ) );
+        }
+
+        return $specs;
+    }
+
+    public function collect_specs_from_file($spec_file)
+    {
+        $spec_descripion = new SpecDescription( "", "" );
+        $spec_descripion->define_in_file( $spec_file );
+
+        return $spec_descripion->get_all_specs();
+    }
+
+    public function evaluate_specs($specs_collection)
+    {
+        foreach( $specs_collection as $spec ) {
+            $this->evaluate_spec( $spec );
         }
     }
 
-    public function run_spec_file($spec_file)
+    public function evaluate_spec($spec)
     {
         try {
 
-            $spec = new Spec();
-            $spec->define_in_file( $spec_file );
+            $spec->evaluate();
 
         } catch( ExpectationFailureSignal $signal ) {
 

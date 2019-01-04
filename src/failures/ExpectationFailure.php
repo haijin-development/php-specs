@@ -34,7 +34,7 @@ class ExpectationFailure
         return $this->stack_trace;
     }
 
-    public function get_file()
+    public function get_file_name()
     {
         $stack_frame = $this->find_source_stack_frame();
 

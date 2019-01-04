@@ -36,6 +36,35 @@ $spec->describe( "When running a single spec from a file", function() {
 
         });
 
+        $this->it( "has the file name", function() {
+
+            $spec_file = __DIR__ . "/../../specs-samples/single-spec-failure.php";
+
+            $spec_runner = new SpecsRunner();
+
+            $spec_runner->run_spec_file( $spec_file );
+
+            $failed_expectations = $spec_runner->get_invalid_expectations();
+
+            $this->expect( $failed_expectations[0]->get_file_name() )
+                ->to() ->end_with( "specs-samples/single-spec-failure.php" );
+
+        });
+
+        $this->it( "has the number of line in the file", function() {
+
+            $spec_file = __DIR__ . "/../../specs-samples/single-spec-failure.php";
+
+            $spec_runner = new SpecsRunner();
+
+            $spec_runner->run_spec_file( $spec_file );
+
+            $failed_expectations = $spec_runner->get_invalid_expectations();
+
+            $this->expect( $failed_expectations[0]->get_line() ) ->to() ->equal( 7 );
+
+        });
+
     });
 
 });

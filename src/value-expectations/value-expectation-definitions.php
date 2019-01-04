@@ -30,3 +30,37 @@ ValueExpectations::define_expectation( "equal", function() {
         );
     });
 });
+
+ValueExpectations::define_expectation( "end_with", function() {
+
+    $this->before( function($expected_value) {
+
+        $this->got_expected_value =
+            strrpos( $this->actual_value, $expected_value )
+            == 
+            strlen( $this->actual_value ) - strlen( $expected_value );
+
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->got_expected_value ) {
+            return;
+        }
+
+        $this->raise_error(
+            "Expected '{$this->actual_value}' to end with '{$expected_value}'."
+        );
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->got_expected_value ) {
+            return;
+        }
+
+        $this->raise_error(
+            "Expected '{$this->actual_value}' not to end with '{$expected_value}'."
+        );
+    });
+});

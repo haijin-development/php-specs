@@ -4,7 +4,7 @@ $spec->describe( "When expecting a value for equality", function() {
 
     $this->it( "the spec passes if values are equal", function() {
 
-        $this->expect( 1 ) ->to() ->equal( 2 );
+        $this->expect( 1 ) ->to() ->equal( 1 );
 
     });
 
