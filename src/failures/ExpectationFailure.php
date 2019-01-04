@@ -34,22 +34,29 @@ class ExpectationFailure
         return $this->stack_trace;
     }
 
-    public function get_file_and_line()
+    public function get_file()
     {
         $stack_frame = $this->find_source_stack_frame();
 
-        return $stack_frame[ "file" ] . ":" . $stack_frame[ "line" ];
+        return $stack_frame[ "file" ];
+    }
+
+    public function get_line()
+    {
+        $stack_frame = $this->find_source_stack_frame();
+
+        return $stack_frame[ "line" ];
     }
 
     public function find_source_stack_frame()
     {
-        foreach( $this->stack_trace as $stack_frame) {
-            if( $stack_frame[ "function" ] == "__call"
+        foreach( $this->stack_trace as $i => $stack_frame) {
+            if( $stack_frame[ "function" ] == "evaluate_expectation_definition_with"
                 && 
                 $stack_frame[ "class" ] == "Haijin\Specs\Expectation"
             ) 
             {
-                return $stack_frame;
+                return $this->stack_trace[ $i + 1 ];
             }
         }
 

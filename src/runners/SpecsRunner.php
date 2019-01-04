@@ -20,13 +20,6 @@ class SpecsRunner
         return $this->invalid_expectations;
     }
 
-    /// Asking
-
-    public function has_invalid_expectations()
-    {
-        return ! empty( $this->invalid_expectations );
-    }
-
     /// Running
 
     public function run_on($folder)

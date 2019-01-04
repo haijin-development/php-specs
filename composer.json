@@ -19,11 +19,12 @@
             "php": "7.1"
         }
     },
-    "require-dev": {
+    "require": {
+        "questocat/console-color": "^1.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Haijin\\Specs\\": ["src/errors", "src/expectations", "src/runners", "src/specs", "src/failures"]
+            "Haijin\\Specs\\": ["src/errors", "src/expectations", "src/runners", "src/specs", "src/failures", "src/report-renderers"]
         }
     },
     "scripts": {
