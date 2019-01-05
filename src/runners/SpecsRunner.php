@@ -4,25 +4,25 @@ namespace Haijin\Specs;
 
 class SpecsRunner
 {
-    protected $statistics;
+    protected $specs_evaluator;
 
     /// Initializing
 
     public function __construct()
     {
-        $this->statistics = new SpecsStatistics();
+        $this->specs_evaluator = $this->new_spec_evaluator();
     }
 
     /// Accessing
 
     public function get_statistics()
     {
-        return $this->statistics;
+        return $this->specs_evaluator->get_statistics();
     }
 
     public function get_invalid_expectations()
     {
-        return $this->statistics->get_invalid_expectations();
+        return $this->specs_evaluator->get_invalid_expectations();
     }
 
     /// Running
@@ -76,7 +76,7 @@ class SpecsRunner
 
     public function get_spec_from_file($spec_file)
     {
-        $spec_descripion = new SpecDescription( "", "" );
+        $spec_descripion = new SpecDescription( "", "", null );
         $spec_descripion->define_in_file( $spec_file );
 
         return $spec_descripion;
@@ -84,6 +84,8 @@ class SpecsRunner
 
     public function evaluate_specs($specs_collection)
     {
+        $this->specs_evaluator = $this->new_spec_evaluator();
+
         foreach( $specs_collection as $spec ) {
             $this->evaluate_spec( $spec );
         }
@@ -91,6 +93,13 @@ class SpecsRunner
 
     public function evaluate_spec($spec)
     {
-        $spec->evaluate( $this->statistics );
+        $this->specs_evaluator->evaluate( $spec );
+    }
+
+    /// Creating instances
+
+    public function new_spec_evaluator()
+    {
+        return new SpecEvaluator();
     }
 }

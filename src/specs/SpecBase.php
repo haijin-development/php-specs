@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecBase
+abstract class SpecBase
 {
     protected $description;
     protected $nested_description;
@@ -10,11 +10,17 @@ class SpecBase
 
     /// Initializing
 
-    public function __construct($description, $nested_description)
+    public function __construct($description, $nested_description, $context)
     {
+        if( $context === null ) {
+            $context = new SpecContext();
+        } else {
+            $context = clone $context;
+        }
+
         $this->description = $description;
         $this->nested_description = $nested_description;
-        $this->context = new SpecContext();
+        $this->context = $context;
     }
 
     /// Accessors
@@ -51,24 +57,7 @@ class SpecBase
         $closure->call( $this, $this );
     }
 
-    /// Evaluating
+    /// Double dispatch evaluations
 
-    public function evaluate_collecting_failures($closure, $statistics)
-    {
-        try {
-
-            $closure->call( $this, $this );
-
-        } catch( ExpectationFailureSignal $signal ) {
-
-            $statistics->add_invalid_expectation(
-                new ExpectationFailure(
-                    $signal->get_description(),
-                    $signal->get_message(),
-                    $signal->get_trace()
-                )
-            );
-
-        }
-    }
+    abstract public function evaluate_with($spec_evaluator);
 }
