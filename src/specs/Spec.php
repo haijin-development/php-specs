@@ -22,8 +22,8 @@ class Spec extends SpecBase
 
     /// Evaluating
 
-    public function evaluate()
+    public function evaluate($statistics)
     {
-        $this->closure->call( $this, $this );
+        $this->evaluate_collecting_failures( $this->closure, $statistics );
     }
 }

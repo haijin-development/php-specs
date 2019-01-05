@@ -4,20 +4,25 @@ namespace Haijin\Specs;
 
 class SpecsRunner
 {
-    protected $invalid_expectations;
+    protected $statistics;
 
     /// Initializing
 
     public function __construct()
     {
-        $this->invalid_expectations = [];
+        $this->statistics = new SpecsStatistics();
     }
 
     /// Accessing
 
+    public function get_statistics()
+    {
+        return $this->statistics;
+    }
+
     public function get_invalid_expectations()
     {
-        return $this->invalid_expectations;
+        return $this->statistics->get_invalid_expectations();
     }
 
     /// Running
@@ -33,9 +38,9 @@ class SpecsRunner
 
     public function run_spec_file($file)
     {
-        $specs = $this->collect_specs_from_file( $file );
+        $specs = $this->get_spec_from_file( $file );
 
-        $this->evaluate_specs( $specs );
+        $this->evaluate_specs( [ $specs ] );
     }
 
 
@@ -63,18 +68,18 @@ class SpecsRunner
         $specs = [];
 
         foreach( $spec_files as $file) {
-            $specs = array_merge( $specs, $this->collect_specs_from_file( $file ) );
+            $specs[] = $this->get_spec_from_file( $file );
         }
 
         return $specs;
     }
 
-    public function collect_specs_from_file($spec_file)
+    public function get_spec_from_file($spec_file)
     {
         $spec_descripion = new SpecDescription( "", "" );
         $spec_descripion->define_in_file( $spec_file );
 
-        return $spec_descripion->get_all_specs();
+        return $spec_descripion;
     }
 
     public function evaluate_specs($specs_collection)
@@ -86,18 +91,6 @@ class SpecsRunner
 
     public function evaluate_spec($spec)
     {
-        try {
-
-            $spec->evaluate();
-
-        } catch( ExpectationFailureSignal $signal ) {
-
-            $this->invalid_expectations[] = new ExpectationFailure(
-                $signal->get_description(),
-                $signal->get_message(),
-                $signal->get_trace()
-            );
-
-        }
+        $spec->evaluate( $this->statistics );
     }
 }

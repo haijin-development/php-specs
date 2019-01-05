@@ -7,23 +7,23 @@ use Questocat\ConsoleColor\ConsoleColor as Output;
 class ConsoleReportRenderer
 {
     protected $output;
-    protected $specs_runner;
+    protected $specs_statistics;
 
     public function __construct()
     {
         $this->output = new Output();
-        $this->specs_runner = null;
+        $this->specs_statistics = null;
     }
 
     public function render_report_from($specs_runner)
     {
-        $this->specs_runner = $specs_runner;
+        $this->specs_statistics = $specs_runner->get_statistics();
 
         $this->cr();
 
         $this->render_report_header();
 
-        foreach( $specs_runner->get_invalid_expectations() as $i => $invalid_expectation ) {
+        foreach( $this->specs_statistics->get_invalid_expectations() as $i => $invalid_expectation ) {
             $this->cr();
 
             $this->render_invalid_expectation_details( $invalid_expectation, $i );
@@ -66,7 +66,7 @@ class ConsoleReportRenderer
 
     public function invalid_expectations()
     {
-        return $this->specs_runner->get_invalid_expectations();
+        return $this->specs_statistics->get_invalid_expectations();
     }
 
     public function invalid_expectations_count()

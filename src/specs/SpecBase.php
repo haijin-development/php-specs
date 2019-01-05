@@ -50,4 +50,25 @@ class SpecBase
     {
         $closure->call( $this, $this );
     }
+
+    /// Evaluating
+
+    public function evaluate_collecting_failures($closure, $statistics)
+    {
+        try {
+
+            $closure->call( $this, $this );
+
+        } catch( ExpectationFailureSignal $signal ) {
+
+            $statistics->add_invalid_expectation(
+                new ExpectationFailure(
+                    $signal->get_description(),
+                    $signal->get_message(),
+                    $signal->get_trace()
+                )
+            );
+
+        }
+    }
 }
