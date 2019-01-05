@@ -6,6 +6,7 @@ class SpecEvaluator
 {
     protected $statistics;
     protected $current_spec;
+    protected $resolved_named_expressions;
 
     /// Initializing
 
@@ -13,6 +14,7 @@ class SpecEvaluator
     {
         $this->statistics = $this->new_specs_statistics();
         $this->current_spec = null;
+        $this->resolved_named_expressions = [];
     }
 
     /// Accessing
@@ -31,35 +33,11 @@ class SpecEvaluator
 
     public function evaluate($spec)
     {
-        return $spec->evaluate_with( $this );
-    }
-
-    public function evaluate_spec_description($spec_description)
-    {
-        foreach( $spec_description->get_nested_specs() as $spec ) {
-            $spec->evaluate_with( $this );
-        }
-    }
-
-    public function evaluate_spec($spec)
-    {
-        $this->current_spec = $spec;
+        $current_resolved_named_expressions = $this->resolved_named_expressions;
 
         try {
 
-            $this->evaluate_collecting_failures( $spec->get_closure() );
-
-        } finally {
-
-            $this->current_spec = null;
-        }
-    }
-
-    public function evaluate_collecting_failures($closure )
-    {
-        try {
-
-            $closure->call( $this );
+            return $spec->evaluate_with( $this );
 
         } catch( ExpectationFailureSignal $signal ) {
 
@@ -71,6 +49,31 @@ class SpecEvaluator
                 )
             );
 
+        } finally {
+
+            $this->resolved_named_expressions = $current_resolved_named_expressions;
+
+        }
+    }
+
+    public function evaluate_spec_description($spec_description)
+    {
+        foreach( $spec_description->get_nested_specs() as $spec ) {
+            $this->evaluate( $spec );
+        }
+    }
+
+    public function evaluate_spec($spec)
+    {
+        $this->current_spec = $spec;
+
+        try {
+
+            $spec->get_closure()->call( $this );
+
+        } finally {
+
+            $this->current_spec = null;
         }
     }
 
@@ -100,9 +103,17 @@ class SpecEvaluator
 
     public function evaluate_named_expression($expression_name)
     {
+        if( array_key_exists( $expression_name, $this->resolved_named_expressions ) ) {
+            return $this->resolved_named_expressions[ $expression_name ];
+        }
+
         $closure = $this->get_named_expression( $expression_name );
 
-        return $closure->call( $this );
+        $resolved_expression_value = $closure->call( $this );
+
+        $this->resolved_named_expressions[ $expression_name ] = $resolved_expression_value;
+
+        return $resolved_expression_value;
     }
 
     public function get_named_expression($expression_name)

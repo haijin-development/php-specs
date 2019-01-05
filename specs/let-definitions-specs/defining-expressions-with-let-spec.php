@@ -2,7 +2,7 @@
 
 use Haijin\Specs\SpecsRunner;
 
-$spec->describe( "When defining expressions with let", function() {
+$spec->describe( "When defining a expression with let", function() {
 
     $this->let( "n", function() {
         return 3 + 4;
@@ -18,12 +18,58 @@ $spec->describe( "When defining expressions with let", function() {
 
     });
 
-    $this->it( "lazily evaluates the expression only the first time its referenced", function(){
+    $this->it( "lazily evaluates the expression only once, the first time its referenced", function(){
 
         $this->accumulator;
         $this->accumulator;
+        $this->accumulator;
 
-        $this->expect( $this->n ) ->to() ->equal( 1 );
+        $this->expect( $this->accumulator ) ->to() ->equal( 1 );
+
+    });
+
+    $this->describe( "in the container description", function() {
+
+        $this->it( "inherits the expression from its container", function() {
+
+            $this->expect( $this->n ) ->to() ->equal( 7 );
+
+        });
+
+        $this->describe( "and overrides it", function() {
+
+            $this->let( "n", function() {
+                return 1 + 2;
+            });
+
+            $this->it( "overrides the container expression", function() {
+
+                $this->expect( $this->n ) ->to() ->equal( 3 );
+
+            });
+
+        });
+
+        $this->it( "and overrides the expressions in a child description, it preserves the overriden expression", function() {
+
+            $this->expect( $this->n ) ->to() ->equal( 7 );
+
+        });
+
+    });
+
+
+    $this->describe( "that references another named expression", function() {
+
+        $this->let( "m", function() {
+            return $this->n + 1;
+        });
+
+        $this->it( "lazily resolves the reference", function() {
+
+            $this->expect( $this->m ) ->to() ->equal( 8 );
+
+        });
 
     });
 });
@@ -31,4 +77,11 @@ $spec->describe( "When defining expressions with let", function() {
 class Accumulator
 {
     static public $accumulator = 0;
+
+    static public function inc()
+    {
+        self::$accumulator += 1;
+
+        return self::$accumulator;
+    }
 }

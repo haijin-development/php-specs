@@ -4,7 +4,7 @@ A testing framework to replace PHPUnit using a simple DSL inspired by RSpec.
 
 [![Latest Stable Version](https://poser.pugx.org/haijin/specs/version)](https://packagist.org/packages/haijin/specs)
 [![Latest Unstable Version](https://poser.pugx.org/haijin/specs/v/unstable)](https://packagist.org/packages/haijin/specs)
-[![Build Status](https://travis-ci.org/haijin-development/php-specs.svg?branch=v0.0.2)](https://travis-ci.org/haijin-development/php-specs)
+[![Build Status](https://travis-ci.org/haijin-development/php-specs.svg?branch=master)](https://travis-ci.org/haijin-development/php-specs)
 [![License](https://poser.pugx.org/haijin/specs/license)](https://packagist.org/packages/haijin/specs)
 
 ### Version 0.0.1
@@ -21,7 +21,7 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
     2. [Built-in expectations](#c-2-2)
     3. [Specs structure](#c-2-3)
     4. [Evaluating code before and after running expectations](#c-2-4)
-    5. [Defining values with ->let(...)](#c-2-5)
+    5. [Defining values with let(...) expressions](#c-2-5)
     6. [Defining custom expectations](#c-2-6)
         1. [Expectation definition structure](#c-2-6-1)
         2. [Getting the value being validated](#c-2-6-2)
@@ -211,8 +211,55 @@ $spec->describe( "When formatting a user's full name", function() {
 ### Evaluating code before and after running expectations
 
 <a name="c-2-5"></a>
-### Defining values with $this->let(...)
+### Defining values with let(...) expressions
 
+Define expressions and constants using the `let( $expression_name, $closure )` statement.
+
+Expressions defined with `let(...)` are lazily evaluated the first time they are referenced by each spec.
+
+`let(...)` expressions are inherit by child `describe(...)` specs and be safely overriden within the scope of a child `describe(...)`.
+
+A `let(...)` expression can reference another `let(...)` expression.
+
+Example:
+
+```php
+$spec->describe( "When searching for users", function() {
+
+    $this->let( "user_id", function() {
+        return 1;
+    });
+
+    $this->it( "finds the user by id", function(){
+
+        $user = Users::find_by_id( $this->user_id );
+
+        $this->expect( $user ) ->not() ->to() ->be_null();
+
+    });
+
+    $this->describe( "the retrieved user data", function() {
+
+        $this->let( "user", function() {
+            return Users::find_by_id( $this->user_id );
+        });
+
+        $this->it( "includes the name", function() {
+
+            $this->expect( $this->user->get_name() ) ->to() ->equal( "Lisa" );
+
+        });
+
+        $this->it( "includes the lastname", function() {
+
+            $this->expect( $this->user->get_lastname() ) ->to() ->equal( "Simpson" );
+
+        });
+
+    });
+
+});
+```
 <a name="c-2-6"></a>
 ### Defining custom expectations
 
