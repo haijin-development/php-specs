@@ -25,6 +25,16 @@ class SpecsRunner
         return $this->specs_evaluator->get_invalid_expectations();
     }
 
+    public function get_last_expectation_status()
+    {
+        return $this->specs_evaluator->get_last_expectation_status();
+    }
+
+    public function after_each_spec_do($closure)
+    {
+        $this->specs_evaluator->after_each_spec_do( $closure );
+    }
+
     /// Running
 
     public function run_on($folder)
@@ -84,7 +94,7 @@ class SpecsRunner
 
     public function evaluate_specs($specs_collection)
     {
-        $this->specs_evaluator = $this->new_spec_evaluator();
+        $this->specs_evaluator->reset();
 
         foreach( $specs_collection as $spec ) {
             $this->evaluate_spec( $spec );

@@ -15,6 +15,23 @@ class ConsoleReportRenderer
         $this->specs_statistics = null;
     }
 
+    public function render_feedback_of_spec_status($spec, $spec_status)
+    {
+        switch( $spec_status ) {
+            case 'passed':
+                $this->output->green()->render( ".", false );
+                break;
+            case 'failed':
+                $this->output->yellow()->render( "F", false );
+                break;
+            case 'error':
+                $this->output->red()->render( "E", false );
+                break;
+            default:
+                $this->output->render( ".", false );
+        }
+    }
+
     public function render_report_from($specs_runner)
     {
         $this->specs_statistics = $specs_runner->get_statistics();

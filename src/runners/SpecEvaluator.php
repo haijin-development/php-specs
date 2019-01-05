@@ -7,10 +7,19 @@ class SpecEvaluator
     protected $statistics;
     protected $current_spec;
     protected $resolved_named_expressions;
+    protected $after_each_spec_closure;
 
     /// Initializing
 
     public function __construct()
+    {
+        $this->statistics = $this->new_specs_statistics();
+        $this->current_spec = null;
+        $this->resolved_named_expressions = [];
+        $this->after_each_spec_closure = null;
+    }
+
+    public function reset()
     {
         $this->statistics = $this->new_specs_statistics();
         $this->current_spec = null;
@@ -29,6 +38,11 @@ class SpecEvaluator
         return $this->statistics->get_invalid_expectations();
     }
 
+    public function after_each_spec_do($closure)
+    {
+        $this->after_each_spec_closure = $closure;
+    }
+
     /// Evaluating
 
     public function evaluate($spec)
@@ -37,7 +51,11 @@ class SpecEvaluator
 
         try {
 
-            return $spec->evaluate_with( $this );
+            $spec->evaluate_with( $this );
+
+            if( $this->after_each_spec_closure !== null ) {
+                $this->after_each_spec_closure->call( $this, $spec, "passed" );
+            }
 
         } catch( ExpectationFailureSignal $signal ) {
 
@@ -48,6 +66,10 @@ class SpecEvaluator
                     $signal->get_trace()
                 )
             );
+
+            if( $this->after_each_spec_closure !== null ) {
+                $this->after_each_spec_closure->call( $this, $spec, "failed" );
+            }
 
         } finally {
 
