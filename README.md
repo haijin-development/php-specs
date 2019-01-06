@@ -27,7 +27,8 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
         2. [Getting the value being validated](#c-2-6-2)
         3. [Parameters of the definition closures](#c-2-6-3)
         4. [Raising expectation errors](#c-2-6-4)
-        5. [Complete example](#c-2-6-5)
+        5. [Evaluating closures within custom expectations](#c-2-6-5)
+        6. [Complete example](#c-2-6-6)
     7. [Temporary skipping a spec](#c-2-7)
 3. [Running the specs](#c-3)
 
@@ -313,6 +314,27 @@ $this->after( function($expected_value) {
 To raise an expectation failure use `$this->raise_failure( $failure_message )`.
 
 <a name="c-2-6-5"></a>
+#### Evaluating closures within custom expectations
+
+To evaluate closures within a custom expectation definition use `evaluate_closure($closure, ...$params)`.
+
+This is required for the closure to evaluate with the propper binding.
+
+Example:
+
+```php
+ValueExpectations::define_expectation( "custom_expectation", function() {
+
+    $this->assert_with( function($expected_closure) {
+
+        $this->evaluate_closure( $expected_closure, $this->actual_value );
+
+        // ...
+    });
+);
+```
+
+<a name="c-2-6-6"></a>
 #### Complete example
 
 Here is a complete example of a custom validation:
@@ -355,7 +377,7 @@ ValueExpectations::define_expectation( "equal", function() {
 <a name="c-2-7"></a>
 #### Temporary skipping a spec
 
-To temporary skip a spec or a group of specs prepend an x to its definition:
+To temporary skip a spec or a group of specs prepend an `x` to its definition:
 
 ```php
 $spec->describe( "When searching for users", function() {
