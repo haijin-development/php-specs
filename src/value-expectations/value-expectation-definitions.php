@@ -14,7 +14,7 @@ ValueExpectations::define_expectation( "equal", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected value to equal {$this->value_string($expected_value)}, got {$this->value_string($this->actual_value)}."
         );
     });
@@ -25,7 +25,7 @@ ValueExpectations::define_expectation( "equal", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected value not to equal {$this->value_string($expected_value)}, got {$this->value_string($this->actual_value)}."
         );
     });
@@ -48,7 +48,7 @@ ValueExpectations::define_expectation( "end_with", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected {$this->value_string($expected_value)} to end with {$this->value_string($expected_value)}."
         );
     });
@@ -59,7 +59,7 @@ ValueExpectations::define_expectation( "end_with", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected {$this->value_string($expected_value)} not to end with {$this->value_string($expected_value)}."
         );
     });

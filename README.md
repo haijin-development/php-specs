@@ -28,6 +28,7 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
         3. [Parameters of the definition closures](#c-2-6-3)
         4. [Raising expectation errors](#c-2-6-4)
         5. [Complete example](#c-2-6-5)
+    7. [Temporary skipping a spec](#c-2-7)
 3. [Running the specs](#c-3)
 
 <a name="c-1"></a>
@@ -101,8 +102,8 @@ Specs library comes with the most common expectations built-in:
 // Comparisson expectations
 
 $this->expect( $value ) ->to() ->equal( $another_value );
-$this->expect( $value ) ->to() ->be( ">" ) ->than($another_value);
-$this->expect( $value ) ->to() ->be( "===" ) ->than($another_value);
+$this->expect( $value ) ->to() ->be( ">" ) ->than( $another_value );
+$this->expect( $value ) ->to() ->be( "===" ) ->than( $another_value );
 
 // Types expectations
 
@@ -129,14 +130,14 @@ $this->expect( function() {
 
     throw Exception();
 
-}) ->to_raise( Exception::class );
+}) ->to() ->raise( Exception::class );
 
 
 $this->expect( function() {
 
         throw Exception( "Some message." );
 
-}) ->to_raise( Exception::class, function($e) {
+}) ->to() ->raise( Exception::class, function($e) {
 
     $this->expect( $e->getMessage() ) ->to() ->equal( "Some message." );        
 
@@ -156,7 +157,7 @@ $this->expect( function() {
 
     throw Exception();
 
-}) ->not() ->to_raise( Exception::class );
+}) ->not() ->to() ->raise( Exception::class );
 ```
 
 <a name="c-2-3"></a>
@@ -309,7 +310,7 @@ $this->after( function($expected_value) {
 <a name="c-2-6-4"></a>
 #### Raising expectation errors
 
-To raise an expectation error use `$this->raise_error( $error_message )`.
+To raise an expectation failure use `$this->raise_failure( $failure_message )`.
 
 <a name="c-2-6-5"></a>
 #### Complete example
@@ -330,7 +331,7 @@ ValueExpectations::define_expectation( "equal", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected value to equal {$expected_value}, got {$this->actual_value}."
         );
     });
@@ -341,7 +342,7 @@ ValueExpectations::define_expectation( "equal", function() {
             return;
         }
 
-        $this->raise_error(
+        $this->raise_failure(
             "Expected value not to equal {$expected_value}, got {$this->actual_value}."
         );
     });
@@ -350,6 +351,50 @@ ValueExpectations::define_expectation( "equal", function() {
     });
 });
 ```
+
+<a name="c-2-7"></a>
+#### Temporary skipping a spec
+
+To temporary skip a spec or a group of specs prepend an x to its definition:
+
+```php
+$spec->describe( "When searching for users", function() {
+
+    $this->let( "user_id", function() {
+        return 1;
+    });
+
+    $this->xit( "finds the user by id", function(){
+
+        $user = Users::find_by_id( $this->user_id );
+
+        $this->expect( $user ) ->not() ->to() ->be_null();
+
+    });
+
+    $this->xdescribe( "the retrieved user data", function() {
+
+        $this->let( "user", function() {
+            return Users::find_by_id( $this->user_id );
+        });
+
+        $this->it( "includes the name", function() {
+
+            $this->expect( $this->user->get_name() ) ->to() ->equal( "Lisa" );
+
+        });
+
+        $this->it( "includes the lastname", function() {
+
+            $this->expect( $this->user->get_lastname() ) ->to() ->equal( "Simpson" );
+
+        });
+
+    });
+
+});
+```
+
 <a name="c-3"></a>
 ## Running the specs
 

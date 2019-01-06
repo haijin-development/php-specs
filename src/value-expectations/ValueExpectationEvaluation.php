@@ -13,9 +13,9 @@ class ValueExpectationEvaluation
         $this->actual_value = $actual_value;
     }
 
-    public function raise_error($error_message)
+    public function raise_failure($failure_message)
     {
-        throw new ExpectationFailureSignal( $error_message, $this->description );
+        throw new ExpectationFailureSignal( $failure_message, $this->description );
     }
 
     public function value_string($value)
