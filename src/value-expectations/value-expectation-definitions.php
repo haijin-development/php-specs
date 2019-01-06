@@ -2,6 +2,8 @@
 
 use Haijin\Specs\ValueExpectations;
 
+/// Comparisson expectations
+
 ValueExpectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
@@ -30,6 +32,8 @@ ValueExpectations::define_expectation( "equal", function() {
         );
     });
 });
+
+/// Strings expectations
 
 ValueExpectations::define_expectation( "end_with", function() {
 
@@ -62,5 +66,52 @@ ValueExpectations::define_expectation( "end_with", function() {
         $this->raise_failure(
             "Expected {$this->value_string($expected_value)} not to end with {$this->value_string($expected_value)}."
         );
+    });
+});
+
+/// Exception expectations
+
+ValueExpectations::define_expectation( "raise", function() {
+
+    $this->assert_with( function($expected_exception_class_name, $expected_exception_closure = null) {
+
+        $raised_exception = null;
+
+        try {
+
+            $this->evaluate_closure( $this->actual_value );
+
+        } catch( \Exception $e ) {
+
+            $raised_exception = $e;
+
+        }
+
+        if( $raised_exception === null ) {
+
+            $this->raise_failure(
+                "Expected the closure to raise a {$expected_exception_class_name}, but no Exception was raised."
+            );
+
+        }
+
+        $raised_exception_class_name = get_class( $raised_exception );
+
+        if( $raised_exception_class_name != $expected_exception_class_name ) {
+
+            $this->raise_failure(
+                "Expected the closure to raise a {$expected_exception_class_name}, but a {$raised_exception_class_name} was raised instead."
+            );
+
+        }
+
+        if( $expected_exception_closure !== null ) {
+
+            $this->evaluate_closure( $expected_exception_closure, $raised_exception );
+
+        }
+    });
+
+    $this->negate_with( function($expected_exception_class_name) {
     });
 });

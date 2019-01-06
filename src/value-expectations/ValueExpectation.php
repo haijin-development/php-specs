@@ -6,14 +6,16 @@ class ValueExpectation
 {
     /// Instance methods
 
+    protected $spec_binding;
     protected $description;
     protected $value;
     protected $negated;
 
     /// Accessors
 
-    public function __construct($description, $value)
+    public function __construct($spec_binding, $description, $value)
     {
+        $this->spec_binding = $spec_binding;
         $this->description = $description;
         $this->value = $value;
         $this->negated = false;
@@ -37,7 +39,11 @@ class ValueExpectation
     {
         $definition = ValueExpectations::definition_at( $method_name );
 
-        $evaluation = new ValueExpectationEvaluation( $this->description, $this->value );
+        $evaluation = new ValueExpectationEvaluation(
+            $this->spec_binding,
+            $this->description,
+            $this->value
+        );
 
         $this->evaluate_expectation_definition_with( $definition, $evaluation, $params );
     }

@@ -4,11 +4,13 @@ namespace Haijin\Specs;
 
 class ValueExpectationEvaluation
 {
+    protected $spec_binding;
     protected $description;
     public $actual_value;
 
-    public function __construct($description, $actual_value)
+    public function __construct($spec_binding, $description, $actual_value)
     {
+        $this->spec_binding = $spec_binding;
         $this->description = $description;
         $this->actual_value = $actual_value;
     }
@@ -25,5 +27,10 @@ class ValueExpectationEvaluation
         }
 
         return (string) $value;
+    }
+
+    public function evaluate_closure($closure, ...$params)
+    {
+        return $closure->call( $this->spec_binding, ...$params );
     }
 }

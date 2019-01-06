@@ -163,7 +163,7 @@ class SpecEvaluator
 
     protected function new_value_expectation($full_description, $value)
     {
-        return new ValueExpectation( $full_description, $value );
+        return new ValueExpectation( $this, $full_description, $value );
     }
 
     /// Raising errors
@@ -171,7 +171,7 @@ class SpecEvaluator
     public function raise_undefined_named_expression($expression_name)
     {
         throw new UndefinedNamedExpressionError(
-            "Undefined expression named '{$expression_name}.",
+            "Undefined expression named '{$expression_name}'.",
             $expression_name
         );
     }

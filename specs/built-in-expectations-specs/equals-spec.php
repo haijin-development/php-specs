@@ -12,18 +12,17 @@ $spec->describe( "When expecting a value for equality", function() {
 
         $error_raised = false;
 
-        try {
+        $this->expect( function() {
+
             $this->expect( 1 ) ->to() ->equal( 2 );
-        } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
-            $error_raised = true;
 
-            $this->expect( $e->get_message() )
-                ->to() ->equal( "Expected value to equal 2, got 1." );
-        }
+        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
 
-        if( $error_raised === false ) {
-            throw new Exception( "->equal(\$value) failed in raising an error." );
-        }
+            $this->expect( $e->get_message() ) ->to()
+                ->equal( "Expected value to equal 2, got 1." );
+
+        });
+
     });
 
     $this->describe( "when negating the expectation", function() {
@@ -36,20 +35,17 @@ $spec->describe( "When expecting a value for equality", function() {
 
         $this->it( "the spec fails if values are equal", function() {
 
-            $error_raised = false;
+            $this->expect( function() {
 
-            try {
                 $this->expect( 1 ) ->not() ->to() ->equal( 1 );
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
-                $error_raised = true;
 
-                $this->expect( $e->get_message() )
-                    ->to() ->equal( "Expected value not to equal 1, got 1." );
-            }
+            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
 
-            if( $error_raised === false ) {
-                throw new Exception( "->equal(\$value) failed in raising an error." );
-            }
+                $this->expect( $e->get_message() ) ->to()
+                    ->equal( "Expected value not to equal 1, got 1." );
+
+            });
+
         });
 
     });

@@ -28,6 +28,21 @@ $spec->describe( "When defining a expression with let", function() {
 
     });
 
+    $this->it( "raises an error if the named expression is not defined", function(){
+
+        $this->expect( function() {
+
+            $this->undefined_expression;
+
+        }) ->to() ->raise( Haijin\Specs\UndefinedNamedExpressionError::class, function($e) {
+
+            $this->expect( $e->getMessage() ) ->to()
+                ->equal( "Undefined expression named 'undefined_expression'." );
+
+        });
+
+    });
+
     $this->describe( "in the container description", function() {
 
         $this->it( "inherits the expression from its container", function() {
