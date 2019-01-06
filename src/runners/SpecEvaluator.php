@@ -61,7 +61,7 @@ class SpecEvaluator
 
             $this->statistics->add_invalid_expectation(
                 new ExpectationFailure(
-                    $signal->get_description(),
+                    $this->current_spec->get_full_description(),
                     $signal->get_message(),
                     $signal->get_trace()
                 )
@@ -69,6 +69,20 @@ class SpecEvaluator
 
             if( $this->after_each_spec_closure !== null ) {
                 $this->after_each_spec_closure->call( $this, $spec, "failed" );
+            }
+
+        } catch( \Exception $e ) {
+
+            $this->statistics->add_invalid_expectation(
+                new ExpectationError(
+                    $this->current_spec->get_full_description(),
+                    $e->getMessage(),
+                    $e->getTrace()
+                )
+            );
+
+            if( $this->after_each_spec_closure !== null ) {
+                $this->after_each_spec_closure->call( $this, $spec, "error" );
             }
 
         } finally {
@@ -87,20 +101,17 @@ class SpecEvaluator
 
     public function evaluate_spec($spec)
     {
+        $this->statistics->inc_run_specs_count();
+
         $this->current_spec = $spec;
 
-        try {
-
-            $spec->get_closure()->call( $this );
-
-        } finally {
-
-            $this->current_spec = null;
-        }
+        $spec->get_closure()->call( $this );
     }
 
     public function expect($value)
     {
+        $this->statistics->inc_expectations_count();
+
         return $this->new_value_expectation(
             $this->current_spec->get_full_description(),
             $value
