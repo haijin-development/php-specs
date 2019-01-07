@@ -2,17 +2,25 @@
 
 use Haijin\Specs\ValueExpectations;
 
-/// Comparisson expectations
+/// Particles definitions
+
+ValueExpectations::define_particle( "be", function($operator = null) {
+
+    $this->store_param_at( "operator", $operator );
+
+});
+
+/// Comparison expectations
 
 ValueExpectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
-        $this->got_expected_value = $expected_value == $this->actual_value;
+        $this->actual_comparison = $expected_value == $this->actual_value;
     });
 
     $this->assert_with( function($expected_value) {
 
-        if( $this->got_expected_value ) {
+        if( $this->actual_comparison ) {
             return;
         }
 
@@ -23,12 +31,427 @@ ValueExpectations::define_expectation( "equal", function() {
 
     $this->negate_with( function($expected_value) {
 
-        if( ! $this->got_expected_value ) {
+        if( ! $this->actual_comparison ) {
             return;
         }
 
         $this->raise_failure(
             "Expected value not to equal {$this->value_string($expected_value)}, got {$this->value_string($this->actual_value)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "than", function() {
+
+    $this->before( function($expected_value) {
+        $this->operator = $this->stored_params[ "operator" ];
+
+        switch( $this->operator ) {
+            case '==':
+                $this->actual_comparison = $this->actual_value == $expected_value;
+                break;
+            case '===':
+                $this->actual_comparison = $this->actual_value === $expected_value;
+                break;
+            case '!=':
+                $this->actual_comparison = $this->actual_value != $expected_value;
+                break;
+            case '!==':
+                $this->actual_comparison = $this->actual_value !== $expected_value;
+                break;
+            case '>':
+                $this->actual_comparison = $this->actual_value > $expected_value;
+                break;
+            case '>=':
+                $this->actual_comparison = $this->actual_value >= $expected_value;
+                break;
+            case '<':
+                $this->actual_comparison = $this->actual_value < $expected_value;
+                break;
+            case '<=':
+                $this->actual_comparison = $this->actual_value <= $expected_value;
+                break;
+
+            default:
+                throw new Exception( "Unkown operator {$operator}" );
+                break;
+        }
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value {$this->value_string($this->actual_value)} to be {$this->operator} than {$this->value_string($expected_value)}."
+        );
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value {$this->value_string($this->actual_value)} not to be {$this->operator} than {$this->value_string($expected_value)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "null", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = $this->actual_value === null;
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be null, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be null, got null."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "true", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = $this->actual_value === true;
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be true, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be true, got true."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "false", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = $this->actual_value === false;
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be false, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be false, got false."
+
+        );
+    });
+});
+
+/// Type expectations
+
+ValueExpectations::define_expectation( "string", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = is_string( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be a string, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be a string, got {$this->value_string($this->actual_value)}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "int", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = is_int( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be an int, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be an int, got {$this->value_string($this->actual_value)}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "double", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = is_double( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be a double, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be a double, got {$this->value_string($this->actual_value)}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "number", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison =
+            is_int( $this->actual_value ) || is_double( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be a number, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be a number, got {$this->value_string($this->actual_value)}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "bool", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = is_bool( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be a bool, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be a bool, got {$this->value_string($this->actual_value)}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "array", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = is_array( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be an array, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be an array, got an array."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "a", function() {
+
+    $this->before( function($class_name) {
+
+        $this->actual_comparison = is_a( $this->actual_value, $class_name );
+
+    });
+
+    $this->assert_with( function($class_name) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be a kind of {$class_name}, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function($class_name) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be a kind of {$class_name}, got a kind of {$class_name}."
+
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "instance_of", function() {
+
+    $this->before( function($class_name) {
+
+        $this->actual_comparison = $this->actual_value instanceof $class_name;
+
+    });
+
+    $this->assert_with( function($class_name) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value to be an instance of {$class_name}, got {$this->value_string($this->actual_value)}."
+        );
+    });
+
+    $this->negate_with( function($class_name) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected value not to be an instance of {$class_name}, got an instance of {$class_name}."
+
         );
     });
 });
@@ -39,7 +462,7 @@ ValueExpectations::define_expectation( "end_with", function() {
 
     $this->before( function($expected_value) {
 
-        $this->got_expected_value =
+        $this->actual_comparison =
             strrpos( $this->actual_value, $expected_value )
             == 
             strlen( $this->actual_value ) - strlen( $expected_value );
@@ -48,7 +471,7 @@ ValueExpectations::define_expectation( "end_with", function() {
 
     $this->assert_with( function($expected_value) {
 
-        if( $this->got_expected_value ) {
+        if( $this->actual_comparison ) {
             return;
         }
 
@@ -59,7 +482,7 @@ ValueExpectations::define_expectation( "end_with", function() {
 
     $this->negate_with( function($expected_value) {
 
-        if( ! $this->got_expected_value ) {
+        if( ! $this->actual_comparison ) {
             return;
         }
 

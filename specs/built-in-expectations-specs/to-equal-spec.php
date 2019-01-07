@@ -10,8 +10,6 @@ $spec->describe( "When expecting a value for equality", function() {
 
     $this->it( "the spec fails if values are not equal", function() {
 
-        $error_raised = false;
-
         $this->expect( function() {
 
             $this->expect( 1 ) ->to() ->equal( 2 );

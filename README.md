@@ -105,18 +105,20 @@ Specs library comes with the most common expectations built-in:
 $this->expect( $value ) ->to() ->equal( $another_value );
 $this->expect( $value ) ->to() ->be( ">" ) ->than( $another_value );
 $this->expect( $value ) ->to() ->be( "===" ) ->than( $another_value );
+$this->expect( $value ) ->to() ->be() ->null();
+$this->expect( $value ) ->to() ->be() ->true();
+$this->expect( $value ) ->to() ->be() ->false();
 
 // Types expectations
 
-$this->expect( $value ) ->to() ->be_null();
-$this->expect( $value ) ->to() ->be_string();
-$this->expect( $value ) ->to() ->be_int();
-$this->expect( $value ) ->to() ->be_double();
-$this->expect( $value ) ->to() ->be_number();
-$this->expect( $value ) ->to() ->be_a( SomeClass::class );
-$this->expect( $value ) ->to() ->be_instance_of( SomeClass::class );
-$this->expect( $value ) ->to() ->be_true();
-$this->expect( $value ) ->to() ->be_false();
+$this->expect( $value ) ->to() ->be() ->string();
+$this->expect( $value ) ->to() ->be() ->int();
+$this->expect( $value ) ->to() ->be() ->double();
+$this->expect( $value ) ->to() ->be() ->number();
+$this->expect( $value ) ->to() ->be() ->bool();
+$this->expect( $value ) ->to() ->be() ->array();
+$this->expect( $value ) ->to() ->be() ->a( SomeClass::class );
+$this->expect( $value ) ->to() ->be() ->instance_of( SomeClass::class );
 
 // String expectations
 

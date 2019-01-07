@@ -5,8 +5,25 @@ namespace Haijin\Specs;
 class ValueExpectations
 {
     static protected $expectation_definitions = [];
+    static protected $particle_definitions = [];
 
-    /// Class methods
+    /// Expectations
+
+    static public function define_particle($method_name, $closure)
+    {
+        self::$particle_definitions[ $method_name ] = $closure;
+    }
+
+    static public function particle_at($particle_name)
+    {
+        if( ! array_key_exists( $particle_name, self::$particle_definitions ) ) {
+            return null;
+        }
+
+        return self::$particle_definitions[ $particle_name ];
+    }
+
+    /// Expectations
 
     static public function define_expectation($method_name, $closure)
     {
@@ -16,7 +33,7 @@ class ValueExpectations
         self::$expectation_definitions[ $method_name ] = $definition;
     }
 
-    static public function definition_at($expectation_name)
+    static public function expectation_at($expectation_name)
     {
         if( ! array_key_exists( $expectation_name, self::$expectation_definitions ) ) {
             self::raise_missing_expectation_definition_error( $expectation_name );
