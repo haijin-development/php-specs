@@ -614,6 +614,208 @@ ValueExpectations::define_expectation( "match", function() {
     });
 });
 
+/// Array expectations
+
+ValueExpectations::define_expectation( "include", function() {
+
+    $this->before( function($expected_value) {
+
+        $this->actual_comparison = in_array( $expected_value, $this->actual_value );
+
+    });
+
+    $this->assert_with( function($expected_regexp, $matching_closure = null) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include {$this->value_string($expected_regexp)}."
+        );
+
+    });
+
+    $this->negate_with( function($expected_regexp) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include {$this->value_string($expected_regexp)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "include_all", function() {
+
+    $this->before( function($expected_values) {
+
+        $this->actual_comparison =
+            array_diff( $expected_values, $this->actual_value ) == [];
+
+    });
+
+    $this->assert_with( function($expected_values) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include all the expected values."
+        );
+
+    });
+
+    $this->negate_with( function($expected_values) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include all the expected values."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "include_any", function() {
+
+    $this->before( function($expected_values) {
+
+        $this->actual_comparison =
+            array_diff( $this->actual_value, $expected_values ) != $this->actual_value;
+
+    });
+
+    $this->assert_with( function($expected_values) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include any of the expected values."
+        );
+
+    });
+
+    $this->negate_with( function($expected_values) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include any of the expected values."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "include_none", function() {
+
+    $this->before( function($expected_values) {
+
+        $this->actual_comparison =
+            array_diff( $this->actual_value, $expected_values ) == $this->actual_value;
+
+    });
+
+    $this->assert_with( function($expected_values) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include none of the expected values."
+        );
+
+    });
+
+    $this->negate_with( function($expected_values) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include none of the expected values."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "include_key", function() {
+
+    $this->before( function($expected_key, $value_closure = null) {
+
+        $this->actual_comparison = array_key_exists( $expected_key, $this->actual_value );
+
+    });
+
+    $this->assert_with( function($expected_key, $value_closure = null) {
+
+        if( $this->actual_comparison ) {
+
+            if( $value_closure !== null ) {
+                $this->evaluate_closure( $value_closure, $this->actual_value[ $expected_key ] );
+            }
+
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include key {$this->value_string($expected_key)}."
+        );
+
+    });
+
+    $this->negate_with( function($expected_key, $value_closure = null) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include key {$this->value_string($expected_key)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "include_value", function() {
+
+    $this->before( function($expected_value) {
+
+        $this->actual_comparison = in_array( $expected_value, $this->actual_value );
+
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array to include value {$this->value_string($expected_value)}."
+        );
+
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected array not to include value {$this->value_string($expected_value)}."
+        );
+    });
+});
+
 /// Exception expectations
 
 ValueExpectations::define_expectation( "raise", function() {

@@ -127,6 +127,19 @@ $this->expect( $string_value ) ->to() ->end_with( $substring );
 $this->expect( $string_value ) ->to() ->contain( $substring );
 $this->expect( $string_value ) ->to() ->match( $regexp );
 
+// Array expectations
+
+$this->expect( $array_value ) ->to() ->include( $value );
+$this->expect( $array_value ) ->to() ->include_all( $values );
+$this->expect( $array_value ) ->to() ->include_any( $values );
+$this->expect( $array_value ) ->to() ->include_none( $values );
+$this->expect( $array_value ) ->to() ->include_key( $key );
+$this->expect( $array_value ) ->to() ->include_key( $key, funtion($value) {
+    // further expectations on the $value, for instance:
+    //$this->expect( $value ) ->to() ->equal(...) ;
+});
+$this->expect( $array_value ) ->to() ->include_value( $value );
+
 // Exceptions
 
 $this->expect( function() {
