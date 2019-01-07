@@ -1,7 +1,5 @@
 <?php
 
-use Haijin\Specs\SpecsRunner;
-
 $spec->describe( "When defining a expression with let", function() {
 
     $this->let( "n", function() {
@@ -43,21 +41,21 @@ $spec->describe( "When defining a expression with let", function() {
 
     });
 
-    $this->describe( "in the container description", function() {
+    $this->describe( "in the parent spec", function() {
 
-        $this->it( "inherits the expression from its container", function() {
+        $this->it( "the child spec inherits the expression", function() {
 
             $this->expect( $this->n ) ->to() ->equal( 7 );
 
         });
 
-        $this->describe( "and overrides it", function() {
+        $this->describe( "and overrides it in the child spec", function() {
 
             $this->let( "n", function() {
                 return 1 + 2;
             });
 
-            $this->it( "overrides the container expression", function() {
+            $this->it( "overrides the parent named expression", function() {
 
                 $this->expect( $this->n ) ->to() ->equal( 3 );
 
@@ -65,7 +63,7 @@ $spec->describe( "When defining a expression with let", function() {
 
         });
 
-        $this->it( "and overrides the expressions in a child description, it preserves the overriden expression", function() {
+        $this->it( "and a child overrides the named expression, the parent spec preserves the expression", function() {
 
             $this->expect( $this->n ) ->to() ->equal( 7 );
 

@@ -19,3 +19,9 @@ $specs_runner->after_each_spec_do( function($spec, $status) use($renderer) {
 $specs_runner->run_on( \getcwd() . "/specs" );
 
 $renderer->render_report_from( $specs_runner );
+
+if( $specs_runner->get_statistics()->invalid_expectations_count() == 0 ) {
+    exit( 0 );
+}
+
+exit( 1 );

@@ -244,6 +244,74 @@ $spec->describe( "When formatting a user's full name", function() {
 <a name="c-2-4"></a>
 ### Evaluating code before and after running expectations
 
+To evaluate statements before and after each spec is run use `before_each($closure)` and `after_each($closure)` at any `describe` statement:
+
+```php
+$spec->describe( "When formatting a user's full name", function() {
+
+    $this->before_each( function() {
+        $this->n = 0;
+    });
+
+    $this->after_each( function() {
+        $this->n = null;
+    });
+
+    $this->describe( "with both name and last name defined", function() {
+
+        $this->before_each( function() {
+            $this->n += 1;
+        });
+
+        $this->after_each( function() {
+            $this->n -= 1;
+        });
+
+
+        $this->it( "...", function() {
+            print $this->n;
+        });
+
+    });
+
+});
+```
+
+To evaluate statements before and after all the specs of a `describe` statement are run use `before_all($closure)` and `after_all($closure)` statements:
+
+```php
+$spec->describe( "When formatting a user's full name", function() {
+
+    $this->before_all( function() {
+        $this->n = 0;
+    });
+
+    $this->after_all( function() {
+        $this->n = null;
+    });
+
+    $this->describe( "with both name and last name defined", function() {
+
+        $this->before_all( function() {
+            $this->n += 1;
+        });
+
+        $this->after_all( function() {
+            $this->n -= 1;
+        });
+
+
+        $this->it( "...", function() {
+            print $this->n;
+        });
+
+    });
+
+});
+```
+
+It is possible to mix `before_all`, `after_all`, `before_each` and `after_each` at any level.
+
 <a name="c-2-5"></a>
 ### Defining values with let(...) expressions
 
