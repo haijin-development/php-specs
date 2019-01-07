@@ -15,7 +15,7 @@ ValueExpectations::define_particle( "be", function($operator = null) {
 ValueExpectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
-        $this->actual_comparison = $expected_value == $this->actual_value;
+        $this->actual_comparison = $expected_value ==$this->actual_value;
     });
 
     $this->assert_with( function($expected_value) {
@@ -48,16 +48,16 @@ ValueExpectations::define_expectation( "than", function() {
 
         switch( $this->operator ) {
             case '==':
-                $this->actual_comparison = $this->actual_value == $expected_value;
+                $this->actual_comparison = $this->actual_value ==$expected_value;
                 break;
             case '===':
-                $this->actual_comparison = $this->actual_value === $expected_value;
+                $this->actual_comparison = $this->actual_value ===$expected_value;
                 break;
             case '!=':
                 $this->actual_comparison = $this->actual_value != $expected_value;
                 break;
             case '!==':
-                $this->actual_comparison = $this->actual_value !== $expected_value;
+                $this->actual_comparison = $this->actual_value !==$expected_value;
                 break;
             case '>':
                 $this->actual_comparison = $this->actual_value > $expected_value;
@@ -105,7 +105,7 @@ ValueExpectations::define_expectation( "null", function() {
 
     $this->before( function() {
 
-        $this->actual_comparison = $this->actual_value === null;
+        $this->actual_comparison = $this->actual_value ===null;
 
     });
 
@@ -137,7 +137,7 @@ ValueExpectations::define_expectation( "true", function() {
 
     $this->before( function() {
 
-        $this->actual_comparison = $this->actual_value === true;
+        $this->actual_comparison = $this->actual_value ===true;
 
     });
 
@@ -169,7 +169,7 @@ ValueExpectations::define_expectation( "false", function() {
 
     $this->before( function() {
 
-        $this->actual_comparison = $this->actual_value === false;
+        $this->actual_comparison = $this->actual_value ===false;
 
     });
 
@@ -458,13 +458,58 @@ ValueExpectations::define_expectation( "instance_of", function() {
 
 /// Strings expectations
 
+ValueExpectations::define_expectation( "begin_with", function() {
+
+    $this->before( function($expected_value) {
+
+        if( $expected_value ==="" ) {
+            $this->actual_comparison = true;
+
+            return;
+        }
+
+        $this->actual_comparison =
+            strpos( $this->actual_value, $expected_value ) ===0;
+
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} to begin with {$this->value_string($expected_value)}."
+        );
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} not to begin with {$this->value_string($expected_value)}."
+        );
+    });
+});
+
+
 ValueExpectations::define_expectation( "end_with", function() {
 
     $this->before( function($expected_value) {
 
+        if( $expected_value ==="" ) {
+            $this->actual_comparison = true;
+
+            return;
+        }
+
         $this->actual_comparison =
             strrpos( $this->actual_value, $expected_value )
-            == 
+            ==
             strlen( $this->actual_value ) - strlen( $expected_value );
 
     });
@@ -476,7 +521,7 @@ ValueExpectations::define_expectation( "end_with", function() {
         }
 
         $this->raise_failure(
-            "Expected {$this->value_string($expected_value)} to end with {$this->value_string($expected_value)}."
+            "Expected {$this->value_string($this->actual_value)} to end with {$this->value_string($expected_value)}."
         );
     });
 
@@ -487,7 +532,84 @@ ValueExpectations::define_expectation( "end_with", function() {
         }
 
         $this->raise_failure(
-            "Expected {$this->value_string($expected_value)} not to end with {$this->value_string($expected_value)}."
+            "Expected {$this->value_string($this->actual_value)} not to end with {$this->value_string($expected_value)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "contain", function() {
+
+    $this->before( function($expected_value) {
+
+        if( $expected_value ==="" ) {
+            $this->actual_comparison = true;
+
+            return;
+        }
+
+        $this->actual_comparison =
+            strpos( $this->actual_value, $expected_value ) !== false;
+
+    });
+
+    $this->assert_with( function($expected_value) {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} to contain {$this->value_string($expected_value)}."
+        );
+    });
+
+    $this->negate_with( function($expected_value) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} not to contain {$this->value_string($expected_value)}."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "match", function() {
+
+    $this->before( function($expected_regexp, $matching_closure = null) {
+
+        $this->matches = [];
+        $this->actual_comparison =
+            preg_match( $expected_regexp, $this->actual_value, $this->matches ) !== 0;
+
+    });
+
+    $this->assert_with( function($expected_regexp, $matching_closure = null) {
+
+        if( $this->actual_comparison ) {
+
+            if( $matching_closure !== null ) {
+                $this->evaluate_closure( $matching_closure, $this->matches );
+            }
+
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} to match {$this->value_string($expected_regexp)}."
+        );
+
+    });
+
+    $this->negate_with( function($expected_regexp) {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected {$this->value_string($this->actual_value)} not to match {$this->value_string($expected_regexp)}."
         );
     });
 });
@@ -510,7 +632,7 @@ ValueExpectations::define_expectation( "raise", function() {
 
         }
 
-        if( $raised_exception === null ) {
+        if( $raised_exception ===null ) {
 
             $this->raise_failure(
                 "Expected the closure to raise a {$expected_exception_class_name}, but no Exception was raised."
@@ -528,7 +650,7 @@ ValueExpectations::define_expectation( "raise", function() {
 
         }
 
-        if( $expected_exception_closure !== null ) {
+        if( $expected_exception_closure !==null ) {
 
             $this->evaluate_closure( $expected_exception_closure, $raised_exception );
 
@@ -536,5 +658,27 @@ ValueExpectations::define_expectation( "raise", function() {
     });
 
     $this->negate_with( function($expected_exception_class_name) {
+
+        $raised_exception_class_name = null;
+
+        try {
+
+            $this->evaluate_closure( $this->actual_value );
+
+        } catch( \Exception $e ) {
+
+            $raised_exception_class_name = get_class( $e );
+
+        }
+
+        if( $raised_exception_class_name ==$expected_exception_class_name ) {
+
+            $this->raise_failure(
+                "Expected the closure not to raise a {$expected_exception_class_name}, but a {$raised_exception_class_name} was raised."
+            );
+
+        }
+
     });
+
 });

@@ -10,17 +10,21 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             try {
 
-                $this->expect(function(){
+                $this->expect( function() {
+
                     throw new \RuntimeException( "RuntimeException raised" );
+
                 }) ->to() ->raise( \RuntimeException::class );
 
             } catch( \Exception $e ) {
+
                 $error_raised = true;
+
             }
 
             if( $error_raised === true ) {
                 throw new Exception(
-                    "->raise($exception) failed in catching an expected excpetion."
+                    "->raise($exception) failed in catching an expected exception."
                 );
             }
 
@@ -32,15 +36,17 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             try {
 
-                $this->expect(function(){
+                $this->expect( function() {
 
                 }) ->to() ->raise( \RuntimeException::class );
 
             } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
                     ->to() ->equal( "Expected the closure to raise a RuntimeException, but no Exception was raised." );
+
             }
 
             if( $error_raised === false ) {
@@ -55,17 +61,19 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             try {
 
-                $this->expect(function(){
+                $this->expect( function() {
 
                     throw new \Exception( "Exception raised" );
 
                 }) ->to() ->raise( \RuntimeException::class );
 
             } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
                     ->to() ->equal( "Expected the closure to raise a RuntimeException, but a Exception was raised instead." );
+
             }
 
             if( $error_raised === false ) {
@@ -82,7 +90,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             $this->exception_closure_executed = false;
 
-            $this->expect(function(){
+            $this->expect( function() {
 
                 throw new \RuntimeException( "RuntimeException raised" );
 
@@ -107,7 +115,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             try {
 
-                $this->expect(function(){
+                $this->expect( function() {
 
                 }) ->to() ->raise( \RuntimeException::class, function($e) {
 
@@ -116,10 +124,12 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
                 });
 
             } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
                     ->to() ->equal( "Expected the closure to raise a RuntimeException, but no Exception was raised." );
+
             }
 
             if( $this->exception_closure_executed === true ) {
@@ -141,7 +151,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
             try {
 
-                $this->expect(function(){
+                $this->expect( function() {
 
                     throw new \Exception( "Exception raised" );
 
@@ -152,10 +162,12 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
                 });
 
             } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
                 $error_raised = true;
 
                 $this->expect( $e->get_message() )
                     ->to() ->equal( "Expected the closure to raise a RuntimeException, but a Exception was raised instead." );
+
             }
 
             if( $this->exception_closure_executed === true ) {
@@ -171,4 +183,91 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
         });
 
     });
+
+
+    $this->describe( "when negating the expectation", function() {
+
+        $this->it( "the spec passes if the exception is not raised", function() {
+
+            $error_raised = false;
+
+            try {
+
+                $this->expect( function() {
+
+                    // No exception raised.
+
+                }) ->not() ->to() ->raise( \RuntimeException::class );
+
+            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
+                $error_raised = true;
+
+            }
+
+            if( $error_raised === true ) {
+                throw new Exception(
+                    "->raise($exception) failed in catching a non raised exception."
+                );
+            }
+
+        });
+
+
+        $this->it( "the spec passes if a different exception is raised", function() {
+
+            $error_raised = false;
+
+            try {
+
+                $this->expect( function() {
+
+                    throw new \Exception( "Exception raised" );
+
+                }) ->not() ->to() ->raise( \RuntimeException::class );
+
+            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
+                $error_raised = true;
+
+            }
+
+            if( $error_raised === true ) {
+                throw new Exception(
+                    "->raise($exception) failed in catching a non raised exception."
+                );
+            }
+
+        });
+
+        $this->it( "the spec fails if the expected exception is raised", function() {
+
+            $error_raised = false;
+
+            try {
+
+                $this->expect(function(){
+
+                    throw new \RuntimeException();
+
+                }) ->not() ->to() ->raise( \RuntimeException::class );
+
+            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+
+                $error_raised = true;
+
+                $this->expect( $e->get_message() )
+                    ->to() ->equal( "Expected the closure not to raise a RuntimeException, but a RuntimeException was raised." );
+            }
+
+            if( $error_raised === false ) {
+                throw new Exception(
+                    "->raise($exception) failed in not raising a failure."
+                );
+            }
+
+        });
+
+    });
+
 });
