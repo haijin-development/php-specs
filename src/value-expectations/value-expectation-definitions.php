@@ -822,7 +822,8 @@ ValueExpectations::define_expectation( "a_file", function() {
 
     $this->before( function() {
 
-        $this->actual_comparison = file_exists( $this->actual_value );
+        $this->actual_comparison =
+            file_exists( $this->actual_value ) && is_file( $this->actual_value );
 
     });
 
@@ -874,6 +875,66 @@ ValueExpectations::define_expectation( "have_file_contents", function() {
 
         $this->evaluate_closure( $contents_closure, $file_contents );
     });
+});
+
+ValueExpectations::define_expectation( "a_folder", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison =
+            file_exists( $this->actual_value ) && ! is_file( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected the folder {$this->value_string($this->actual_value)} to exist."
+        );
+
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected the folder {$this->value_string($this->actual_value)} not to exist."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "have_folder_contents", function() {
+
+    $this->assert_with( function($contents_closure) {
+
+        if( ! file_exists( $this->actual_value ) ) {
+
+            $this->raise_failure(
+                "Expected the folder {$this->value_string($this->actual_value)} to have contents, but is does not exist."
+            );
+
+        }
+
+        if( is_file( $this->actual_value ) ) {
+
+            $this->raise_failure(
+                "Expected {$this->value_string($this->actual_value)} to be a folder, but it is a file."
+            );
+
+        }
+
+        $files_in_folder = \scandir( $this->actual_value );
+
+        $this->evaluate_closure( $contents_closure, $files_in_folder, $this->actual_value );
+    });
+
 });
 
 /// Exception expectations

@@ -126,6 +126,10 @@ $this->expect( $string_value ) ->to() ->begin_with( $substring );
 $this->expect( $string_value ) ->to() ->end_with( $substring );
 $this->expect( $string_value ) ->to() ->contain( $substring );
 $this->expect( $string_value ) ->to() ->match( $regexp );
+$this->expect( $string_value ) ->to() ->match( $regexp, function($matches) {
+    // further expectations on the $matches, for instance:
+    //$this->expect( $matches[ 1 ] ) ->to() ->equal(...) ;
+});
 
 // Array expectations
 
@@ -146,6 +150,11 @@ $this->expect( $file_path ) ->to() ->be() ->a_file();
 $this->expect( $file_path ) ->to() ->have_file_contents( function($contents) {
     // further expectations on the $contents, for instance:
     //$this->expect( $contents ) ->to() ->match(...) ;
+});
+
+$this->expect( $file_path ) ->to() ->be() ->a_folder();
+$this->expect( $file_path ) ->to() ->have_folder_contents( function($files, $files_base_path) {
+    // further expectations on the $files
 });
 
 // Exceptions
