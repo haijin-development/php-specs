@@ -816,6 +816,66 @@ ValueExpectations::define_expectation( "include_value", function() {
     });
 });
 
+/// File expectations
+
+ValueExpectations::define_expectation( "a_file", function() {
+
+    $this->before( function() {
+
+        $this->actual_comparison = file_exists( $this->actual_value );
+
+    });
+
+    $this->assert_with( function() {
+
+        if( $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected the file {$this->value_string($this->actual_value)} to exist."
+        );
+
+    });
+
+    $this->negate_with( function() {
+
+        if( ! $this->actual_comparison ) {
+            return;
+        }
+
+        $this->raise_failure(
+            "Expected the file {$this->value_string($this->actual_value)} not to exist."
+        );
+    });
+});
+
+ValueExpectations::define_expectation( "have_file_contents", function() {
+
+    $this->assert_with( function($contents_closure) {
+
+        if( ! file_exists( $this->actual_value ) ) {
+
+            $this->raise_failure(
+                "Expected the file {$this->value_string($this->actual_value)} to have contents, but is does not exist."
+            );
+
+        }
+
+        $file_contents = file_get_contents( $this->actual_value );
+
+        if( $file_contents === false ) {
+
+            $this->raise_failure(
+                "Expected the file {$this->value_string($this->actual_value)} to have contents, but could not read its contents."
+            );
+
+        }
+
+        $this->evaluate_closure( $contents_closure, $file_contents );
+    });
+});
+
 /// Exception expectations
 
 ValueExpectations::define_expectation( "raise", function() {

@@ -100,7 +100,7 @@ and the expectations on that value:
 Specs library comes with the most common expectations built-in:
 
 ```php
-// Comparisson expectations
+// Comparison expectations
 
 $this->expect( $value ) ->to() ->equal( $another_value );
 $this->expect( $value ) ->to() ->be( ">" ) ->than( $another_value );
@@ -140,6 +140,14 @@ $this->expect( $array_value ) ->to() ->include_key( $key, funtion($value) {
 });
 $this->expect( $array_value ) ->to() ->include_value( $value );
 
+// File expectations
+
+$this->expect( $file_path ) ->to() ->be() ->a_file();
+$this->expect( $file_path ) ->to() ->have_file_contents( function($contents) {
+    // further expectations on the $contents, for instance:
+    //$this->expect( $contents ) ->to() ->match(...) ;
+});
+
 // Exceptions
 
 $this->expect( function() {
@@ -163,7 +171,7 @@ $this->expect( function() {
 Any expectation can also be negated with
 
 ```php
-// Comparisson expectations
+// Comparison expectations
 
 $this->expect( $value ) ->not() ->to() ->equal( $another_value );
 
