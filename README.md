@@ -7,9 +7,9 @@ A testing framework to replace PHPUnit using a simple DSL inspired by RSpec.
 [![Build Status](https://travis-ci.org/haijin-development/php-specs.svg?branch=master)](https://travis-ci.org/haijin-development/php-specs)
 [![License](https://poser.pugx.org/haijin/specs/license)](https://packagist.org/packages/haijin/specs)
 
-### Version 0.0.1
+### Version 0.0.1 (beta)
 
-This library is under active development and no stable version was released yet.
+This library is under active development.
 
 If you like it a lot you may contribute by [financing](https://github.com/haijin-development/support-haijin-development) its development.
 
