@@ -2,7 +2,7 @@
 
 use Haijin\Specs\Specs_Runner;
 
-$spec->describe( "When running a single spec from a file", function() {
+$spec->describe( "When running specs from a file", function() {
 
     $this->let( "spec_runner", function() {
         return new Specs_Runner();

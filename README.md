@@ -331,7 +331,7 @@ Define expressions and constants using the `let( $expression_name, $closure )` s
 
 Expressions defined with `let(...)` are lazily evaluated the first time they are referenced by each spec.
 
-`let(...)` expressions are inherit by child `describe(...)` specs and be safely overriden within the scope of a child `describe(...)`.
+`let(...)` expressions are inherit by child `describe(...)` specs and can be safely overriden within the scope of a child `describe(...)`.
 
 A `let(...)` expression can reference another `let(...)` expression.
 
@@ -386,9 +386,9 @@ The first one is the `$this->before($closure)` closure. This closure is evaluate
 
 The second one is the `$this->assert_with($closure)` closure. This closure is evaluated to evaluate a possitive expectation on a value.
 
-The third one is the `$this->negate_with($closure)` closure. This closure is evaluated to evaluate a nagated expectation on a value.
+The third one is the `$this->negate_with($closure)` closure. This closure is evaluated to evaluate a negated expectation on a value.
 
-The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an Expectation_Failure was raise. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
+The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an Expectation_Failure was raised. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
 
 <a name="c-2-6-2"></a>
 #### Getting the value being validated
