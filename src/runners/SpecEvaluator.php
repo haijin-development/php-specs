@@ -22,7 +22,7 @@ class SpecEvaluator
         $this->resolved_named_expressions = [];
         $this->before_each_closures = [];
         $this->after_each_closures = [];
-        $this->after_each_spec_closure = null;
+        $this->on_spec_run_closure = null;
     }
 
     public function reset()
@@ -44,9 +44,9 @@ class SpecEvaluator
         return $this->statistics->get_invalid_expectations();
     }
 
-    public function after_each_spec_do($closure)
+    public function on_spec_run_do($closure)
     {
-        $this->after_each_spec_closure = $closure;
+        $this->on_spec_run_closure = $closure;
     }
 
     /// Evaluating
@@ -59,8 +59,8 @@ class SpecEvaluator
 
             $spec->evaluate_with( $this );
 
-            if( $this->after_each_spec_closure !== null ) {
-                $this->after_each_spec_closure->call( $this, $spec, "passed" );
+            if( $this->on_spec_run_closure !== null ) {
+                $this->on_spec_run_closure->call( $this, $spec, "passed" );
             }
 
         } catch( ExpectationFailureSignal $signal ) {
@@ -73,8 +73,8 @@ class SpecEvaluator
                 )
             );
 
-            if( $this->after_each_spec_closure !== null ) {
-                $this->after_each_spec_closure->call( $this, $spec, "failed" );
+            if( $this->on_spec_run_closure !== null ) {
+                $this->on_spec_run_closure->call( $this, $spec, "failed" );
             }
 
         } catch( \Exception $e ) {
@@ -87,8 +87,8 @@ class SpecEvaluator
                 )
             );
 
-            if( $this->after_each_spec_closure !== null ) {
-                $this->after_each_spec_closure->call( $this, $spec, "error" );
+            if( $this->on_spec_run_closure !== null ) {
+                $this->on_spec_run_closure->call( $this, $spec, "error" );
             }
 
         } finally {

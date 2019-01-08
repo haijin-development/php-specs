@@ -27,7 +27,8 @@
             "Haijin\\Specs\\": ["src/errors", "src/value-expectations", "src/runners", "src/specs", "src/failures", "src/report-renderers"]
         }
     },
+    "bin": ["bin/specs"],
     "scripts": {
-        "specs": "php bin/specs.php"
+        "specs": "php bin/specs"
     }
 }

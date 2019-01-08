@@ -30,9 +30,9 @@ class SpecsRunner
         return $this->specs_evaluator->get_last_expectation_status();
     }
 
-    public function after_each_spec_do($closure)
+    public function on_spec_run_do($closure)
     {
-        $this->specs_evaluator->after_each_spec_do( $closure );
+        $this->specs_evaluator->on_spec_run_do( $closure );
     }
 
     /// Running

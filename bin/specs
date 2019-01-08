@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 use Haijin\Specs\SpecsRunner;
@@ -10,7 +11,7 @@ $renderer = new ConsoleReportRenderer();
 
 $specs_runner = new SpecsRunner();
 
-$specs_runner->after_each_spec_do( function($spec, $status) use($renderer) {
+$specs_runner->on_spec_run_do( function($spec, $status) use($renderer) {
     $renderer->render_feedback_of_spec_status( $spec, $status );
 });
 
