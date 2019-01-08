@@ -53,9 +53,9 @@ Include this library in your project `composer.json` file:
 <a name="c-2"></a>
 ## Usage
 
-In the project create a subfolder named `specs`.
+In the project create a subfolder named `tests/specs`.
 
-In any nested subfolder of `specs` create files with specs definitions.
+In any nested subfolder of `tests/specs` create files with specs definitions. No naming convention is needed for these files, all of them will be considered spec files.
 
 <a name="c-2-1"></a>
 ### Spec definitions

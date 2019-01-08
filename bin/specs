@@ -1,28 +1,10 @@
 #!/usr/bin/env php
 <?php
 
-use Haijin\Specs\Specs_Runner;
-use Haijin\Specs\Console_Report_Renderer;
+use Haijin\Specs\Specs_CLI;
 
 require_once "vendor/autoload.php";
 
+$cli = new Specs_CLI();
 
-$renderer = new Console_Report_Renderer();
-
-$specs_runner = new Specs_Runner();
-
-$specs_runner->on_spec_run_do( function($spec, $status) use($renderer) {
-    $renderer->render_feedback_of_spec_status( $spec, $status );
-});
-
-
-
-$specs_runner->run_on( \getcwd() . "/specs" );
-
-$renderer->render_report_from( $specs_runner );
-
-if( $specs_runner->get_statistics()->invalid_expectations_count() == 0 ) {
-    exit( 0 );
-}
-
-exit( 1 );
+$cli->run_specs();
