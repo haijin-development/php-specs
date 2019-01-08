@@ -1,6 +1,6 @@
 <?php
 
-Spec_Evaluator::configure( function($specs) {
+Specs_Runner::configure( function($specs) {
 
     $specs->before_all( function() {
         print "Before all specs";

@@ -4,12 +4,14 @@ namespace Haijin\Specs;
 
 class Specs_Runner
 {
+    protected $spec_closures;
     protected $specs_evaluator;
 
     /// Initializing
 
     public function __construct()
     {
+        $this->spec_closures = new Spec_Closures();
         $this->specs_evaluator = $this->new_spec_evaluator();
     }
 
