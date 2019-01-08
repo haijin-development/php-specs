@@ -1,20 +1,24 @@
 <?php
 
-Specs_Runner::configure( function($specs) {
-
-    $specs->before_all( function() {
-        print "Before all specs";
-    });
-
-    $specs->after_all( function() {
-        print "After all specs";
-    });
-
-    $specs->before_each( function() {
-        print "Before each spec";
-    });
-
-    $specs->after_each( function() {
-        print "After each spec";
-    });
-});
+/*
+ * Global configuration of the Specs_Runner.
+ * Uncomment the lines according to the specs need.
+ */
+//\Haijin\Specs\Specs_Runner::configure( function($specs) {
+//
+//    $specs->before_all( function() {
+//
+//    });
+//
+//    $specs->after_all( function() {
+//
+//    });
+//
+//    $specs->before_each( function() {
+//
+//    });
+//
+//    $specs->after_each( function() {
+//
+//    });
+//});

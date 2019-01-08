@@ -168,6 +168,8 @@ class Specs_CLI
 
     public function load_specs_boot_file()
     {
-
+        if( $this->exists_specs_boot_file() ) {
+            require_once( $this->specs_boot_file() );
+        }
     }
 }

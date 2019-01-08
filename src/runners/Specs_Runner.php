@@ -4,14 +4,23 @@ namespace Haijin\Specs;
 
 class Specs_Runner
 {
-    protected $spec_closures;
+    /// Configuring
+
+    static protected $configuration_closure;
+
+    static public function configure($configuration_closure)
+    {
+        self::$configuration_closure = $configuration_closure;
+    }
+
+    /// Instance methods
+
     protected $specs_evaluator;
 
     /// Initializing
 
     public function __construct()
     {
-        $this->spec_closures = new Spec_Closures();
         $this->specs_evaluator = $this->new_spec_evaluator();
     }
 
@@ -98,14 +107,11 @@ class Specs_Runner
     {
         $this->specs_evaluator->___reset();
 
-        foreach( $specs_collection as $spec ) {
-            $this->evaluate_spec( $spec );
+        if( self::$configuration_closure !== null ) {
+            $this->specs_evaluator->___configure( self::$configuration_closure );
         }
-    }
 
-    public function evaluate_spec($spec)
-    {
-        $spec->evaluate_with( $this->specs_evaluator );
+        $this->specs_evaluator->___run_all( $specs_collection );
     }
 
     /// Creating instances

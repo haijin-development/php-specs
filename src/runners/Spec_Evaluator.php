@@ -4,6 +4,7 @@ namespace Haijin\Specs;
 
 class Spec_Evaluator
 {
+    protected $spec_closures;
     protected $statistics;
     protected $current_spec;
     protected $resolved_named_expressions;
@@ -17,6 +18,7 @@ class Spec_Evaluator
 
     public function __construct()
     {
+        $this->spec_closures = new Spec_Closures();
         $this->statistics = $this->___new_specs_statistics();
         $this->current_spec = null;
         $this->resolved_named_expressions = [];
@@ -30,6 +32,15 @@ class Spec_Evaluator
         $this->statistics = $this->___new_specs_statistics();
         $this->current_spec = null;
         $this->resolved_named_expressions = [];
+    }
+
+    public function ___configure($configuration_closure, $binding = null)
+    {
+        if( $binding === null ) {
+            $binding = $this;
+        }
+
+        $configuration_closure->call( $binding, $this );
     }
 
     /// Accessing
@@ -47,6 +58,54 @@ class Spec_Evaluator
     public function ___on_spec_run_do($closure)
     {
         $this->on_spec_run_closure = $closure;
+    }
+
+    /// DSL
+
+
+    public function before_all($closure)
+    {
+        $this->spec_closures->before_all_closure = $closure;
+    }
+
+    public function after_all($closure)
+    {
+        $this->spec_closures->after_all_closure = $closure;
+    }
+
+    public function before_each($closure)
+    {
+        $this->spec_closures->before_each_closure = $closure;
+    }
+
+    public function after_each($closure)
+    {
+        $this->spec_closures->after_each_closure = $closure;
+    }
+
+    /// Running
+
+    public function ___run_all($specs_collection)
+    {
+        if( $this->spec_closures->before_each_closure !== null ) {
+            $this->before_each_closures[] = $this->spec_closures->before_each_closure;
+        }
+
+        if( $this->spec_closures->after_each_closure !== null ) {
+            $this->after_each_closures[] = $this->spec_closures->after_each_closure;
+        }
+
+        if( $this->spec_closures->before_all_closure !== null ) {
+            $this->spec_closures->before_all_closure->call( $this );
+        }
+
+        foreach( $specs_collection as $spec ) {
+            $spec->evaluate_with( $this );
+        }
+
+        if( $this->spec_closures->after_all_closure !== null ) {
+            $this->spec_closures->after_all_closure->call( $this );
+        }
     }
 
     /// Evaluating
