@@ -14,7 +14,7 @@ $spec->describe( "When expecting a value to be a bool", function() {
 
             $this->expect( 1 ) ->to() ->be() ->bool();
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected value to be a bool, got 1." );
@@ -37,7 +37,7 @@ $spec->describe( "When expecting a value to be a bool", function() {
 
                 $this->expect( true ) ->not() ->to() ->be() ->bool();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value not to be a bool, got true." );
@@ -52,7 +52,7 @@ $spec->describe( "When expecting a value to be a bool", function() {
 
                 $this->expect( false ) ->not() ->to() ->be() ->bool();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value not to be a bool, got false." );

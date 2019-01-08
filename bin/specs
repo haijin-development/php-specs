@@ -1,15 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-use Haijin\Specs\SpecsRunner;
-use Haijin\Specs\ConsoleReportRenderer;
+use Haijin\Specs\Specs_Runner;
+use Haijin\Specs\Console_Report_Renderer;
 
 require_once "vendor/autoload.php";
 
 
-$renderer = new ConsoleReportRenderer();
+$renderer = new Console_Report_Renderer();
 
-$specs_runner = new SpecsRunner();
+$specs_runner = new Specs_Runner();
 
 $specs_runner->on_spec_run_do( function($spec, $status) use($renderer) {
     $renderer->render_feedback_of_spec_status( $spec, $status );

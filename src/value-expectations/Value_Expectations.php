@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ValueExpectations
+class Value_Expectations
 {
     static protected $expectation_definitions = [];
     static protected $particle_definitions = [];
@@ -27,7 +27,7 @@ class ValueExpectations
 
     static public function define_expectation($method_name, $closure)
     {
-        $definition = new ValueExpectationDefinition($method_name);
+        $definition = new Value_Expectation_Definition($method_name);
         $definition->define( $closure );
 
         self::$expectation_definitions[ $method_name ] = $definition;
@@ -44,7 +44,7 @@ class ValueExpectations
 
     static public function raise_missing_expectation_definition_error($expectation_name)
     {
-        throw new ExpectationDefinitionError(
+        throw new Expectation_Definition_Error(
             "The expectation '->{$expectation_name}(...)' is not defined."
         );
     }

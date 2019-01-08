@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ExpectationFailureSignal extends \Exception
+class Expectation_Failure_Signal extends \Exception
 {
     protected $description;
 

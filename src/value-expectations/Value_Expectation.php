@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ValueExpectation
+class Value_Expectation
 {
     /// Instance methods
 
@@ -44,7 +44,7 @@ class ValueExpectation
 
     public function __call($method_name, $params)
     {
-        $particle_closure = ValueExpectations::particle_at( $method_name );
+        $particle_closure = Value_Expectations::particle_at( $method_name );
 
         if( $particle_closure !== null ) {
 
@@ -53,9 +53,9 @@ class ValueExpectation
             return $this;
         }
 
-        $definition = ValueExpectations::expectation_at( $method_name );
+        $definition = Value_Expectations::expectation_at( $method_name );
 
-        $evaluation = new ValueExpectationEvaluation(
+        $evaluation = new Value_Expectation_Evaluation(
             $this->spec_binding,
             $this->description,
             $this->value,

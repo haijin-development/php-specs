@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecDescription extends SpecBase
+class Spec_Description extends Spec_Base
 {
     protected $before_all_closure;
     protected $before_each_closure;

@@ -14,7 +14,7 @@ $spec->describe( "When expecting a value to be true", function() {
 
             $this->expect( false ) ->to() ->be() ->true();
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected value to be true, got false." );
@@ -37,7 +37,7 @@ $spec->describe( "When expecting a value to be true", function() {
 
                 $this->expect( true ) ->not() ->to() ->be() ->true();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value not to be true, got true." );

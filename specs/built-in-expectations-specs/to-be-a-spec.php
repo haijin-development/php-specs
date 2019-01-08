@@ -1,6 +1,6 @@
 <?php
 
-namespace ToBeASpec;
+namespace To_Be_A_Spec;
 
 $spec->describe( "When expecting a value to be a kind of a class", function() {
 
@@ -16,10 +16,10 @@ $spec->describe( "When expecting a value to be a kind of a class", function() {
 
             $this->expect( 1 ) ->to() ->be() ->a( SomeClass::class );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
-                ->equal( "Expected value to be a kind of ToBeASpec\SomeClass, got 1." );
+                ->equal( "Expected value to be a kind of To_Be_A_Spec\SomeClass, got 1." );
 
         });
 
@@ -39,10 +39,10 @@ $spec->describe( "When expecting a value to be a kind of a class", function() {
 
                 $this->expect( new SomeClass() ) ->not() ->to() ->be() ->a( SomeClass::class );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
-                    ->equal( "Expected value not to be a kind of ToBeASpec\SomeClass, got a kind of ToBeASpec\SomeClass." );
+                    ->equal( "Expected value not to be a kind of To_Be_A_Spec\SomeClass, got a kind of To_Be_A_Spec\SomeClass." );
 
             });
 

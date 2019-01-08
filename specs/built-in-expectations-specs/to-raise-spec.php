@@ -40,7 +40,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 }) ->to() ->raise( \RuntimeException::class );
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -67,7 +67,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 }) ->to() ->raise( \RuntimeException::class );
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -123,7 +123,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 });
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -161,7 +161,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 });
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -199,7 +199,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 }) ->not() ->to() ->raise( \RuntimeException::class );
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -226,7 +226,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 }) ->not() ->to() ->raise( \RuntimeException::class );
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 
@@ -252,7 +252,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
 
                 }) ->not() ->to() ->raise( \RuntimeException::class );
 
-            } catch( \Haijin\Specs\ExpectationFailureSignal $e ) {
+            } catch( \Haijin\Specs\Expectation_Failure_Signal $e ) {
 
                 $error_raised = true;
 

@@ -1,10 +1,10 @@
 <?php
 
-use Haijin\Specs\ValueExpectations;
+use Haijin\Specs\Value_Expectations;
 
 /// Particles definitions
 
-ValueExpectations::define_particle( "be", function($operator = null) {
+Value_Expectations::define_particle( "be", function($operator = null) {
 
     $this->store_param_at( "operator", $operator );
 
@@ -12,7 +12,7 @@ ValueExpectations::define_particle( "be", function($operator = null) {
 
 /// Comparison expectations
 
-ValueExpectations::define_expectation( "equal", function() {
+Value_Expectations::define_expectation( "equal", function() {
 
     $this->before( function($expected_value) {
         $this->actual_comparison = $expected_value ==$this->actual_value;
@@ -41,7 +41,7 @@ ValueExpectations::define_expectation( "equal", function() {
     });
 });
 
-ValueExpectations::define_expectation( "than", function() {
+Value_Expectations::define_expectation( "than", function() {
 
     $this->before( function($expected_value) {
         $this->operator = $this->stored_params[ "operator" ];
@@ -101,7 +101,7 @@ ValueExpectations::define_expectation( "than", function() {
     });
 });
 
-ValueExpectations::define_expectation( "null", function() {
+Value_Expectations::define_expectation( "null", function() {
 
     $this->before( function() {
 
@@ -133,7 +133,7 @@ ValueExpectations::define_expectation( "null", function() {
     });
 });
 
-ValueExpectations::define_expectation( "true", function() {
+Value_Expectations::define_expectation( "true", function() {
 
     $this->before( function() {
 
@@ -165,7 +165,7 @@ ValueExpectations::define_expectation( "true", function() {
     });
 });
 
-ValueExpectations::define_expectation( "false", function() {
+Value_Expectations::define_expectation( "false", function() {
 
     $this->before( function() {
 
@@ -199,7 +199,7 @@ ValueExpectations::define_expectation( "false", function() {
 
 /// Type expectations
 
-ValueExpectations::define_expectation( "string", function() {
+Value_Expectations::define_expectation( "string", function() {
 
     $this->before( function() {
 
@@ -231,7 +231,7 @@ ValueExpectations::define_expectation( "string", function() {
     });
 });
 
-ValueExpectations::define_expectation( "int", function() {
+Value_Expectations::define_expectation( "int", function() {
 
     $this->before( function() {
 
@@ -263,7 +263,7 @@ ValueExpectations::define_expectation( "int", function() {
     });
 });
 
-ValueExpectations::define_expectation( "double", function() {
+Value_Expectations::define_expectation( "double", function() {
 
     $this->before( function() {
 
@@ -295,7 +295,7 @@ ValueExpectations::define_expectation( "double", function() {
     });
 });
 
-ValueExpectations::define_expectation( "number", function() {
+Value_Expectations::define_expectation( "number", function() {
 
     $this->before( function() {
 
@@ -328,7 +328,7 @@ ValueExpectations::define_expectation( "number", function() {
     });
 });
 
-ValueExpectations::define_expectation( "bool", function() {
+Value_Expectations::define_expectation( "bool", function() {
 
     $this->before( function() {
 
@@ -360,7 +360,7 @@ ValueExpectations::define_expectation( "bool", function() {
     });
 });
 
-ValueExpectations::define_expectation( "array", function() {
+Value_Expectations::define_expectation( "array", function() {
 
     $this->before( function() {
 
@@ -392,7 +392,7 @@ ValueExpectations::define_expectation( "array", function() {
     });
 });
 
-ValueExpectations::define_expectation( "a", function() {
+Value_Expectations::define_expectation( "a", function() {
 
     $this->before( function($class_name) {
 
@@ -424,7 +424,7 @@ ValueExpectations::define_expectation( "a", function() {
     });
 });
 
-ValueExpectations::define_expectation( "instance_of", function() {
+Value_Expectations::define_expectation( "instance_of", function() {
 
     $this->before( function($class_name) {
 
@@ -458,7 +458,7 @@ ValueExpectations::define_expectation( "instance_of", function() {
 
 /// Strings expectations
 
-ValueExpectations::define_expectation( "begin_with", function() {
+Value_Expectations::define_expectation( "begin_with", function() {
 
     $this->before( function($expected_value) {
 
@@ -497,7 +497,7 @@ ValueExpectations::define_expectation( "begin_with", function() {
 });
 
 
-ValueExpectations::define_expectation( "end_with", function() {
+Value_Expectations::define_expectation( "end_with", function() {
 
     $this->before( function($expected_value) {
 
@@ -537,7 +537,7 @@ ValueExpectations::define_expectation( "end_with", function() {
     });
 });
 
-ValueExpectations::define_expectation( "contain", function() {
+Value_Expectations::define_expectation( "contain", function() {
 
     $this->before( function($expected_value) {
 
@@ -575,7 +575,7 @@ ValueExpectations::define_expectation( "contain", function() {
     });
 });
 
-ValueExpectations::define_expectation( "match", function() {
+Value_Expectations::define_expectation( "match", function() {
 
     $this->before( function($expected_regexp, $matching_closure = null) {
 
@@ -616,7 +616,7 @@ ValueExpectations::define_expectation( "match", function() {
 
 /// Array expectations
 
-ValueExpectations::define_expectation( "include", function() {
+Value_Expectations::define_expectation( "include", function() {
 
     $this->before( function($expected_value) {
 
@@ -648,7 +648,7 @@ ValueExpectations::define_expectation( "include", function() {
     });
 });
 
-ValueExpectations::define_expectation( "include_all", function() {
+Value_Expectations::define_expectation( "include_all", function() {
 
     $this->before( function($expected_values) {
 
@@ -681,7 +681,7 @@ ValueExpectations::define_expectation( "include_all", function() {
     });
 });
 
-ValueExpectations::define_expectation( "include_any", function() {
+Value_Expectations::define_expectation( "include_any", function() {
 
     $this->before( function($expected_values) {
 
@@ -714,7 +714,7 @@ ValueExpectations::define_expectation( "include_any", function() {
     });
 });
 
-ValueExpectations::define_expectation( "include_none", function() {
+Value_Expectations::define_expectation( "include_none", function() {
 
     $this->before( function($expected_values) {
 
@@ -747,7 +747,7 @@ ValueExpectations::define_expectation( "include_none", function() {
     });
 });
 
-ValueExpectations::define_expectation( "include_key", function() {
+Value_Expectations::define_expectation( "include_key", function() {
 
     $this->before( function($expected_key, $value_closure = null) {
 
@@ -784,7 +784,7 @@ ValueExpectations::define_expectation( "include_key", function() {
     });
 });
 
-ValueExpectations::define_expectation( "include_value", function() {
+Value_Expectations::define_expectation( "include_value", function() {
 
     $this->before( function($expected_value) {
 
@@ -818,7 +818,7 @@ ValueExpectations::define_expectation( "include_value", function() {
 
 /// File expectations
 
-ValueExpectations::define_expectation( "a_file", function() {
+Value_Expectations::define_expectation( "a_file", function() {
 
     $this->before( function() {
 
@@ -851,7 +851,7 @@ ValueExpectations::define_expectation( "a_file", function() {
     });
 });
 
-ValueExpectations::define_expectation( "have_file_contents", function() {
+Value_Expectations::define_expectation( "have_file_contents", function() {
 
     $this->assert_with( function($contents_closure) {
 
@@ -877,7 +877,7 @@ ValueExpectations::define_expectation( "have_file_contents", function() {
     });
 });
 
-ValueExpectations::define_expectation( "a_folder", function() {
+Value_Expectations::define_expectation( "a_folder", function() {
 
     $this->before( function() {
 
@@ -910,7 +910,7 @@ ValueExpectations::define_expectation( "a_folder", function() {
     });
 });
 
-ValueExpectations::define_expectation( "have_folder_contents", function() {
+Value_Expectations::define_expectation( "have_folder_contents", function() {
 
     $this->assert_with( function($contents_closure) {
 
@@ -939,7 +939,7 @@ ValueExpectations::define_expectation( "have_folder_contents", function() {
 
 /// Exception expectations
 
-ValueExpectations::define_expectation( "raise", function() {
+Value_Expectations::define_expectation( "raise", function() {
 
     $this->assert_with( function($expected_exception_class_name, $expected_exception_closure = null) {
 

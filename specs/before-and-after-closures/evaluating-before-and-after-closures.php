@@ -1,6 +1,6 @@
 <?php
 
-namespace BeforeAndAfterClosures;
+namespace Before_And_After_Closures;
 
 $spec->describe( "When evaluating before and after closures", function() {
 

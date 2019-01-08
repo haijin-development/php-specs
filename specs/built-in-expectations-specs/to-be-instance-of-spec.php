@@ -1,6 +1,6 @@
 <?php
 
-namespace ToBeInstanceOfSpec;
+namespace To_Be_Instance_Of_Spec;
 
 $spec->describe( "When expecting a value to be an instance of a class", function() {
 
@@ -16,10 +16,10 @@ $spec->describe( "When expecting a value to be an instance of a class", function
 
             $this->expect( 1 ) ->to() ->be() ->instance_of( SomeClass::class );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
-                ->equal( "Expected value to be an instance of ToBeInstanceOfSpec\SomeClass, got 1." );
+                ->equal( "Expected value to be an instance of To_Be_Instance_Of_Spec\SomeClass, got 1." );
 
         });
 
@@ -40,10 +40,10 @@ $spec->describe( "When expecting a value to be an instance of a class", function
                 $this->expect( new SomeClass() ) ->not() ->to() ->be()
                     ->instance_of( SomeClass::class );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
-                    ->equal( "Expected value not to be an instance of ToBeInstanceOfSpec\SomeClass, got an instance of ToBeInstanceOfSpec\SomeClass." );
+                    ->equal( "Expected value not to be an instance of To_Be_Instance_Of_Spec\SomeClass, got an instance of To_Be_Instance_Of_Spec\SomeClass." );
 
             });
 

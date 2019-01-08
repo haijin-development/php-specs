@@ -16,7 +16,7 @@ $spec->describe( "When expecting a string value to match a regex", function() {
 
                 $this->expect( "1234" ) ->to() ->match( "/^.23$/" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" to match \"/^.23$/\"." );
@@ -39,7 +39,7 @@ $spec->describe( "When expecting a string value to match a regex", function() {
 
                     $this->expect( "1234" ) ->not() ->to() ->match( "/^.23.$/" );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected \"1234\" not to match \"/^.23.$/\"." );
@@ -70,7 +70,7 @@ $spec->describe( "When expecting a string value to match a regex", function() {
                     throw new Exception( "Should no evaluated this closure." );
                 });
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" to match \"/^(.)23$/\"." );

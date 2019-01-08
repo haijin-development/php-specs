@@ -14,7 +14,7 @@ $spec->describe( "When expecting a value for equality", function() {
 
             $this->expect( 1 ) ->to() ->equal( 2 );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected value to equal 2, got 1." );
@@ -37,7 +37,7 @@ $spec->describe( "When expecting a value for equality", function() {
 
                 $this->expect( 1 ) ->not() ->to() ->equal( 1 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value not to equal 1, got 1." );

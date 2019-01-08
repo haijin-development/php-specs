@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecsStatistics
+class Specs_Statistics
 {
     protected $run_specs_count;
     protected $run_expectations_count;
@@ -51,7 +51,7 @@ class SpecsStatistics
         $count = 0;
 
         foreach( $this->invalid_expectations as $invalid_spec ) {
-            if( is_a( $invalid_spec, ExpectationFailure::class ) ) {
+            if( is_a( $invalid_spec, Expectation_Failure::class ) ) {
                 $count += 1;
             }
         }
@@ -64,7 +64,7 @@ class SpecsStatistics
         $count = 0;
 
         foreach( $this->invalid_expectations as $invalid_spec ) {
-            if( is_a( $invalid_spec, ExpectationError::class ) ) {
+            if( is_a( $invalid_spec, Expectation_Error::class ) ) {
                 $count += 1;
             }
         }

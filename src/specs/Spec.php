@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Spec extends SpecBase
+class Spec extends Spec_Base
 {
     protected $closure;
 
@@ -27,7 +27,7 @@ class Spec extends SpecBase
      */
     public function expect($value)
     {
-        throw new Exception( "See class SpecEvaluator for this method implementation." );
+        throw new Exception( "See class Spec_Evaluator for this method implementation." );
     }
 
     /// Evaluating

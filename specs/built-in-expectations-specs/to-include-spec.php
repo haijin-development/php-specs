@@ -14,7 +14,7 @@ $spec->describe( "When expecting an array to include a value", function() {
 
             $this->expect( [ 1, 2, 3 ] ) ->to() ->include( 0 );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected array to include 0." );
@@ -36,7 +36,7 @@ $spec->describe( "When expecting an array to include a value", function() {
 
                 $this->expect( [ 1, 2, 3 ] ) ->not() ->to() ->include( 1 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected array not to include 1." );

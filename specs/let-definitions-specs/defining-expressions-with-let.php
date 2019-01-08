@@ -32,7 +32,7 @@ $spec->describe( "When defining a expression with let", function() {
 
             $this->undefined_expression;
 
-        }) ->to() ->raise( Haijin\Specs\UndefinedNamedExpressionError::class, function($e) {
+        }) ->to() ->raise( Haijin\Specs\Undefined_Named_Expression_Error::class, function($e) {
 
             $this->expect( $e->getMessage() ) ->to()
                 ->equal( "Undefined expression named 'undefined_expression'." );

@@ -4,7 +4,7 @@ namespace Haijin\Specs;
 
 use Questocat\ConsoleColor\ConsoleColor as Output;
 
-class ConsoleReportRenderer
+class Console_Report_Renderer
 {
     protected $output;
     protected $specs_statistics;
@@ -77,11 +77,11 @@ class ConsoleReportRenderer
     public function render_invalid_expectation_details($invalid_expectation, $index)
     {
 
-        if( is_a( $invalid_expectation, ExpectationFailure::class ) ) {
+        if( is_a( $invalid_expectation, Expectation_Failure::class ) ) {
             $this->render_failed_expectation_details( $invalid_expectation, $index );
         }
 
-        if( is_a( $invalid_expectation, ExpectationError::class ) ) {
+        if( is_a( $invalid_expectation, Expectation_Error::class ) ) {
             $this->render_errored_expectation_details( $invalid_expectation, $index );
         }
     }

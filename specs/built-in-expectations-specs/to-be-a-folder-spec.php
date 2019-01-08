@@ -18,7 +18,7 @@ $spec->describe( "When expecting a folder to exist", function() {
 
             $this->expect( "missing_folder/" ) ->to() ->be() ->a_folder();
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected the folder \"missing_folder/\" to exist." );
@@ -41,7 +41,7 @@ $spec->describe( "When expecting a folder to exist", function() {
 
                 $this->expect( $this->folder_path ) ->not() ->to() ->be() ->a_folder();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->match( "/Expected the folder \"(.+)\" not to exist./", function($matches) {

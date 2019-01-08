@@ -15,7 +15,7 @@ $spec->describe( "When expecting an array to include some elements in a collecti
 
         $this->expect( [ 1, 2, 3 ] ) ->to() ->include_any( [ 0, 4 ] );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected array to include any of the expected values." );
@@ -37,7 +37,7 @@ $spec->describe( "When expecting an array to include some elements in a collecti
 
             $this->expect( [ 1, 2, 3 ] ) ->not() ->to() ->include_any( [ 0, 2 ] );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected array not to include any of the expected values." );

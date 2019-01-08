@@ -18,7 +18,7 @@ $spec->describe( "When expecting a file path to exist", function() {
 
             $this->expect( "missing_file.txt" ) ->to() ->be() ->a_file();
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected the file \"missing_file.txt\" to exist." );
@@ -41,7 +41,7 @@ $spec->describe( "When expecting a file path to exist", function() {
 
                 $this->expect( $this->file_path ) ->not() ->to() ->be() ->a_file();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->match( "/Expected the file \"(.+)\" not to exist./", function($matches) {

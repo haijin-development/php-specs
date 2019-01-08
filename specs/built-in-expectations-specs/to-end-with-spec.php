@@ -17,7 +17,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
             $this->expect( "1234" ) ->to() ->end_with( "1" );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected \"1234\" to end with \"1\"." );
@@ -32,7 +32,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
             $this->expect( "1234" ) ->to() ->end_with( "01234" );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected \"1234\" to end with \"01234\"." );
@@ -56,7 +56,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
                 $this->expect( "1234" ) ->not() ->to() ->end_with( "" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to end with \"\"." );
@@ -71,7 +71,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
                 $this->expect( "1234" ) ->not() ->to() ->end_with( "4" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to end with \"4\"." );
@@ -86,7 +86,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
                 $this->expect( "1234" ) ->not() ->to() ->end_with( "34" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to end with \"34\"." );
@@ -101,7 +101,7 @@ $spec->describe( "When expecting a string value to end with a substring", functi
 
                 $this->expect( "1234" ) ->not() ->to() ->end_with( "1234" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to end with \"1234\"." );

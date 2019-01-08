@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-abstract class SpecBase
+abstract class Spec_Base
 {
     protected $description;
     protected $nested_description;
@@ -13,7 +13,7 @@ abstract class SpecBase
     public function __construct($description, $nested_description, $context)
     {
         if( $context === null ) {
-            $context = new SpecContext();
+            $context = new Spec_Context();
         } else {
             $context = clone $context;
         }

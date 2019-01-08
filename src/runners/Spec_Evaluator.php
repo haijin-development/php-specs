@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecEvaluator
+class Spec_Evaluator
 {
     protected $statistics;
     protected $current_spec;
@@ -63,10 +63,10 @@ class SpecEvaluator
                 $this->on_spec_run_closure->call( $this, $spec, "passed" );
             }
 
-        } catch( ExpectationFailureSignal $signal ) {
+        } catch( Expectation_Failure_Signal $signal ) {
 
             $this->statistics->add_invalid_expectation(
-                new ExpectationFailure(
+                new Expectation_Failure(
                     $this->current_spec->get_full_description(),
                     $signal->get_message(),
                     $signal->get_trace()
@@ -80,7 +80,7 @@ class SpecEvaluator
         } catch( \Exception $e ) {
 
             $this->statistics->add_invalid_expectation(
-                new ExpectationError(
+                new Expectation_Error(
                     $this->current_spec->get_full_description(),
                     $e->getMessage(),
                     $e->getTrace()
@@ -211,19 +211,19 @@ class SpecEvaluator
 
     protected function new_specs_statistics()
     {
-        return new SpecsStatistics();
+        return new Specs_Statistics();
     }
 
     protected function new_value_expectation($full_description, $value)
     {
-        return new ValueExpectation( $this, $full_description, $value );
+        return new Value_Expectation( $this, $full_description, $value );
     }
 
     /// Raising errors
 
     public function raise_undefined_named_expression($expression_name)
     {
-        throw new UndefinedNamedExpressionError(
+        throw new Undefined_Named_Expression_Error(
             "Undefined expression named '{$expression_name}'.",
             $expression_name
         );

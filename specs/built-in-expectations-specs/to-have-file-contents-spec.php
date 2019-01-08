@@ -22,7 +22,7 @@ $spec->describe( "When expecting a file to have contents", function() {
                 $this->expect( $contents ) ->to() ->equal( "Sample file contents." );
             });
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected the file \"missing_file.txt\" to have contents, but is does not exist." );

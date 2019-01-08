@@ -1,11 +1,11 @@
 <?php
 
-use Haijin\Specs\SpecsRunner;
+use Haijin\Specs\Specs_Runner;
 
 $spec->describe( "When running a single spec from a file", function() {
 
     $this->let( "spec_runner", function() {
-        return new SpecsRunner();
+        return new Specs_Runner();
     });
 
     $this->describe( "each failed expectations", function(){

@@ -18,7 +18,7 @@ $spec->describe( "When expecting an array to include a key", function() {
 
             $this->expect( $this->array ) ->to() ->include_key( "d" );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected array to include key \"d\"." );
@@ -40,7 +40,7 @@ $spec->describe( "When expecting an array to include a key", function() {
 
                 $this->expect( $this->array ) ->not() ->to() ->include_key( "c" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected array not to include key \"c\"." );
@@ -73,7 +73,7 @@ $spec->describe( "When expecting an array to include a key", function() {
                     throw new \Exception( "This closure should not be evaluated" );
                 });
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected array to include key \"d\"." );

@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class InvalidExpectation
+class Invalid_Expectation
 {
     protected $description;
     protected $message;
@@ -53,7 +53,7 @@ class InvalidExpectation
         foreach( $this->stack_trace as $i => $stack_frame) {
             if( $stack_frame[ "function" ] == "evaluate_expectation_definition_with"
                 && 
-                $stack_frame[ "class" ] == "Haijin\Specs\ValueExpectation"
+                $stack_frame[ "class" ] == "Haijin\Specs\Value_Expectation"
             ) 
             {
                 return $this->stack_trace[ $i + 1 ];

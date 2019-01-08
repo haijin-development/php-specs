@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ValueExpectationDefinition
+class Value_Expectation_Definition
 {
     public $expectation_name;
     public $before_closure;
@@ -88,14 +88,14 @@ class ValueExpectationDefinition
 
     public function raise_missing_assertion_closure_error()
     {
-        throw new ExpectationDefinitionError(
+        throw new Expectation_Definition_Error(
             "Expectation definition '{$this->expectation_name}' is missing the 'assert_with()' closure."
         );
     }
 
     public function raise_missing_negation_closure_error()
     {
-        throw new ExpectationDefinitionError(
+        throw new Expectation_Definition_Error(
             "Expectation definition '{$this->expectation_name}' is missing the 'negate_with()' closure."
         );
     }

@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecsRunner
+class Specs_Runner
 {
     protected $specs_evaluator;
 
@@ -86,7 +86,7 @@ class SpecsRunner
 
     public function get_spec_from_file($spec_file)
     {
-        $spec_descripion = new SpecDescription( "", "", null );
+        $spec_descripion = new Spec_Description( "", "", null );
         $spec_descripion->define_in_file( $spec_file );
 
         return $spec_descripion;
@@ -110,6 +110,6 @@ class SpecsRunner
 
     public function new_spec_evaluator()
     {
-        return new SpecEvaluator();
+        return new Spec_Evaluator();
     }
 }

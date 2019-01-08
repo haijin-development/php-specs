@@ -17,7 +17,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
             $this->expect( "1234" ) ->to() ->begin_with( "4" );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected \"1234\" to begin with \"4\"." );
@@ -32,7 +32,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
             $this->expect( "1234" ) ->to() ->begin_with( "12345" );
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected \"1234\" to begin with \"12345\"." );
@@ -56,7 +56,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
                 $this->expect( "1234" ) ->not() ->to() ->begin_with( "" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to begin with \"\"." );
@@ -71,7 +71,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
                 $this->expect( "1234" ) ->not() ->to() ->begin_with( "1" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to begin with \"1\"." );
@@ -86,7 +86,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
                 $this->expect( "1234" ) ->not() ->to() ->begin_with( "123" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to begin with \"123\"." );
@@ -101,7 +101,7 @@ $spec->describe( "When expecting a string value to begin with a substring", func
 
                 $this->expect( "1234" ) ->not() ->to() ->begin_with( "1234" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected \"1234\" not to begin with \"1234\"." );

@@ -16,7 +16,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "==" ) ->than( 0 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be == than 0." );
@@ -39,7 +39,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "==" ) ->than( 1 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be == than 1." );
@@ -66,7 +66,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "===" ) ->than( "1" );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be === than \"1\"." );
@@ -89,7 +89,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "===" ) ->than( 1 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be === than 1." );
@@ -116,7 +116,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "!=" ) ->than( 1 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be != than 1." );
@@ -139,7 +139,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "!=" ) ->than( 0 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be != than 0." );
@@ -166,7 +166,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "!==" ) ->than( 1 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be !== than 1." );
@@ -189,7 +189,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "!==" ) ->than( "1" );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be !== than \"1\"." );
@@ -216,7 +216,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( ">" ) ->than( 2 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be > than 2." );
@@ -239,7 +239,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( ">" ) ->than( 0 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be > than 0." );
@@ -267,7 +267,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( ">=" ) ->than( 2 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be >= than 2." );
@@ -290,7 +290,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( ">=" ) ->than( 0 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be >= than 0." );
@@ -301,7 +301,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( ">=" ) ->than( 1 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be >= than 1." );
@@ -328,7 +328,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "<" ) ->than( 0 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be < than 0." );
@@ -351,7 +351,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "<" ) ->than( 2 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be < than 2." );
@@ -379,7 +379,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                 $this->expect( 1 ) ->to() ->be( "<=" ) ->than( 0 );
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value 1 to be <= than 0." );
@@ -402,7 +402,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "<=" ) ->than( 2 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be <= than 2." );
@@ -413,7 +413,7 @@ $spec->describe( "When expecting a value to compare to anothe value", function()
 
                     $this->expect( 1 ) ->not() ->to() ->be( "<=" ) ->than( 1 );
 
-                }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+                }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                     $this->expect( $e->get_message() ) ->to()
                         ->equal( "Expected value 1 not to be <= than 1." );

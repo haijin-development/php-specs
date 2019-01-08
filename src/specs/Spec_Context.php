@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class SpecContext
+class Spec_Context
 {
     public $named_expressions;
 

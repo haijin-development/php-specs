@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class ValueExpectationEvaluation
+class Value_Expectation_Evaluation
 {
     protected $spec_binding;
     protected $description;
@@ -19,7 +19,7 @@ class ValueExpectationEvaluation
 
     public function raise_failure($failure_message)
     {
-        throw new ExpectationFailureSignal( $failure_message, $this->description );
+        throw new Expectation_Failure_Signal( $failure_message, $this->description );
     }
 
     public function value_string($value)

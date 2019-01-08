@@ -14,7 +14,7 @@ $spec->describe( "When expecting a value to be null", function() {
 
             $this->expect( 1 ) ->to() ->be() ->null();
 
-        }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+        }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
             $this->expect( $e->get_message() ) ->to()
                 ->equal( "Expected value to be null, got 1." );
@@ -37,7 +37,7 @@ $spec->describe( "When expecting a value to be null", function() {
 
                 $this->expect( null ) ->not() ->to() ->be() ->null();
 
-            }) ->to() ->raise( \Haijin\Specs\ExpectationFailureSignal::class, function($e) {
+            }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {
 
                 $this->expect( $e->get_message() ) ->to()
                     ->equal( "Expected value not to be null, got null." );
