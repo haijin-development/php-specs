@@ -11,13 +11,13 @@ class Spec_Evaluator
     protected $after_each_closures;
 
     // An external handle to evaluate after each spec run, not part the DSL
-    protected $after_each_spec_closure;
+    protected $on_spec_run_closure;
 
     /// Initializing
 
     public function __construct()
     {
-        $this->statistics = $this->new_specs_statistics();
+        $this->statistics = $this->___new_specs_statistics();
         $this->current_spec = null;
         $this->resolved_named_expressions = [];
         $this->before_each_closures = [];
@@ -25,80 +25,33 @@ class Spec_Evaluator
         $this->on_spec_run_closure = null;
     }
 
-    public function reset()
+    public function ___reset()
     {
-        $this->statistics = $this->new_specs_statistics();
+        $this->statistics = $this->___new_specs_statistics();
         $this->current_spec = null;
         $this->resolved_named_expressions = [];
     }
 
     /// Accessing
 
-    public function get_statistics()
+    public function ___get_statistics()
     {
         return $this->statistics;
     }
 
-    public function get_invalid_expectations()
+    public function ___get_invalid_expectations()
     {
         return $this->statistics->get_invalid_expectations();
     }
 
-    public function on_spec_run_do($closure)
+    public function ___on_spec_run_do($closure)
     {
         $this->on_spec_run_closure = $closure;
     }
 
     /// Evaluating
 
-    public function evaluate($spec)
-    {
-        $current_resolved_named_expressions = $this->resolved_named_expressions;
-
-        try {
-
-            $spec->evaluate_with( $this );
-
-            if( $this->on_spec_run_closure !== null ) {
-                $this->on_spec_run_closure->call( $this, $spec, "passed" );
-            }
-
-        } catch( Expectation_Failure_Signal $signal ) {
-
-            $this->statistics->add_invalid_expectation(
-                new Expectation_Failure(
-                    $this->current_spec->get_full_description(),
-                    $signal->get_message(),
-                    $signal->get_trace()
-                )
-            );
-
-            if( $this->on_spec_run_closure !== null ) {
-                $this->on_spec_run_closure->call( $this, $spec, "failed" );
-            }
-
-        } catch( \Exception $e ) {
-
-            $this->statistics->add_invalid_expectation(
-                new Expectation_Error(
-                    $this->current_spec->get_full_description(),
-                    $e->getMessage(),
-                    $e->getTrace()
-                )
-            );
-
-            if( $this->on_spec_run_closure !== null ) {
-                $this->on_spec_run_closure->call( $this, $spec, "error" );
-            }
-
-        } finally {
-
-            $this->resolved_named_expressions = $current_resolved_named_expressions;
-
-        }
-    }
-
-    public function evaluate_spec_description($spec_description)
+    public function ___evaluate_spec_description($spec_description)
     {
         $current_before_each_closures = $this->before_each_closures;
         $current_after_each_closures = $this->after_each_closures;
@@ -122,7 +75,7 @@ class Spec_Evaluator
         try {
 
             foreach( $spec_description->get_nested_specs() as $spec ) {
-                $this->evaluate( $spec );
+                $spec->evaluate_with( $this );
             }
 
         } finally {
@@ -138,28 +91,91 @@ class Spec_Evaluator
 
     }
 
-    public function evaluate_spec($spec)
+    public function ___evaluate_spec($spec)
     {
         $this->statistics->inc_run_specs_count();
 
         $this->current_spec = $spec;
 
-        foreach( $this->before_each_closures as $before_closure ) {
-            $before_closure->call( $this );
-        }
+        $current_resolved_named_expressions = $this->resolved_named_expressions;
 
         try {
 
+            $this->___evaluate_before_each_closures();
+
             $spec->get_closure()->call( $this );
+
+            $this->___on_spec_passed( $spec );
+
+        } catch( Expectation_Failure_Signal $failure_signal ) {
+
+            $this->___on_spec_failure( $spec, $failure_signal );
+
+        } catch( \Exception $e ) {
+
+            $this->___on_spec_error( $spec, $e );
 
         } finally {
 
-            foreach( $this->after_each_closures as $after_closure ) {
-                $after_closure->call( $this );
-            }
+            $this->___evaluate_after_each_closures();
+
+            $this->resolved_named_expressions = $current_resolved_named_expressions;
 
         }
     }
+
+    protected function ___evaluate_before_each_closures()
+    {
+        foreach( $this->before_each_closures as $before_closure ) {
+            $before_closure->call( $this );
+        }
+    }
+
+    protected function ___evaluate_after_each_closures()
+    {
+        foreach( $this->after_each_closures as $after_closure ) {
+            $after_closure->call( $this );
+        }
+    }
+
+    protected function ___on_spec_passed($spec)
+    {
+        if( $this->on_spec_run_closure !== null ) {
+            $this->on_spec_run_closure->call( $this, $spec, "passed" );
+        }
+    }
+
+    protected function ___on_spec_failure($spec, $failure_signal)
+    {
+        $this->statistics->add_invalid_expectation(
+            new Expectation_Failure(
+                $this->current_spec->get_full_description(),
+                $failure_signal->get_message(),
+                $failure_signal->get_trace()
+            )
+        );
+
+        if( $this->on_spec_run_closure !== null ) {
+            $this->on_spec_run_closure->call( $this, $spec, "failed" );
+        }
+    }
+
+    protected function ___on_spec_error($spec, $error)
+    {
+        $this->statistics->add_invalid_expectation(
+            new Expectation_Error(
+                $this->current_spec->get_full_description(),
+                $error->getMessage(),
+                $error->getTrace()
+            )
+        );
+
+        if( $this->on_spec_run_closure !== null ) {
+            $this->on_spec_run_closure->call( $this, $spec, "error" );
+        }
+    }
+
+    /// Expectations
 
     public function expect($value)
     {
@@ -173,27 +189,27 @@ class Spec_Evaluator
 
     public function __get($property)
     {
-        if( $this->has_named_expression( $property ) ) {
-            return $this->evaluate_named_expression( $property );
+        if( $this->___has_named_expression( $property ) ) {
+            return $this->___evaluate_named_expression( $property );
         }
 
-        $this->raise_undefined_named_expression( $property );
+        $this->___raise_undefined_named_expression( $property );
     }
 
     /// Named expressions
 
-    public function has_named_expression($expression_name)
+    public function ___has_named_expression($expression_name)
     {
         return $this->current_spec->get_context()->has_named_expression( $expression_name );
     }
 
-    public function evaluate_named_expression($expression_name)
+    public function ___evaluate_named_expression($expression_name)
     {
         if( array_key_exists( $expression_name, $this->resolved_named_expressions ) ) {
             return $this->resolved_named_expressions[ $expression_name ];
         }
 
-        $closure = $this->get_named_expression( $expression_name );
+        $closure = $this->___get_named_expression( $expression_name );
 
         $resolved_expression_value = $closure->call( $this );
 
@@ -202,14 +218,14 @@ class Spec_Evaluator
         return $resolved_expression_value;
     }
 
-    public function get_named_expression($expression_name)
+    public function ___get_named_expression($expression_name)
     {
         return $this->current_spec->get_context()->get_named_expression( $expression_name );
     }
 
     /// Creating instances
 
-    protected function new_specs_statistics()
+    protected function ___new_specs_statistics()
     {
         return new Specs_Statistics();
     }
@@ -221,7 +237,7 @@ class Spec_Evaluator
 
     /// Raising errors
 
-    public function raise_undefined_named_expression($expression_name)
+    public function ___raise_undefined_named_expression($expression_name)
     {
         throw new Undefined_Named_Expression_Error(
             "Undefined expression named '{$expression_name}'.",

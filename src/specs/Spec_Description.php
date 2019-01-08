@@ -108,6 +108,6 @@ class Spec_Description extends Spec_Base
 
     public function evaluate_with($spec_evaluator)
     {
-        $spec_evaluator->evaluate_spec_description( $this );
+        $spec_evaluator->___evaluate_spec_description( $this );
     }
 }

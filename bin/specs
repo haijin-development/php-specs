@@ -7,4 +7,4 @@ require_once "vendor/autoload.php";
 
 $cli = new Specs_CLI();
 
-$cli->run_specs();
+$cli->evaluate( $argv );

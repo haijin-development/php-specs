@@ -8,7 +8,7 @@ $spec->describe( "When running a single spec from a file", function() {
         return new Specs_Runner();
     });
 
-    $this->describe( "each failed expectations", function(){
+    $this->describe( "each failed expectation", function(){
 
         $this->let( "spec_file", function() {
             return __DIR__ . "/../../specs-samples/single-spec-failure.php";
@@ -59,7 +59,7 @@ $spec->describe( "When running a single spec from a file", function() {
 
     });
 
-    $this->describe( "the spectation runner statistics", function(){
+    $this->describe( "the expectation runner statistics", function(){
 
         $this->let( "spec_file", function() {
             return __DIR__ .
@@ -101,6 +101,33 @@ $spec->describe( "When running a single spec from a file", function() {
 
             $this->expect( $count ) ->to() ->equal( 3 );
         });
+    });
+
+    $this->describe( "with a on_spec_run_do closure defined", function() {
+
+        $this->let( "spec_file", function() {
+            return __DIR__ .
+                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success.php";
+        });
+
+        $this->it( "evaluates the on_spec_run_do after each spec run", function() {
+
+            $this->specs_evaluations = 0;
+
+            $context = $this;
+
+            $this->spec_runner->on_spec_run_do( function($spec, $status) use($context) {
+
+                $context->specs_evaluations += 1;
+
+            });
+
+            $this->spec_runner->run_spec_file( $this->spec_file );
+
+            $this->expect( $this->specs_evaluations ) ->to() ->equal( 4 );
+
+        });
+
     });
 
 });

@@ -17,12 +17,12 @@ class Specs_Runner
 
     public function get_statistics()
     {
-        return $this->specs_evaluator->get_statistics();
+        return $this->specs_evaluator->___get_statistics();
     }
 
     public function get_invalid_expectations()
     {
-        return $this->specs_evaluator->get_invalid_expectations();
+        return $this->specs_evaluator->___get_invalid_expectations();
     }
 
     public function get_last_expectation_status()
@@ -32,7 +32,7 @@ class Specs_Runner
 
     public function on_spec_run_do($closure)
     {
-        $this->specs_evaluator->on_spec_run_do( $closure );
+        $this->specs_evaluator->___on_spec_run_do( $closure );
     }
 
     /// Running
@@ -94,7 +94,7 @@ class Specs_Runner
 
     public function evaluate_specs($specs_collection)
     {
-        $this->specs_evaluator->reset();
+        $this->specs_evaluator->___reset();
 
         foreach( $specs_collection as $spec ) {
             $this->evaluate_spec( $spec );
@@ -103,7 +103,7 @@ class Specs_Runner
 
     public function evaluate_spec($spec)
     {
-        $this->specs_evaluator->evaluate( $spec );
+        $spec->evaluate_with( $this->specs_evaluator );
     }
 
     /// Creating instances

@@ -30,7 +30,8 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
         5. [Evaluating closures within custom expectations](#c-2-6-5)
         6. [Complete example](#c-2-6-6)
     7. [Temporary skipping a spec](#c-2-7)
-3. [Running the specs](#c-3)
+    8. [Running the specs from the command line](#c-2-8)
+3. [Running this project tests](#c-3)
 
 <a name="c-1"></a>
 ## Installation
@@ -50,12 +51,23 @@ Include this library in your project `composer.json` file:
     ...
 }
 ```
+
 <a name="c-2"></a>
 ## Usage
 
-In the project create a subfolder named `tests/specs`.
+In the project folder run
+
+```
+composer install
+
+php ./vendor/bin/specs init
+```
+
+This will create a folder named `tests/specs` with a `specs_boot.php` sample file.
 
 In any nested subfolder of `tests/specs` create files with specs definitions. No naming convention is needed for these files, all of them will be considered spec files.
+
+`tests/specs_boot.php` is an optional regular PHP script file loaded before any spec used to customize the specs runner.
 
 <a name="c-2-1"></a>
 ### Spec definitions
@@ -516,9 +528,29 @@ $spec->describe( "When searching for users", function() {
 
 });
 ```
+<a name="c-2-8"></a>
+#### Running the specs from the command line
+
+```
+php ./vendor/bin/specs
+```
+
+or add to the `composer.json` of the project the line:
+
+```json
+"scripts": {
+    "specs": "php ./vendor/bin/specs"
+}
+```
+
+and then run the specs with
+
+```
+composer specs
+```
 
 <a name="c-3"></a>
-## Running the specs
+## Running this project tests
 
 ```
 composer specs
