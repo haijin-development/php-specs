@@ -130,4 +130,60 @@ $spec->describe( "When running specs from a file", function() {
 
     });
 
+    $this->describe( "with global before_all_ after_all, before_each and after_each closures", function() {
+
+        $this->let( "spec_file", function() {
+            return __DIR__ .
+                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success.php";
+        });
+
+        $this->before_all( function() {
+            Specs_Runner::configure( function($specs) {
+
+                $specs->before_all( function() {
+                    $this->evaluations = [];
+                    $this->evaluations[] = "before-all";
+                });
+
+                $specs->after_all( function() {
+                    $this->evaluations[] = "after-all";
+                });
+
+                $specs->before_each( function() {
+                    $this->evaluations[] = "before-each";
+                });
+
+                $specs->after_each( function() {
+                    $this->evaluations[] = "after-each";
+                });
+
+            });
+
+        });
+
+        $this->after_all( function() {
+            Specs_Runner::configure( function($specs) {
+            });
+        });
+
+        $this->it( "evaluates the closures on every spec", function() {
+
+            $this->spec_runner->run_spec_file( $this->spec_file );
+
+            $this->expect( $this->spec_runner->___get_specs_evaluator()->evaluations ) ->to()
+                ->equal([
+                    "before-all",
+                    "before-each",
+                    "after-each",
+                    "before-each",
+                    "after-each",
+                    "before-each",
+                    "after-each",
+                    "before-each",
+                    "after-each",
+                    "after-all"
+                ]);
+        });
+
+    });
 });

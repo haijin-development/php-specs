@@ -46,6 +46,14 @@ class Specs_Runner
         $this->specs_evaluator->___on_spec_run_do( $closure );
     }
 
+    /**
+     *  Private - For testing purposes only.
+     */
+    public function ___get_specs_evaluator()
+    {
+        return $this->specs_evaluator;
+    }
+
     /// Running
 
     public function run_on($folder)
@@ -108,6 +116,7 @@ class Specs_Runner
         $this->specs_evaluator->___reset();
 
         if( self::$configuration_closure !== null ) {
+
             $this->specs_evaluator->___configure( self::$configuration_closure );
         }
 

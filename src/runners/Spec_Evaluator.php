@@ -4,34 +4,34 @@ namespace Haijin\Specs;
 
 class Spec_Evaluator
 {
-    protected $spec_closures;
-    protected $statistics;
-    protected $current_spec;
-    protected $resolved_named_expressions;
-    protected $before_each_closures;
-    protected $after_each_closures;
+    protected $___spec_closures;
+    protected $___statistics;
+    protected $___current_spec;
+    protected $___scope_variables;
+    protected $___before_each_closures;
+    protected $___after_each_closures;
 
     // An external handle to evaluate after each spec run, not part the DSL
-    protected $on_spec_run_closure;
+    protected $___on_spec_run_closure;
 
     /// Initializing
 
     public function __construct()
     {
-        $this->spec_closures = new Spec_Closures();
-        $this->statistics = $this->___new_specs_statistics();
-        $this->current_spec = null;
-        $this->resolved_named_expressions = [];
-        $this->before_each_closures = [];
-        $this->after_each_closures = [];
-        $this->on_spec_run_closure = null;
+        $this->___spec_closures = new Spec_Closures();
+        $this->___statistics = $this->___new_specs_statistics();
+        $this->___current_spec = null;
+        $this->___scope_variables = [];
+        $this->___before_each_closures = [];
+        $this->___after_each_closures = [];
+        $this->___on_spec_run_closure = null;
     }
 
     public function ___reset()
     {
-        $this->statistics = $this->___new_specs_statistics();
-        $this->current_spec = null;
-        $this->resolved_named_expressions = [];
+        $this->___statistics = $this->___new_specs_statistics();
+        $this->___current_spec = null;
+        $this->___scope_variables = [];
     }
 
     public function ___configure($configuration_closure, $binding = null)
@@ -47,17 +47,17 @@ class Spec_Evaluator
 
     public function ___get_statistics()
     {
-        return $this->statistics;
+        return $this->___statistics;
     }
 
     public function ___get_invalid_expectations()
     {
-        return $this->statistics->get_invalid_expectations();
+        return $this->___statistics->get_invalid_expectations();
     }
 
     public function ___on_spec_run_do($closure)
     {
-        $this->on_spec_run_closure = $closure;
+        $this->___on_spec_run_closure = $closure;
     }
 
     /// DSL
@@ -65,46 +65,46 @@ class Spec_Evaluator
 
     public function before_all($closure)
     {
-        $this->spec_closures->before_all_closure = $closure;
+        $this->___spec_closures->before_all_closure = $closure;
     }
 
     public function after_all($closure)
     {
-        $this->spec_closures->after_all_closure = $closure;
+        $this->___spec_closures->after_all_closure = $closure;
     }
 
     public function before_each($closure)
     {
-        $this->spec_closures->before_each_closure = $closure;
+        $this->___spec_closures->before_each_closure = $closure;
     }
 
     public function after_each($closure)
     {
-        $this->spec_closures->after_each_closure = $closure;
+        $this->___spec_closures->after_each_closure = $closure;
     }
 
     /// Running
 
     public function ___run_all($specs_collection)
     {
-        if( $this->spec_closures->before_each_closure !== null ) {
-            $this->before_each_closures[] = $this->spec_closures->before_each_closure;
+        if( $this->___spec_closures->before_each_closure !== null ) {
+            $this->___before_each_closures[] = $this->___spec_closures->before_each_closure;
         }
 
-        if( $this->spec_closures->after_each_closure !== null ) {
-            $this->after_each_closures[] = $this->spec_closures->after_each_closure;
+        if( $this->___spec_closures->after_each_closure !== null ) {
+            $this->___after_each_closures[] = $this->___spec_closures->after_each_closure;
         }
 
-        if( $this->spec_closures->before_all_closure !== null ) {
-            $this->spec_closures->before_all_closure->call( $this );
+        if( $this->___spec_closures->before_all_closure !== null ) {
+            $this->___spec_closures->before_all_closure->call( $this );
         }
 
         foreach( $specs_collection as $spec ) {
             $spec->evaluate_with( $this );
         }
 
-        if( $this->spec_closures->after_all_closure !== null ) {
-            $this->spec_closures->after_all_closure->call( $this );
+        if( $this->___spec_closures->after_all_closure !== null ) {
+            $this->___spec_closures->after_all_closure->call( $this );
         }
     }
 
@@ -112,22 +112,22 @@ class Spec_Evaluator
 
     public function ___evaluate_spec_description($spec_description)
     {
-        $current_before_each_closures = $this->before_each_closures;
-        $current_after_each_closures = $this->after_each_closures;
+        $current_before_each_closures = $this->___before_each_closures;
+        $current_after_each_closures = $this->___after_each_closures;
 
         if( $spec_description->get_before_all_closure() !== null ) {
             $spec_description->get_before_all_closure()->call( $this );
         }
 
         if( $spec_description->get_before_each_closure() !== null ) {
-            $this->before_each_closures[] = $spec_description->get_before_each_closure();
+            $this->___before_each_closures[] = $spec_description->get_before_each_closure();
         }
 
         if( $spec_description->get_after_each_closure() !== null ) {
-            $this->after_each_closures =
+            $this->___after_each_closures =
                 array_merge(
                     [ $spec_description->get_after_each_closure() ],
-                    $this->after_each_closures
+                    $this->___after_each_closures
                 );
         }
 
@@ -143,8 +143,8 @@ class Spec_Evaluator
                 $spec_description->get_after_all_closure()->call( $this );
             }
 
-            $this->before_each_closures = $current_before_each_closures;
-            $this->after_each_closures = $current_after_each_closures;
+            $this->___before_each_closures = $current_before_each_closures;
+            $this->___after_each_closures = $current_after_each_closures;
 
         }
 
@@ -152,11 +152,11 @@ class Spec_Evaluator
 
     public function ___evaluate_spec($spec)
     {
-        $this->statistics->inc_run_specs_count();
+        $this->___statistics->inc_run_specs_count();
 
-        $this->current_spec = $spec;
+        $this->___current_spec = $spec;
 
-        $current_resolved_named_expressions = $this->resolved_named_expressions;
+        $previous_scope = $this->___scope_variables;
 
         try {
 
@@ -178,59 +178,70 @@ class Spec_Evaluator
 
             $this->___evaluate_after_each_closures();
 
-            $this->resolved_named_expressions = $current_resolved_named_expressions;
+            $this->___unbind_scope_variables( $previous_scope );
 
+            $this->___scope_variables = $previous_scope;
+
+            $this->___current_spec = null;
+
+        }
+    }
+
+    protected function ___unbind_scope_variables($previous_scope)
+    {
+        foreach( array_diff( $this->___scope_variables, $previous_scope ) as $inst_var_name ) {
+            unset( $this->$inst_var_name );
         }
     }
 
     protected function ___evaluate_before_each_closures()
     {
-        foreach( $this->before_each_closures as $before_closure ) {
+        foreach( $this->___before_each_closures as $before_closure ) {
             $before_closure->call( $this );
         }
     }
 
     protected function ___evaluate_after_each_closures()
     {
-        foreach( $this->after_each_closures as $after_closure ) {
+        foreach( $this->___after_each_closures as $after_closure ) {
             $after_closure->call( $this );
         }
     }
 
     protected function ___on_spec_passed($spec)
     {
-        if( $this->on_spec_run_closure !== null ) {
-            $this->on_spec_run_closure->call( $this, $spec, "passed" );
+        if( $this->___on_spec_run_closure !== null ) {
+            $this->___on_spec_run_closure->call( $this, $spec, "passed" );
         }
     }
 
     protected function ___on_spec_failure($spec, $failure_signal)
     {
-        $this->statistics->add_invalid_expectation(
+        $this->___statistics->add_invalid_expectation(
             new Expectation_Failure(
-                $this->current_spec->get_full_description(),
+                $this->___current_spec->get_full_description(),
                 $failure_signal->get_message(),
                 $failure_signal->get_trace()
             )
         );
 
-        if( $this->on_spec_run_closure !== null ) {
-            $this->on_spec_run_closure->call( $this, $spec, "failed" );
+        if( $this->___on_spec_run_closure !== null ) {
+            $this->___on_spec_run_closure->call( $this, $spec, "failed" );
         }
     }
 
     protected function ___on_spec_error($spec, $error)
     {
-        $this->statistics->add_invalid_expectation(
+        $this->___statistics->add_invalid_expectation(
             new Expectation_Error(
-                $this->current_spec->get_full_description(),
+                $this->___current_spec->get_full_description(),
                 $error->getMessage(),
                 $error->getTrace()
             )
         );
 
-        if( $this->on_spec_run_closure !== null ) {
-            $this->on_spec_run_closure->call( $this, $spec, "error" );
+        if( $this->___on_spec_run_closure !== null ) {
+            $this->___on_spec_run_closure->call( $this, $spec, "error" );
         }
     }
 
@@ -238,10 +249,10 @@ class Spec_Evaluator
 
     public function expect($value)
     {
-        $this->statistics->inc_expectations_count();
+        $this->___statistics->inc_expectations_count();
 
         return $this->new_value_expectation(
-            $this->current_spec->get_full_description(),
+            $this->___current_spec->get_full_description(),
             $value
         );
     }
@@ -249,37 +260,41 @@ class Spec_Evaluator
     public function __get($property)
     {
         if( $this->___has_named_expression( $property ) ) {
-            return $this->___evaluate_named_expression( $property );
+
+            $value = $this->___evaluate_named_expression( $property );
+
+            $this->$property = $value;
+
+            return $value;
+
         }
 
         $this->___raise_undefined_named_expression( $property );
+    }
+
+    public function __set($property, $value)
+    {
+        $this->___scope_variables[] = $property;
+        $this->$property = $value;
     }
 
     /// Named expressions
 
     public function ___has_named_expression($expression_name)
     {
-        return $this->current_spec->get_context()->has_named_expression( $expression_name );
+        return $this->___current_spec->get_context()->has_named_expression( $expression_name );
     }
 
     public function ___evaluate_named_expression($expression_name)
     {
-        if( array_key_exists( $expression_name, $this->resolved_named_expressions ) ) {
-            return $this->resolved_named_expressions[ $expression_name ];
-        }
-
         $closure = $this->___get_named_expression( $expression_name );
 
-        $resolved_expression_value = $closure->call( $this );
-
-        $this->resolved_named_expressions[ $expression_name ] = $resolved_expression_value;
-
-        return $resolved_expression_value;
+        return $closure->call( $this );
     }
 
     public function ___get_named_expression($expression_name)
     {
-        return $this->current_spec->get_context()->get_named_expression( $expression_name );
+        return $this->___current_spec->get_context()->get_named_expression( $expression_name );
     }
 
     /// Creating instances
