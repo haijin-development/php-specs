@@ -114,6 +114,7 @@ class Spec_Evaluator
     {
         $current_before_each_closures = $this->___before_each_closures;
         $current_after_each_closures = $this->___after_each_closures;
+        $previous_scope = $this->___scope_variables;
 
         if( $spec_description->get_before_all_closure() !== null ) {
             $spec_description->get_before_all_closure()->call( $this );
@@ -145,6 +146,8 @@ class Spec_Evaluator
 
             $this->___before_each_closures = $current_before_each_closures;
             $this->___after_each_closures = $current_after_each_closures;
+
+            $this->___unbind_scope_variables( $previous_scope );
 
         }
 

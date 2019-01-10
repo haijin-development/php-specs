@@ -1,79 +1,78 @@
 <?php
 
-namespace Before_And_After_Closures;
+use Haijin\Specs\Specs_Runner;
 
 $spec->describe( "When evaluating before and after closures", function() {
 
     $this->before_all( function() {
-        $this->evaluations = [];
-        $this->evaluations[] = "before-all-outer";
+        Specs_Runner::configure( function($specs) {
+
+            $specs->before_all( function() {
+                $this->evaluations = [];
+                $this->evaluations[] = "before-all";
+            });
+
+            $specs->after_all( function() {
+                $this->evaluations[] = "after-all";
+            });
+
+            $specs->before_each( function() {
+                $this->evaluations[] = "before-each";
+            });
+
+            $specs->after_each( function() {
+                $this->evaluations[] = "after-each";
+            });
+
+        });
+
     });
 
-    $this->before_each( function() {
-        $this->evaluations[] = "before-each-outer";
+    $this->after_all( function() {
+        Specs_Runner::configure( function($specs) {
+        });
     });
 
-    $this->after_each( function() {
-        $this->evaluations[] = "after-each-outer";
+    $this->let( "spec_runner", function() {
+        return new Specs_Runner();
     });
 
-    $this->describe( "outer", function() {
+    $this->let( "spec_file", function() {
+        return __DIR__ .
+            "/../../specs-samples/spec-with-before-and-after-closures.php";
+    });
 
-        $this->before_all( function() {
-            $this->evaluations[] = "before-all-inner";
-        });
+    $this->it( "evaluates the on_spec_run_do after each spec run", function() {
 
-        $this->after_all( function() {
-            $this->evaluations[] = "after-all-inner";
-        });
+        $this->spec_runner->run_spec_file( $this->spec_file );
 
-        $this->before_each( function() {
-            $this->evaluations[] = "before-each-inner";
-        });
+        $this->expect( $this->spec_runner->get_invalid_expectations() ) ->to() ->equal( [] );
 
-        $this->after_each( function() {
-            $this->evaluations[] = "after-each-inner";
-        });
+        $evaluations = $this->spec_runner->___get_specs_evaluator()->evaluations;
 
-        $this->it( "evaluates the closures", function() {
-            $this->expect( $this->evaluations ) ->to() ->equal([
+        $this->expect( $evaluations ) ->to() ->equal([
+            "before-all",
                 "before-all-outer",
                     "before-all-inner",
-                        "before-each-outer",
-                        "before-each-inner"
-            ]);
-        });
-
-        $this->it( "evaluates the closures", function() {
-            $this->expect( $this->evaluations ) ->to() ->equal([
-                "before-all-outer",
-                    "before-all-inner",
+                        "before-each",
                         "before-each-outer",
                         "before-each-inner",
                         "after-each-inner",
                         "after-each-outer",
-                        "before-each-outer",
-                        "before-each-inner"
-            ]);
-        });
-
-    });
-
-    $this->it( "evaluates the closures", function() {
-
-        $this->expect( $this->evaluations ) ->to() ->equal([
-                "before-all-outer",
-                    "before-all-inner",
+                        "after-each",
+                        "before-each",
                         "before-each-outer",
                         "before-each-inner",
                         "after-each-inner",
                         "after-each-outer",
-                        "before-each-outer",
-                        "before-each-inner",
-                        "after-each-inner",
-                        "after-each-outer",
+                        "after-each",
                     "after-all-inner",
-                "before-each-outer"
+                    "before-each",
+                    "before-each-outer",
+                    "after-each-outer",
+                    "after-each",
+                "after-all-outer",
+            "after-all"
         ]);
 
     });
