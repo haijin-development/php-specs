@@ -4,7 +4,7 @@ namespace Haijin\Specs;
 
 class Spec_Evaluator
 {
-    protected $___spec_closures;
+    protected $___specs_config;
     protected $___statistics;
     protected $___current_spec;
     protected $___scope_variables;
@@ -18,7 +18,7 @@ class Spec_Evaluator
 
     public function __construct()
     {
-        $this->___spec_closures = new Spec_Closures();
+        $this->___specs_config = new Specs_Configuration();
         $this->___statistics = $this->___new_specs_statistics();
         $this->___current_spec = null;
         $this->___scope_variables = [];
@@ -34,13 +34,9 @@ class Spec_Evaluator
         $this->___scope_variables = [];
     }
 
-    public function ___configure($configuration_closure, $binding = null)
+    public function ___configure($specs_configuration)
     {
-        if( $binding === null ) {
-            $binding = $this;
-        }
-
-        $configuration_closure->call( $binding, $this );
+        $this->___specs_config = $specs_configuration;
     }
 
     /// Accessing
@@ -60,51 +56,28 @@ class Spec_Evaluator
         $this->___on_spec_run_closure = $closure;
     }
 
-    /// DSL
-
-
-    public function before_all($closure)
-    {
-        $this->___spec_closures->before_all_closure = $closure;
-    }
-
-    public function after_all($closure)
-    {
-        $this->___spec_closures->after_all_closure = $closure;
-    }
-
-    public function before_each($closure)
-    {
-        $this->___spec_closures->before_each_closure = $closure;
-    }
-
-    public function after_each($closure)
-    {
-        $this->___spec_closures->after_each_closure = $closure;
-    }
-
     /// Running
 
     public function ___run_all($specs_collection)
     {
-        if( $this->___spec_closures->before_each_closure !== null ) {
-            $this->___before_each_closures[] = $this->___spec_closures->before_each_closure;
+        if( $this->___specs_config->get_before_each_closure() !== null ) {
+            $this->___before_each_closures[] = $this->___specs_config->get_before_each_closure();
         }
 
-        if( $this->___spec_closures->after_each_closure !== null ) {
-            $this->___after_each_closures[] = $this->___spec_closures->after_each_closure;
+        if( $this->___specs_config->get_after_each_closure() !== null ) {
+            $this->___after_each_closures[] = $this->___specs_config->get_after_each_closure();
         }
 
-        if( $this->___spec_closures->before_all_closure !== null ) {
-            $this->___spec_closures->before_all_closure->call( $this );
+        if( $this->___specs_config->get_before_all_closure() !== null ) {
+            $this->___specs_config->get_before_all_closure()->call( $this );
         }
 
         foreach( $specs_collection as $spec ) {
             $spec->evaluate_with( $this );
         }
 
-        if( $this->___spec_closures->after_all_closure !== null ) {
-            $this->___spec_closures->after_all_closure->call( $this );
+        if( $this->___specs_config->get_after_all_closure() !== null ) {
+            $this->___specs_config->get_after_all_closure()->call( $this );
         }
     }
 

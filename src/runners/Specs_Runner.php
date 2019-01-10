@@ -6,11 +6,14 @@ class Specs_Runner
 {
     /// Configuring
 
-    static protected $configuration_closure;
+    static protected $specs_config;
 
     static public function configure($configuration_closure)
     {
-        self::$configuration_closure = $configuration_closure;
+        self::$specs_config = new Specs_Configuration();
+        self::$specs_config->configure( $configuration_closure );
+
+        return self::$specs_config;
     }
 
     /// Instance methods
@@ -44,6 +47,22 @@ class Specs_Runner
     public function on_spec_run_do($closure)
     {
         $this->specs_evaluator->___on_spec_run_do( $closure );
+    }
+
+    public function get_specs_config()
+    {
+        if( self::$specs_config === null ) {
+
+            return new Specs_Configuration();
+
+        }
+
+        return self::$specs_config;
+    }
+
+    public function get_initial_context()
+    {
+        return $this->get_specs_config()->get_specs_context();
     }
 
     /**
@@ -105,7 +124,8 @@ class Specs_Runner
 
     public function get_spec_from_file($spec_file)
     {
-        $spec_descripion = new Spec_Description( "", "", null );
+        $spec_descripion = new Spec_Description( "", "", $this->get_initial_context() );
+
         $spec_descripion->define_in_file( $spec_file );
 
         return $spec_descripion;
@@ -115,10 +135,7 @@ class Specs_Runner
     {
         $this->specs_evaluator->___reset();
 
-        if( self::$configuration_closure !== null ) {
-
-            $this->specs_evaluator->___configure( self::$configuration_closure );
-        }
+        $this->specs_evaluator->___configure( $this->get_specs_config() );
 
         $this->specs_evaluator->___run_all( $specs_collection );
     }

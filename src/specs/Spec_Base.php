@@ -12,15 +12,9 @@ abstract class Spec_Base
 
     public function __construct($description, $nested_description, $context)
     {
-        if( $context === null ) {
-            $context = new Spec_Context();
-        } else {
-            $context = clone $context;
-        }
-
         $this->description = $description;
         $this->nested_description = $nested_description;
-        $this->context = $context;
+        $this->context = clone $context;
     }
 
     /// Accessors
