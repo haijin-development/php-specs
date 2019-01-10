@@ -322,7 +322,31 @@ $spec->describe( "When formatting a user's full name", function() {
 });
 ```
 
-It is possible to mix `before_all`, `after_all`, `before_each` and `after_each` at any level.
+To evaluate statements before and after any spec is run, like stablishing connections to databases, creating tables or creating complex folder structures, or before and after each single statement, create or add to the `tests/specs_boot.php` file the following `SpecsRunner` configuration:
+
+```php
+\Haijin\Specs\Specs_Runner::configure( function($specs) {
+
+    $specs->before_all( function() {
+
+    });
+
+    $specs->after_all( function() {
+
+    });
+
+    $specs->before_each( function() {
+
+    });
+
+    $specs->after_each( function() {
+
+    });
+});
+```
+
+
+It is possible to use and mix multiple `before_all`, `after_all`, `before_each` and `after_each` at any level.
 
 <a name="c-2-5"></a>
 ### Defining values with let(...) expressions
