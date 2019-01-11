@@ -674,6 +674,12 @@ and then run the specs with
 composer specs
 ```
 
+or a single spec file with
+
+```
+composer specs tests/specs/variables-scope/variables-scope.php
+```
+
 <a name="c-3"></a>
 ## Running this project tests
 

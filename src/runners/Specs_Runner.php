@@ -75,9 +75,13 @@ class Specs_Runner
 
     /// Running
 
-    public function run_on($folder)
+    public function run_on($folder_or_file)
     {
-        $spec_files = $this->collect_spec_files_in( $folder );
+        if( is_file( explode( ":", $folder_or_file )[0] ) ) {
+            return $this->run_spec_file( explode( ":", $folder_or_file )[0] );
+        }
+
+        $spec_files = $this->collect_spec_files_in( $folder_or_file );
 
         $specs = $this->collect_specs_from_files( $spec_files );
 

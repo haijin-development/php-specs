@@ -160,7 +160,13 @@ class Specs_CLI
 
         $this->load_specs_boot_file();
 
-        $this->specs_runner->run_on( $this->specs_folder() );
+        $folder = $this->specs_folder();
+
+        if( isset( $this->argv[ 1 ] ) ) {
+            $folder = $this->argv[ 1 ];
+        }
+
+        $this->specs_runner->run_on( $folder );
 
         $this->renderer->render_report_from( $this->specs_runner );
 
