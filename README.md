@@ -262,6 +262,19 @@ $this->expect( $user ) ->to() ->be() ->like([
 ]);
 ```
 
+The expectation uses equality (`==`) to compare values. To use a custom expectation on a single value use a closure:
+
+```php
+$this->expect( $user ) ->to() ->be() ->like([
+    "get_name()" => function($value) { $this->expect( $value ) ->not() ->to() ->be() ->null() },
+    "get_last_name()" => "Simpson",
+    "get_address()" => [
+        "get_street_name()" => "Evergreen",
+        "get_street_number()" => 742
+    ]
+]);
+```
+
 <a name="c-2-2-2"></a>
 #### expect( $object ) ->to() ->be() ->exactly_like(...)
 
