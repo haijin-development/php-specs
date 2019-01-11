@@ -24,19 +24,7 @@ class Value_Expectation_Evaluation
 
     public function value_string($value)
     {
-        if( is_string( $value ) ) {
-            return "\"" . (string) $value . "\"";
-        }
-
-        if( $value === true ) {
-            return "true";
-        }
-
-        if( $value === false ) {
-            return "false";
-        }
-
-        return (string) $value;
+        return Value_Printer::print_string_of( $value );
     }
 
     public function evaluate_closure($closure, ...$params)
