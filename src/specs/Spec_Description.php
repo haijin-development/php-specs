@@ -86,6 +86,11 @@ class Spec_Description extends Spec_Base
         $this->context->at_named_expression_put( $expression_name, $closure );
     }
 
+    public function def($method_name, $closure)
+    {
+        $this->context->at_method_put( $method_name, $closure );
+    }
+
     public function it($description_text, $closure)
     {
         $nested_spec = new Spec(

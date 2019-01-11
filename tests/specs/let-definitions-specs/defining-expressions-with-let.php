@@ -124,6 +124,7 @@ $spec->describe( "When defining a expression with let", function() {
         });
 
     });
+
 });
 
 class Accumulator

@@ -22,15 +22,16 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
     3. [Specs structure](#c-2-3)
     4. [Evaluating code before and after running expectations](#c-2-4)
     5. [Defining values with let(...) expressions](#c-2-5)
-    6. [Defining custom expectations](#c-2-6)
-        1. [Expectation definition structure](#c-2-6-1)
-        2. [Getting the value being validated](#c-2-6-2)
-        3. [Parameters of the definition closures](#c-2-6-3)
-        4. [Raising expectation errors](#c-2-6-4)
-        5. [Evaluating closures within custom expectations](#c-2-6-5)
-        6. [Complete example](#c-2-6-6)
-    7. [Temporary skipping a spec](#c-2-7)
-    8. [Running the specs from the command line](#c-2-8)
+    6. [Defining methods with def(...)](#c-2-6)
+    7. [Defining custom expectations](#c-2-7)
+        1. [Expectation definition structure](#c-2-7-1)
+        2. [Getting the value being validated](#c-2-7-2)
+        3. [Parameters of the definition closures](#c-2-7-3)
+        4. [Raising expectation errors](#c-2-7-4)
+        5. [Evaluating closures within custom expectations](#c-2-7-5)
+        6. [Complete example](#c-2-7-6)
+    7. [Temporary skipping a spec](#c-2-8)
+    8. [Running the specs from the command line](#c-2-9)
 3. [Running this project tests](#c-3)
 
 <a name="c-1"></a>
@@ -411,12 +412,35 @@ It is also possible to define named expressions at a global level in the `Specs_
 
 });
 ```
-
-
 <a name="c-2-6"></a>
+### Defining methods with def(...)
+
+Define methods using the `def($method_name, $closure)` statement.
+
+The behaviour and scope of the methods is very much the same as for `let(...)` expressions.
+
+Example:
+
+```php
+$spec->describe( "...", function() {
+
+    $this->def( "sum", function($n, $m) {
+        return $n + $m;
+    });
+
+    $this->it( "...", function(){
+
+        $this->expect( $this->sum( 3, 4 ) ->to() ->equal( 7 );
+
+    });
+
+});
+```
+
+<a name="c-2-7"></a>
 ### Defining custom expectations
 
-<a name="c-2-6-1"></a>
+<a name="c-2-7-1"></a>
 #### Expectation definition structure
 
 Expectation definitions have 4 parts, each defined with a closure.
@@ -429,12 +453,12 @@ The third one is the `$this->negate_with($closure)` closure. This closure is eva
 
 The fourth one is the `$this->after($closure)` closure. This closure is evaluated after the expectation is run, even when an Expectation_Failure was raised. This closure is optional but it can be used to release resources allocated during the evaluation of the previous closures.
 
-<a name="c-2-6-2"></a>
+<a name="c-2-7-2"></a>
 #### Getting the value being validated
 
 To get the actual value being validated, use `$this->actual_value`.
 
-<a name="c-2-6-3"></a>
+<a name="c-2-7-3"></a>
 #### Parameters of the definition closures
 
 The parameters of the 4 closures are the ones passed to the expectation in the Spec. For instance, if the spec is declared as
@@ -459,12 +483,12 @@ $this->after( function($expected_value) {
 });
 ```
 
-<a name="c-2-6-4"></a>
+<a name="c-2-7-4"></a>
 #### Raising expectation errors
 
 To raise an expectation failure use `$this->raise_failure( $failure_message )`.
 
-<a name="c-2-6-5"></a>
+<a name="c-2-7-5"></a>
 #### Evaluating closures within custom expectations
 
 To evaluate closures within a custom expectation definition use `evaluate_closure($closure, ...$params)`.
@@ -485,7 +509,7 @@ Value_Expectations::define_expectation( "custom_expectation", function() {
 );
 ```
 
-<a name="c-2-6-6"></a>
+<a name="c-2-7-6"></a>
 #### Complete example
 
 Here is a complete example of a custom validation:
@@ -525,7 +549,7 @@ Value_Expectations::define_expectation( "equal", function() {
 });
 ```
 
-<a name="c-2-7"></a>
+<a name="c-2-8"></a>
 #### Temporary skipping a spec
 
 To temporary skip a spec or a group of specs prepend an `x` to its definition:
@@ -567,7 +591,7 @@ $spec->describe( "When searching for users", function() {
 
 });
 ```
-<a name="c-2-8"></a>
+<a name="c-2-9"></a>
 #### Running the specs from the command line
 
 ```

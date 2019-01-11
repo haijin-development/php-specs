@@ -273,6 +273,35 @@ class Spec_Evaluator
         return $this->___current_spec->get_context()->get_named_expression( $expression_name );
     }
 
+    /// Methods
+
+    public function __call($method_name, $parameters)
+    {
+        if( $this->___has_method( $method_name ) ) {
+
+            return $this->___call_method( $method_name, $parameters );
+        }
+
+        $this->___raise_undefined_method( $method_name );
+    }
+
+    public function ___call_method($method_name, $parameters)
+    {
+        $closure = $this->___get_method( $method_name );
+
+        return $closure->call( $this, ...$parameters );
+    }
+
+    public function ___has_method($method_name)
+    {
+        return $this->___current_spec->get_context()->has_method( $method_name );
+    }
+
+    public function ___get_method($method_name)
+    {
+        return $this->___current_spec->get_context()->get_method( $method_name );
+    }
+
     /// Creating instances
 
     protected function ___new_specs_statistics()
@@ -292,6 +321,14 @@ class Spec_Evaluator
         throw new Undefined_Named_Expression_Error(
             "Undefined expression named '{$expression_name}'.",
             $expression_name
+        );
+    }
+
+    public function ___raise_undefined_method($method_name)
+    {
+        throw new Undefined_Method_Error(
+            "Undefined method named '{$method_name}'.",
+            $method_name
         );
     }
 }

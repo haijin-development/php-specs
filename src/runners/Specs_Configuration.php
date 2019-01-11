@@ -75,4 +75,9 @@ class Specs_Configuration
     {
         $this->spec_context->at_named_expression_put( $expression_name, $closure );
     }
+
+    public function def($method_name, $closure)
+    {
+        $this->spec_context->at_method_put( $method_name, $closure );
+    }
 }
