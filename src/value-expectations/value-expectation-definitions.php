@@ -1,6 +1,6 @@
 <?php
 
-use Haijin\Specs\Value_Expectations;
+namespace Haijin\Specs;
 
 /// Particles definitions
 
@@ -194,6 +194,145 @@ Value_Expectations::define_expectation( "false", function() {
             "Expected value not to be false, got false."
 
         );
+    });
+});
+
+Value_Expectations::define_expectation( "like", function() {
+
+    $this->assert_with( function($expected_object, $attribute_path = "") {
+
+        if( is_callable( $expected_object ) ) {
+
+            $this->evaluate_closure( $expected_object, $this->actual_value, $attribute_path );
+
+            return;
+        }
+
+        if( ! is_array( $expected_object ) ) {
+
+            if( $this->actual_value != $expected_object ) {
+
+                return $this->raise_failure(
+                    "At {$this->value_string($attribute_path)} expected {$this->value_string($expected_object)}, got {$this->value_string($this->actual_value)}."
+                );
+
+            }
+
+            return;
+        }
+
+        foreach( $expected_object as $expected_key => $expected_value) {
+
+            if( empty( $attribute_path ) ) {
+                $child_attribute_path = $expected_key;
+            }
+            else {
+                $child_attribute_path = $attribute_path . "." . $expected_key;
+            }
+
+            $child_value = Attribute_Reader::read_attribute(
+                $this->actual_value,
+                $expected_key
+            );
+
+            if( $child_value === Attribute_Reader::$missing_attribute ) {
+                return $this->raise_failure(
+                    "The object was expected to have an attribute defined at {$this->value_string($child_attribute_path)}."
+                );
+            }
+
+            $this->evaluate_closure( function() use($child_value, $expected_value, $child_attribute_path) {
+
+                $this->expect( $child_value ) ->to() ->be()
+                    ->like( $expected_value, $child_attribute_path );
+
+            });
+        }
+
+    });
+});
+
+Value_Expectations::define_expectation( "exactly_like", function() {
+
+    $this->assert_with( function($expected_object, $attribute_path = "") {
+
+        if( is_callable( $expected_object ) ) {
+
+            $this->evaluate_closure( $expected_object, $this->actual_value, $attribute_path );
+
+            return;
+        }
+
+        if( ! is_array( $expected_object ) ) {
+
+            if( $this->actual_value != $expected_object ) {
+
+                return $this->raise_failure(
+                    "At {$this->value_string($attribute_path)} expected {$this->value_string($expected_object)}, got {$this->value_string($this->actual_value)}."
+                );
+
+            }
+
+            return;
+        }
+
+        if( is_array( $this->actual_value ) ) {
+            $expected_keys = array_keys( $expected_object );
+            $actual_keys = array_keys( $this->actual_value );
+
+            $missing_keys = array_diff( $expected_keys, $actual_keys );
+
+            if( count( $missing_keys ) > 0 ) {
+
+                $this->raise_failure(
+                    "The object was expected to have the attributes defined at [\"" . join("\", \"", $missing_keys) . "\"]."
+                );
+
+                return;
+
+            }
+
+            $exceding_keys = array_diff( $actual_keys, $expected_keys );
+
+            if( count( $exceding_keys ) > 0 ) {
+
+                $this->raise_failure(
+                    "The object was not expected to have the attributes defined at [\"" . join("\", \"", $exceding_keys) . "\"]."
+                );
+
+                return;
+
+            }
+        }
+
+        foreach( $expected_object as $expected_key => $expected_value) {
+
+            if( empty( $attribute_path ) ) {
+                $child_attribute_path = $expected_key;
+            }
+            else {
+                $child_attribute_path = $attribute_path . "." . $expected_key;
+            }
+
+            $child_value = Attribute_Reader::read_attribute(
+                $this->actual_value,
+                $expected_key
+            );
+
+            if( $child_value === Attribute_Reader::$missing_attribute ) {
+                return $this->raise_failure(
+                    "The object was expected to have an attribute defined at {$this->value_string($child_attribute_path)}."
+                );
+            }
+
+            $this->evaluate_closure( function() use($child_value, $expected_value, $child_attribute_path) {
+
+                $this->expect( $child_value ) ->to() ->be()
+                    ->like( $expected_value, $child_attribute_path );
+
+            });
+        }
+
     });
 });
 

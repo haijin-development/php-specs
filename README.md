@@ -19,6 +19,8 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
 2. [Usage](#c-2)
     1. [Spec definitions](#c-2-1)
     2. [Built-in expectations](#c-2-2)
+        1. [expect( $object ) ->to() ->be() ->like(...)](#c-2-2-1)
+        2. [expect( $object ) ->to() ->be() ->exactly_like(...)](#c-2-2-2)
     3. [Specs structure](#c-2-3)
     4. [Evaluating code before and after running expectations](#c-2-4)
     5. [Defining values with let(...) expressions](#c-2-5)
@@ -121,6 +123,22 @@ $this->expect( $value ) ->to() ->be( "===" ) ->than( $another_value );
 $this->expect( $value ) ->to() ->be() ->null();
 $this->expect( $value ) ->to() ->be() ->true();
 $this->expect( $value ) ->to() ->be() ->false();
+$this->expect( $value ) ->to() ->be() ->like([
+    "name" => "Lisa",
+    "last_name" => "Simpson",
+    "address" => [
+        "street_name" => "Evergreen",
+        "street_number" => 742
+    ]
+]);
+$this->expect( $value ) ->to() ->be() ->exactly_like([
+    "name" => "Lisa",
+    "last_name" => "Simpson",
+    "address" => [
+        "street_name" => "Evergreen",
+        "street_number" => 742
+    ]
+]);
 
 // Types expectations
 
@@ -190,14 +208,10 @@ $this->expect( function() {
 });
 ```
 
-Any expectation can also be negated with
+Most expectations can also be negated with
 
 ```php
-// Comparison expectations
-
 $this->expect( $value ) ->not() ->to() ->equal( $another_value );
-
-// Exceptions
 
 $this->expect( function() {
 
@@ -205,6 +219,54 @@ $this->expect( function() {
 
 }) ->not() ->to() ->raise( Exception::class );
 ```
+
+<a name="c-2-2-1"></a>
+#### expect( $object ) ->to() ->be() ->like(...)
+
+The expectation `expect( $object ) ->to() ->be() ->like(...)` evaluates a nested expectations on arrays, associative arrays, objects and any mix of them.
+
+Example:
+
+```php
+
+$user = [
+    "name" => "Lisa",
+    "last_name" => "Simpson",
+    "address" => [
+        "street_name" => "Evergreen",
+        "street_number" => 742
+    ],
+    "ignored_attribute" => ""
+];
+
+$this->expect( $user ) ->to() ->be() ->like([
+    "name" => "Lisa",
+    "last_name" => "Simpson",
+    "address" => [
+        "street_name" => "Evergreen",
+        "street_number" => 742
+    ]
+]);
+```
+
+It also works with getter functions:
+
+```php
+$this->expect( $user ) ->to() ->be() ->like([
+    "get_name()" => "Lisa",
+    "get_last_name()" => "Simpson",
+    "get_address()" => [
+        "get_street_name()" => "Evergreen",
+        "get_street_number()" => 742
+    ]
+]);
+```
+
+<a name="c-2-2-2"></a>
+#### expect( $object ) ->to() ->be() ->exactly_like(...)
+
+Same as `expect( $object ) ->to() ->be() ->like(...)` but if the object is array and has more or less attributes than the expected value the expectation fails.
+
 
 <a name="c-2-3"></a>
 ### Specs structure
