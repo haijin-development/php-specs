@@ -9,7 +9,7 @@ A testing framework to replace PHPUnit using a simple DSL inspired by RSpec.
 
 ### Version 0.1.0 (beta)
 
-This library is under active development.
+This is the pre-release of version v1.0.0.
 
 If you like it a lot you may contribute by [financing](https://github.com/haijin-development/support-haijin-development) its development.
 
@@ -266,7 +266,7 @@ The expectation uses equality (`==`) to compare values. To use a custom expectat
 
 ```php
 $this->expect( $user ) ->to() ->be() ->like([
-    "get_name()" => function($value) { $this->expect( $value ) ->not() ->to() ->be() ->null() },
+    "get_name()" => function($value) { $this->expect( $value ) ->not() ->to() ->be() ->null(); },
     "get_last_name()" => "Simpson",
     "get_address()" => [
         "get_street_name()" => "Evergreen",
