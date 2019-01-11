@@ -1,5 +1,7 @@
 <?php
 
+use Haijin\Specs\Specs_Runner;
+
 $spec->describe( "When defining a expression with let", function() {
 
     $this->let( "n", function() {
@@ -81,6 +83,43 @@ $spec->describe( "When defining a expression with let", function() {
         $this->it( "lazily resolves the reference", function() {
 
             $this->expect( $this->m ) ->to() ->equal( 8 );
+
+        });
+
+    });
+
+    $this->describe( "in the Specs_Runner config", function() {
+
+        $this->before_all( function() {
+            Specs_Runner::configure( function($specs) {
+
+                $this->let( "n", function() {
+                    return 3 + 4;
+                });
+
+            });
+
+        });
+
+        $this->after_all( function() {
+            Specs_Runner::configure( function($specs) {
+            });
+        });
+
+        $this->let( "spec_runner", function() {
+            return new Specs_Runner();
+        });
+
+        $this->let( "spec_file", function() {
+            return __DIR__ .
+                "/../../specs-samples/spec-with-global-let-reference.php";
+        });
+
+        $this->it( "evaluates the expression when its referenced", function(){
+
+            $this->spec_runner->run_spec_file( $this->spec_file );
+
+            $this->expect( $this->spec_runner->get_invalid_expectations() ) ->to() ->equal( [] );
 
         });
 

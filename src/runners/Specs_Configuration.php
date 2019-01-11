@@ -5,12 +5,14 @@ namespace Haijin\Specs;
 class Specs_Configuration
 {
     protected $spec_closures;
+    protected $spec_context;
 
     /// Initializing
 
     public function __construct()
     {
         $this->___spec_closures = new Spec_Closures();
+        $this->spec_context = new Spec_Context();
     }
 
     /// Configuring
@@ -44,7 +46,7 @@ class Specs_Configuration
 
     public function get_specs_context()
     {
-        return new Spec_Context();
+        return $this->spec_context;
     }
 
     /// DSL
@@ -67,5 +69,10 @@ class Specs_Configuration
     public function after_each($closure)
     {
         $this->___spec_closures->after_each_closure = $closure;
+    }
+
+    public function let($expression_name, $closure)
+    {
+        $this->spec_context->at_named_expression_put( $expression_name, $closure );
     }
 }

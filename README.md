@@ -342,6 +342,7 @@ To evaluate statements before and after any spec is run, like stablishing connec
     $specs->after_each( function() {
 
     });
+
 });
 ```
 
@@ -398,6 +399,20 @@ $spec->describe( "When searching for users", function() {
 
 });
 ```
+
+It is also possible to define named expressions at a global level in the `Specs_Runner::config`, but keep in mind that that will make each spec less expressive and will make it more difficult to understand:
+
+```php
+\Haijin\Specs\Specs_Runner::configure( function($specs) {
+
+    $this->let( "user_id", function() {
+        return 1;
+    });
+
+});
+```
+
+
 <a name="c-2-6"></a>
 ### Defining custom expectations
 

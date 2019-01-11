@@ -2,7 +2,7 @@
 
 /*
  * Global configuration of the Specs_Runner.
- * Uncomment the lines according to the specs need.
+ * Uncomment the lines according to the specs needs.
  */
 //\Haijin\Specs\Specs_Runner::configure( function($specs) {
 //
@@ -21,4 +21,9 @@
 //    $specs->after_each( function() {
 //
 //    });
+//
+//    $this->let( "n", function() {
+//        return 3 + 4;
+//    });
+//
 //});
