@@ -26,4 +26,8 @@
 //        return 3 + 4;
 //    });
 //
+//    $this->def( "sum", function($n, $m) {
+//        return $n + $m;
+//    });
+//
 //});

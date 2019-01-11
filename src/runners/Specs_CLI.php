@@ -22,25 +22,42 @@ class Specs_CLI
         $this->renderer = null;
         $this->specs_runner = null;
 
-        $this->tests_folder = $this->default_tests_folder();
-        $this->specs_folder = $this->default_specs_folder();
+        $this->tests_path = $this->default_tests_path();
+        $this->specs_folder_name = $this->default_specs_folder_name();
     }
 
     /// Config
 
-    public function default_tests_folder()
+    public function default_tests_path()
     {
         return \getcwd() . "/tests/";
     }
 
-    public function default_specs_folder()
+    public function default_specs_folder_name()
     {
-        return $this->tests_folder . "specs/";
+        return "specs";
     }
 
     public function specs_boot_file()
     {
-        return $this->tests_folder . "specs_boot.php";
+        return $this->tests_path . "specs_boot.php";
+    }
+
+    /// Accessing
+
+    public function set_tests_path($folder)
+    {
+        return $this->tests_path = $folder;
+    }
+
+    public function set_specs_folder_name()
+    {
+        return $this->specs_folder_name = $folder;
+    }
+
+    public function specs_folder()
+    {
+        return $this->tests_path . $this->specs_folder_name . "/";
     }
 
     /// Asking
@@ -77,11 +94,11 @@ class Specs_CLI
 
             $this->create_specs_folder();
 
-            echo "Created 'tests/specs/' folder in {$this->specs_folder}.\n";
+            echo "Created 'tests/specs/' folder in {$this->specs_folder()}.\n";
 
         } else {
 
-            echo "'tests/specs/' folder not created because it already exists in {$this->specs_folder}.\n";
+            echo "'tests/specs/' folder not created because it already exists in {$this->specs_folder()}.\n";
 
         }
 
@@ -113,24 +130,24 @@ class Specs_CLI
 
     public function exists_specs_folder()
     {
-        return file_exists( $this->specs_folder );
+        return file_exists( $this->specs_folder() );
     }
 
     public function create_specs_folder()
     {
-        if( ! file_exists( $this->tests_folder ) ) {
-            mkdir( $this->tests_folder );
+        if( ! file_exists( $this->tests_path ) ) {
+            mkdir( $this->tests_path );
         }
 
-        if( ! file_exists( $this->specs_folder ) ) {
-            mkdir( $this->specs_folder );
+        if( ! file_exists( $this->specs_folder() ) ) {
+            mkdir( $this->specs_folder() );
         }
 
 
-        if( ! file_exists( $this->specs_folder . "spec_example.php" ) ) {
+        if( ! file_exists( $this->specs_folder() . "spec_example.php" ) ) {
             copy(
                 __DIR__ . "/../../init-command-templates/spec_example.php",
-                $this->specs_folder . "spec_example.php"
+                $this->specs_folder() . "spec_example.php"
             );
         }
     }
@@ -143,7 +160,7 @@ class Specs_CLI
 
         $this->load_specs_boot_file();
 
-        $this->specs_runner->run_on( $this->specs_folder );
+        $this->specs_runner->run_on( $this->specs_folder() );
 
         $this->renderer->render_report_from( $this->specs_runner );
 
