@@ -6,10 +6,12 @@ class Spec_Evaluator
 {
     protected $___specs_config;
     protected $___statistics;
-    protected $___current_spec;
     protected $___scope_variables;
     protected $___before_each_closures;
     protected $___after_each_closures;
+
+    protected $___current_description;
+    protected $___current_context;
 
     // An external handle to evaluate after each spec run, not part the DSL
     protected $___on_spec_run_closure;
@@ -20,18 +22,21 @@ class Spec_Evaluator
     {
         $this->___specs_config = new Specs_Configuration();
         $this->___statistics = $this->___new_specs_statistics();
-        $this->___current_spec = null;
         $this->___scope_variables = [];
         $this->___before_each_closures = [];
         $this->___after_each_closures = [];
         $this->___on_spec_run_closure = null;
+
+        $this->___current_description = "";
+        $this->___current_context = null;
     }
 
     public function ___reset()
     {
         $this->___statistics = $this->___new_specs_statistics();
-        $this->___current_spec = null;
         $this->___scope_variables = [];
+        $this->___current_description = "";
+        $this->___current_context = null;
     }
 
     public function ___configure($specs_configuration)
@@ -60,6 +65,8 @@ class Spec_Evaluator
 
     public function ___run_all($specs_collection)
     {
+        $this->___current_context = $this->___specs_config->get_specs_context();
+
         if( $this->___specs_config->get_before_each_closure() !== null ) {
             $this->___before_each_closures[] = $this->___specs_config->get_before_each_closure();
         }
@@ -130,11 +137,15 @@ class Spec_Evaluator
     {
         $this->___statistics->inc_run_specs_count();
 
-        $this->___current_spec = $spec;
+        $previous_description = $this->___current_description;
+        $previous_context = $this->___current_context;
 
         $previous_scope = $this->___scope_variables;
 
         try {
+
+            $this->___current_description = $spec->get_full_description();
+            $this->___current_context = $spec->get_context();
 
             $this->___evaluate_before_each_closures();
 
@@ -158,7 +169,8 @@ class Spec_Evaluator
 
             $this->___scope_variables = $previous_scope;
 
-            $this->___current_spec = null;
+            $this->___current_description = $previous_description;
+            $this->___current_context = $previous_context;
 
         }
     }
@@ -195,7 +207,7 @@ class Spec_Evaluator
     {
         $this->___statistics->add_invalid_expectation(
             new Expectation_Failure(
-                $this->___current_spec->get_full_description(),
+                $this->___current_description,
                 $failure_signal->get_message(),
                 $failure_signal->get_trace()
             )
@@ -210,7 +222,7 @@ class Spec_Evaluator
     {
         $this->___statistics->add_invalid_expectation(
             new Expectation_Error(
-                $this->___current_spec->get_full_description(),
+                $this->___current_description,
                 $error->getMessage(),
                 $error->getTrace()
             )
@@ -228,7 +240,7 @@ class Spec_Evaluator
         $this->___statistics->inc_expectations_count();
 
         return $this->new_value_expectation(
-            $this->___current_spec->get_full_description(),
+            $this->___current_description,
             $value
         );
     }
@@ -258,7 +270,7 @@ class Spec_Evaluator
 
     public function ___has_named_expression($expression_name)
     {
-        return $this->___current_spec->get_context()->has_named_expression( $expression_name );
+        return $this->___current_context->has_named_expression( $expression_name );
     }
 
     public function ___evaluate_named_expression($expression_name)
@@ -270,7 +282,7 @@ class Spec_Evaluator
 
     public function ___get_named_expression($expression_name)
     {
-        return $this->___current_spec->get_context()->get_named_expression( $expression_name );
+        return $this->___current_context->get_named_expression( $expression_name );
     }
 
     /// Methods
@@ -294,12 +306,12 @@ class Spec_Evaluator
 
     public function ___has_method($method_name)
     {
-        return $this->___current_spec->get_context()->has_method( $method_name );
+        return $this->___current_context->has_method( $method_name );
     }
 
     public function ___get_method($method_name)
     {
-        return $this->___current_spec->get_context()->get_method( $method_name );
+        return $this->___current_context->get_method( $method_name );
     }
 
     /// Creating instances
