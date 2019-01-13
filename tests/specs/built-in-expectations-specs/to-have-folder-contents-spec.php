@@ -17,7 +17,7 @@ $spec->describe( "When expecting a folder to have contents", function() {
                 "..",
                 "file-sample.txt",
                 "single-spec-failure.php",
-                "spec-with-one-failure-one-error-and-two-success.php"
+                "spec-with-one-failure-one-error-and-two-success-one-skip.php"
             ]);
 
         });
@@ -37,7 +37,7 @@ $spec->describe( "When expecting a folder to have contents", function() {
                     "..",
                     "file-sample.txt",
                     "single-spec-failure.php",
-                    "spec-with-one-failure-one-error-and-two-success.php"
+                    "spec-with-one-failure-one-error-and-two-success-one-skip.php"
                 ]);
 
             });

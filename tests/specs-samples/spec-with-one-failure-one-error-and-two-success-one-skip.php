@@ -2,6 +2,12 @@
 
 $spec->describe( "A single spec", function() {
 
+    $this->xit( "skips", function() {
+
+        $this->expect( 1 ) ->to() ->equal( 2 );
+
+    });
+
     $this->it( "fails", function() {
 
         $this->expect( 1 ) ->to() ->equal( 2 );

@@ -27,6 +27,9 @@ class Console_Report_Renderer
             case 'error':
                 $this->output->red()->render( "E", false );
                 break;
+            case 'skipped':
+                $this->output->blue()->render( "S", false );
+                break;
             default:
                 $this->output->render( ".", false );
         }
@@ -56,6 +59,7 @@ class Console_Report_Renderer
         $errored_specs_count = $this->specs_statistics->errored_specs_count();
         $run_specs_count = $this->specs_statistics->run_specs_count();
         $run_expectations_count = $this->specs_statistics->run_expectations_count();
+        $skipped_specs_count = $this->specs_statistics->skipped_specs_count();
 
         $this->cr();
 
@@ -69,7 +73,7 @@ class Console_Report_Renderer
 
         $this->cr();
 
-        $this->output->render( "Run: {$run_specs_count}, Errors: {$errored_specs_count}, Fails: {$failed_specs_count}, Expectations: {$run_expectations_count}.", false );
+        $this->output->render( "Run: {$run_specs_count}, Skipped: {$skipped_specs_count}, Errors: {$errored_specs_count}, Fails: {$failed_specs_count}, Expectations: {$run_expectations_count}.", false );
 
         $this->cr();
     }

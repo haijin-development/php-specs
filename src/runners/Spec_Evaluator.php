@@ -13,6 +13,8 @@ class Spec_Evaluator
     protected $___current_description;
     protected $___current_context;
 
+    protected $___is_skipping;
+
     // An external handle to evaluate after each spec run, not part the DSL
     protected $___on_spec_run_closure;
 
@@ -29,6 +31,8 @@ class Spec_Evaluator
 
         $this->___current_description = "";
         $this->___current_context = null;
+
+        $this->___is_skipping = false;
     }
 
     public function ___reset()
@@ -94,7 +98,9 @@ class Spec_Evaluator
     {
         $this->___with_context_do( $spec_description, function() use($spec_description) {
 
-            if( $spec_description->get_before_all_closure() !== null ) {
+            $this->___is_skipping = $this->___is_skipping || $spec_description->is_skipping();
+
+            if( !$this->___is_skipping && $spec_description->get_before_all_closure() !== null ) {
                 $spec_description->get_before_all_closure()->call( $this );
             }
 
@@ -118,7 +124,7 @@ class Spec_Evaluator
 
             } finally {
 
-                if( $spec_description->get_after_all_closure() !== null ) {
+                if( !$this->___is_skipping && $spec_description->get_after_all_closure() !== null ) {
                     $spec_description->get_after_all_closure()->call( $this );
                 }
 
@@ -130,11 +136,21 @@ class Spec_Evaluator
 
     public function ___evaluate_spec($spec)
     {
-        $this->___statistics->inc_run_specs_count();
-
         $this->___with_context_do( $spec, function() use($spec) {
 
+            $this->___is_skipping = $this->___is_skipping || $spec->is_skipping();
+
+            if( $this->___is_skipping ) {
+
+                $this->___statistics->inc_skipped_specs_count();
+                $this->___on_spec_skipped( $spec );
+
+                return;
+            }
+
             try {
+
+                $this->___statistics->inc_run_specs_count();
 
                 $this->___evaluate_before_each_closures();
 
@@ -145,6 +161,7 @@ class Spec_Evaluator
             } finally {
 
                 $this->___evaluate_after_each_closures();
+
             }
 
         });
@@ -157,8 +174,10 @@ class Spec_Evaluator
 
         $previous_scope = $this->___scope_variables;
 
-        $current_before_each_closures = $this->___before_each_closures;
-        $current_after_each_closures = $this->___after_each_closures;
+        $previous_before_each_closures = $this->___before_each_closures;
+        $previous_after_each_closures = $this->___after_each_closures;
+
+        $previous_is_skipping = $this->___is_skipping;
 
         try {
 
@@ -179,8 +198,10 @@ class Spec_Evaluator
 
             $this->___unbind_scope_variables( $previous_scope );
 
-            $this->___before_each_closures = $current_before_each_closures;
-            $this->___after_each_closures = $current_after_each_closures;
+            $this->___is_skipping = $previous_is_skipping;
+
+            $this->___before_each_closures = $previous_before_each_closures;
+            $this->___after_each_closures = $previous_after_each_closures;
 
             $this->___scope_variables = $previous_scope;
 
@@ -215,6 +236,13 @@ class Spec_Evaluator
     {
         if( $this->___on_spec_run_closure !== null ) {
             $this->___on_spec_run_closure->call( $this, $spec, "passed" );
+        }
+    }
+
+    protected function ___on_spec_skipped($spec)
+    {
+        if( $this->___on_spec_run_closure !== null ) {
+            $this->___on_spec_run_closure->call( $this, $spec, "skipped" );
         }
     }
 

@@ -6,6 +6,7 @@ class Specs_Statistics
 {
     protected $run_specs_count;
     protected $run_expectations_count;
+    protected $skipped_specs_count;
     protected $invalid_expectations;
 
     /// Initializing
@@ -14,6 +15,7 @@ class Specs_Statistics
     {
         $this->run_specs_count = 0;
         $this->run_expectations_count = 0;
+        $this->skipped_specs_count = 0;
         $this->invalid_expectations = [];
     }
 
@@ -27,6 +29,11 @@ class Specs_Statistics
     public function inc_expectations_count()
     {
         $this->run_expectations_count += 1;
+    }
+
+    public function inc_skipped_specs_count()
+    {
+        $this->skipped_specs_count += 1;
     }
 
     public function get_invalid_expectations()
@@ -80,5 +87,10 @@ class Specs_Statistics
     public function run_expectations_count()
     {
         return $this->run_expectations_count;
+    }
+
+    public function skipped_specs_count()
+    {
+        return $this->skipped_specs_count;
     }
 }

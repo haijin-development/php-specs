@@ -7,6 +7,7 @@ abstract class Spec_Base
     protected $description;
     protected $nested_description;
     protected $context;
+    protected $skipping;
 
     /// Initializing
 
@@ -15,6 +16,7 @@ abstract class Spec_Base
         $this->description = $description;
         $this->nested_description = $nested_description;
         $this->context = clone $context;
+        $this->skipping = false;
     }
 
     /// Accessors
@@ -35,6 +37,16 @@ abstract class Spec_Base
         $description .= $this->description;
 
         return $description;
+    }
+
+    public function is_skipping()
+    {
+        return $this->skipping;
+    }
+
+    public function be_skipping($bool)
+    {
+        $this->skipping = $bool;
     }
 
     /// Definition

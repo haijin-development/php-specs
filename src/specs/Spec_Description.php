@@ -72,13 +72,18 @@ class Spec_Description extends Spec_Base
             $this->context
         );
 
-        $this->nested_specs[] = $nested_spec_description;
-
-        $nested_spec_description->eval( $closure );
+        $this->add_nested_spec( $nested_spec_description, false, $closure );
     }
 
     public function xdescribe($description_text, $closure)
     {
+        $nested_spec_description = new self(
+            $description_text,
+            $this->get_full_description(),
+            $this->context
+        );
+
+        $this->add_nested_spec( $nested_spec_description, true, $closure );
     }
 
     public function let($expression_name, $closure)
@@ -100,11 +105,30 @@ class Spec_Description extends Spec_Base
             $closure
         );
 
-        $this->nested_specs[] = $nested_spec;
+        $this->add_nested_spec( $nested_spec, false, null );
     }
 
     public function xit($description_text, $closure)
     {
+        $nested_spec = new Spec(
+            $description_text,
+            $this->get_full_description(),
+            $this->context,
+            $closure
+        );
+
+        $this->add_nested_spec( $nested_spec, true, null );
+    }
+
+    protected function add_nested_spec($nested_spec, $skipping, $closure)
+    {
+        $nested_spec->be_skipping( $skipping );
+
+        $this->nested_specs[] = $nested_spec;
+
+        if( $closure !== null ) {
+            $nested_spec->eval( $closure );
+        }
     }
 
     /// Double dispatch evaluations

@@ -63,7 +63,25 @@ $spec->describe( "When running specs from a file", function() {
 
         $this->let( "spec_file", function() {
             return __DIR__ .
-                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success.php";
+                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success-one-skip.php";
+        });
+
+        $this->it( "has the run specs count", function() {
+
+            $this->spec_runner->run_spec_file( $this->spec_file );
+
+            $count = $this->spec_runner->get_statistics()->run_specs_count();
+
+            $this->expect( $count ) ->to() ->equal( 4 );
+        });
+
+        $this->it( "has the skipped specs count", function() {
+
+            $this->spec_runner->run_spec_file( $this->spec_file );
+
+            $count = $this->spec_runner->get_statistics()->skipped_specs_count();
+
+            $this->expect( $count ) ->to() ->equal( 1 );
         });
 
         $this->it( "has the failures count", function() {
@@ -84,15 +102,6 @@ $spec->describe( "When running specs from a file", function() {
             $this->expect( $count ) ->to() ->equal( 1 );
         });
 
-        $this->it( "has the run specs count", function() {
-
-            $this->spec_runner->run_spec_file( $this->spec_file );
-
-            $count = $this->spec_runner->get_statistics()->run_specs_count();
-
-            $this->expect( $count ) ->to() ->equal( 4 );
-        });
-
         $this->it( "has the run expectations count", function() {
 
             $this->spec_runner->run_spec_file( $this->spec_file );
@@ -107,7 +116,7 @@ $spec->describe( "When running specs from a file", function() {
 
         $this->let( "spec_file", function() {
             return __DIR__ .
-                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success.php";
+                "/../../specs-samples/spec-with-one-failure-one-error-and-two-success-one-skip.php";
         });
 
         $this->it( "evaluates the on_spec_run_do after each spec run", function() {
@@ -124,7 +133,7 @@ $spec->describe( "When running specs from a file", function() {
 
             $this->spec_runner->run_spec_file( $this->spec_file );
 
-            $this->expect( $this->specs_evaluations ) ->to() ->equal( 4 );
+            $this->expect( $this->specs_evaluations ) ->to() ->equal( 5 );
 
         });
 
