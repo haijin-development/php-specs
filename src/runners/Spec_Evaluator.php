@@ -92,44 +92,39 @@ class Spec_Evaluator
 
     public function ___evaluate_spec_description($spec_description)
     {
-        $current_before_each_closures = $this->___before_each_closures;
-        $current_after_each_closures = $this->___after_each_closures;
-        $previous_scope = $this->___scope_variables;
+        $this->___with_context_do( $spec_description, function() use($spec_description) {
 
-        if( $spec_description->get_before_all_closure() !== null ) {
-            $spec_description->get_before_all_closure()->call( $this );
-        }
-
-        if( $spec_description->get_before_each_closure() !== null ) {
-            $this->___before_each_closures[] = $spec_description->get_before_each_closure();
-        }
-
-        if( $spec_description->get_after_each_closure() !== null ) {
-            $this->___after_each_closures =
-                array_merge(
-                    [ $spec_description->get_after_each_closure() ],
-                    $this->___after_each_closures
-                );
-        }
-
-        try {
-
-            foreach( $spec_description->get_nested_specs() as $spec ) {
-                $spec->evaluate_with( $this );
+            if( $spec_description->get_before_all_closure() !== null ) {
+                $spec_description->get_before_all_closure()->call( $this );
             }
 
-        } finally {
-
-            if( $spec_description->get_after_all_closure() !== null ) {
-                $spec_description->get_after_all_closure()->call( $this );
+            if( $spec_description->get_before_each_closure() !== null ) {
+                $this->___before_each_closures[] = $spec_description->get_before_each_closure();
             }
 
-            $this->___before_each_closures = $current_before_each_closures;
-            $this->___after_each_closures = $current_after_each_closures;
+            if( $spec_description->get_after_each_closure() !== null ) {
+                $this->___after_each_closures =
+                    array_merge(
+                        [ $spec_description->get_after_each_closure() ],
+                        $this->___after_each_closures
+                    );
+            }
 
-            $this->___unbind_scope_variables( $previous_scope );
+            try {
 
-        }
+                foreach( $spec_description->get_nested_specs() as $spec ) {
+                    $spec->evaluate_with( $this );
+                }
+
+            } finally {
+
+                if( $spec_description->get_after_all_closure() !== null ) {
+                    $spec_description->get_after_all_closure()->call( $this );
+                }
+
+            }
+
+        });
 
     }
 
@@ -137,21 +132,40 @@ class Spec_Evaluator
     {
         $this->___statistics->inc_run_specs_count();
 
+        $this->___with_context_do( $spec, function() use($spec) {
+
+            try {
+
+                $this->___evaluate_before_each_closures();
+
+                $spec->get_closure()->call( $this );
+
+                $this->___on_spec_passed( $spec );
+
+            } finally {
+
+                $this->___evaluate_after_each_closures();
+            }
+
+        });
+    }
+
+    protected function ___with_context_do($spec, $closure)
+    {
         $previous_description = $this->___current_description;
         $previous_context = $this->___current_context;
 
         $previous_scope = $this->___scope_variables;
+
+        $current_before_each_closures = $this->___before_each_closures;
+        $current_after_each_closures = $this->___after_each_closures;
 
         try {
 
             $this->___current_description = $spec->get_full_description();
             $this->___current_context = $spec->get_context();
 
-            $this->___evaluate_before_each_closures();
-
-            $spec->get_closure()->call( $this );
-
-            $this->___on_spec_passed( $spec );
+            $closure->call( $this );
 
         } catch( Expectation_Failure_Signal $failure_signal ) {
 
@@ -163,9 +177,10 @@ class Spec_Evaluator
 
         } finally {
 
-            $this->___evaluate_after_each_closures();
-
             $this->___unbind_scope_variables( $previous_scope );
+
+            $this->___before_each_closures = $current_before_each_closures;
+            $this->___after_each_closures = $current_after_each_closures;
 
             $this->___scope_variables = $previous_scope;
 
