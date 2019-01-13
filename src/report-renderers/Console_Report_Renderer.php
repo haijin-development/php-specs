@@ -55,7 +55,7 @@ class Console_Report_Renderer
         $failed_specs_count = $this->specs_statistics->failed_specs_count();
         $errored_specs_count = $this->specs_statistics->errored_specs_count();
         $run_specs_count = $this->specs_statistics->run_specs_count();
-        $run_expectations_count = $this->specs_statistics->run_specs_count();
+        $run_expectations_count = $this->specs_statistics->run_expectations_count();
 
         $this->cr();
 
