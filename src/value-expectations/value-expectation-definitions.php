@@ -201,7 +201,7 @@ Value_Expectations::define_expectation( "like", function() {
 
     $this->assert_with( function($expected_object, $attribute_path = "") {
 
-        if( is_callable( $expected_object ) ) {
+        if( $expected_object instanceof \Closure ) {
 
             $this->evaluate_closure( $expected_object, $this->actual_value, $attribute_path );
 
@@ -256,7 +256,7 @@ Value_Expectations::define_expectation( "exactly_like", function() {
 
     $this->assert_with( function($expected_object, $attribute_path = "") {
 
-        if( is_callable( $expected_object ) ) {
+        if( $expected_object instanceof \Closure ) {
 
             $this->evaluate_closure( $expected_object, $this->actual_value, $attribute_path );
 

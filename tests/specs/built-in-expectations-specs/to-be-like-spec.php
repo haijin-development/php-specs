@@ -237,7 +237,7 @@ $spec->describe( "When expecting an object to be like", function() {
 
         });
 
-        $this->it( "the spec fails if the object is not like the expected string", function() {
+        $this->it( "the spec fails if the object does not pass the custom expectation", function() {
 
             $this->expect( function() {
 
