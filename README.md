@@ -32,8 +32,9 @@ If you like it a lot you may contribute by [financing](https://github.com/haijin
         4. [Raising expectation errors](#c-2-7-4)
         5. [Evaluating closures within custom expectations](#c-2-7-5)
         6. [Complete example](#c-2-7-6)
-    7. [Temporary skipping a spec](#c-2-8)
-    8. [Running the specs from the command line](#c-2-9)
+    8. [Temporary skipping a spec](#c-2-8)
+    9. [Factorizing and reusing specs behaviour](#c-2-9)
+    10. [Running the specs from the command line](#c-2-10)
 3. [Running this project tests](#c-3)
 
 <a name="c-1"></a>
@@ -666,7 +667,43 @@ $spec->describe( "When searching for users", function() {
 
 });
 ```
+
+
 <a name="c-2-9"></a>
+#### Factorizing and reusing specs behaviour
+
+Factorize specs behaviour to reuse them in classes in a method and call that method from a spec.
+
+Example:
+
+```php
+class Html_Specs_Methods {
+
+    static public function add_to($spec)
+    {
+        $spec->def( "navigate_to", function($request_uri) {
+            /// ...
+        });
+
+    }
+
+}
+```
+
+and include the methods in any spec with:
+
+
+```php
+use Slim\App;
+
+\Haijin\Specs\Specs_Runner::configure( function($spec) {
+
+    Html_Specs_Methods::add_to( $this );
+
+});
+```
+
+<a name="c-2-10"></a>
 #### Running the specs from the command line
 
 ```
