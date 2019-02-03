@@ -704,6 +704,8 @@ use Slim\App;
 <a name="c-2-10"></a>
 #### Running the specs from the command line
 
+Run all specs with:
+
 ```
 php ./vendor/bin/specs
 ```
@@ -722,11 +724,42 @@ and then run the specs with
 composer specs
 ```
 
-or a single spec file with
+
+Run all the specs in a single file or folder with:
 
 ```
 composer specs tests/specs/variables-scope/variables-scope.php
 ```
+
+Run a single spec at a line number with:
+
+```
+composer specs tests/specs/variables-scope/variables-scope.php:48
+```
+
+The line number must be in the scope of the spec.
+
+When specs are run from the command line failures are logged as
+
+```
+F
+
+1 failed expectation.
+Run: 1, Skipped: 0, Errors: 0, Fails: 1, Expectations: 1.
+
+0) When defining variables in before and after closures the variables are defined during the scope of the expression in which they were defined
+
+Expected value to equal [0 => 1], got [].
+
+at /home/haijin/php-specs/tests/specs/variables-scope/variables-scope.php:48
+```
+
+To run a single failing spec copy the failing spec `filename:line_number` from the console last line and paste it in a new command:
+
+```
+composer specs /home/haijin/php-specs/tests/specs/variables-scope/variables-scope.php:48
+```
+
 
 <a name="c-3"></a>
 ## Running this project tests

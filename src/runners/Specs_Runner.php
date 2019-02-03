@@ -78,7 +78,14 @@ class Specs_Runner
     public function run_on($folder_or_file)
     {
         if( is_file( explode( ":", $folder_or_file )[0] ) ) {
-            return $this->run_spec_file( explode( ":", $folder_or_file )[0] );
+            $parts = explode( ":", $folder_or_file );
+
+            $filename = $parts[ 0 ];
+            $line_number = null;
+            if( count( $parts ) == 2 ) {
+                $line_number = $parts[ 1 ];
+            }
+            return $this->run_spec_file( $filename, $line_number );
         }
 
         $spec_files = $this->collect_spec_files_in( $folder_or_file );
@@ -88,9 +95,13 @@ class Specs_Runner
         $this->evaluate_specs( $specs );
     }
 
-    public function run_spec_file($file)
+    public function run_spec_file($file, $line_number = null)
     {
         $specs = $this->get_spec_from_file( $file );
+
+        if( $line_number !== null )  {
+            $specs->restrict_to_line_number( $line_number );
+        }
 
         $this->evaluate_specs( [ $specs ] );
     }

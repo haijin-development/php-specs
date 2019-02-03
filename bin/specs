@@ -5,6 +5,11 @@ use Haijin\Specs\Specs_CLI;
 
 require_once "vendor/autoload.php";
 
+/**
+ * This script is the entry point to the command line to evaluate the specs files.
+ */
+
+
 $cli = new Specs_CLI();
 
 $cli->evaluate( $argv );

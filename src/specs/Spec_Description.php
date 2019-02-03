@@ -42,6 +42,35 @@ class Spec_Description extends Spec_Base
         return $this->spec_closures->after_each_closure;
     }
 
+    public function restrict_to_line_number($line_number)
+    {
+        foreach( $this->nested_specs as $nested_spec) {
+
+            if( $nested_spec->is_in_line_number( $line_number ) ) {
+
+                $this->nested_specs = [ $nested_spec ];
+
+                $nested_spec->restrict_to_line_number( $line_number );
+
+                return;
+
+            }
+
+        }
+    }
+
+    public function is_in_line_number($line_number)
+    {
+        foreach( $this->nested_specs as $nested_spec) {
+
+            if( $nested_spec->is_in_line_number( $line_number ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /// DSL
 
     public function before_all($closure)
@@ -104,6 +133,8 @@ class Spec_Description extends Spec_Base
             $this->context,
             $closure
         );
+
+        $nested_spec->set_line_number( \debug_backtrace( 0, 1 )[ 0 ][ "line" ] );
 
         $this->add_nested_spec( $nested_spec, false, null );
     }

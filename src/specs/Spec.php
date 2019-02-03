@@ -5,12 +5,14 @@ namespace Haijin\Specs;
 class Spec extends Spec_Base
 {
     protected $closure;
+    protected $line_number;
 
     public function __construct($description, $nested_description, $context, $closure)
     {
         parent::__construct( $description, $nested_description, $context );
 
         $this->closure = $closure;
+        $this->line_number = null;
     }
 
     /// Accessing
@@ -18,6 +20,26 @@ class Spec extends Spec_Base
     public function get_closure()
     {
         return $this->closure;
+    }
+
+    public function set_line_number($line_number)
+    {
+        $this->line_number = $line_number;
+    }
+
+    public function get_line_number()
+    {
+        return $this->line_number;
+    }
+
+    public function restrict_to_line_number($line_number)
+    {
+        return $this;
+    }
+
+    public function is_in_line_number($line_number)
+    {
+        return $this->line_number > $line_number;
     }
 
     /// DSL
