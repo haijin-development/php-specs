@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Expectation_Definition_Error extends \Exception
+class Expectation_Definition_Error extends \RuntimeException
 {
     public function get_message()
     {

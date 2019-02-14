@@ -49,7 +49,7 @@ class Spec extends Spec_Base
      */
     public function expect($value)
     {
-        throw new Exception( "See class Spec_Evaluator for this method implementation." );
+        throw new \RuntimeException( "See class Spec_Evaluator for this method implementation." );
     }
 
     /// Evaluating

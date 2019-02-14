@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Undefined_Method_Error extends \Exception
+class Undefined_Method_Error extends \RuntimeException
 {
     protected $method_name;
 

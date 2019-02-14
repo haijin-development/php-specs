@@ -67,7 +67,7 @@ $spec->describe( "When expecting a string value to match a regex", function() {
             $this->expect( function() {
 
                 $this->expect( "1234" ) ->to() ->match( "/^(.)23$/", function($matches) {
-                    throw new Exception( "Should no evaluated this closure." );
+                    throw new \RuntimeException( "Should no evaluated this closure." );
                 });
 
             }) ->to() ->raise( \Haijin\Specs\Expectation_Failure_Signal::class, function($e) {

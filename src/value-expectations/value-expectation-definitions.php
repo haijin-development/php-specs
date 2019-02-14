@@ -73,7 +73,7 @@ Value_Expectations::define_expectation( "than", function() {
                 break;
 
             default:
-                throw new Exception( "Unkown operator {$operator}" );
+                throw new \RuntimeException( "Unkown operator {$operator}" );
                 break;
         }
     });

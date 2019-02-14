@@ -2,7 +2,7 @@
 
 namespace Haijin\Specs;
 
-class Undefined_Named_Expression_Error extends \Exception
+class Undefined_Named_Expression_Error extends \RuntimeException
 {
     protected $expression_name;
 

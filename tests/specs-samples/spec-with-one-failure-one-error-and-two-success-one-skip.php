@@ -28,7 +28,7 @@ $spec->describe( "A single spec", function() {
 
     $this->it( "throws an Exception", function() {
 
-        throw new Exception( "Intended exception raised." );
+        throw new \RuntimeException( "Intended exception raised." );
 
     });
 });

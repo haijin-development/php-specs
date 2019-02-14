@@ -23,7 +23,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === true ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise($exception) failed in catching an expected exception."
                 );
             }
@@ -50,7 +50,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === false ) {
-                throw new Exception( "->raise($exception) failed in raising a failure." );
+                throw new \RuntimeException( "->raise($exception) failed in raising a failure." );
             }
 
         });
@@ -77,7 +77,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === false ) {
-                throw new Exception( "->raise(\$exception) failed in raising a failure." );
+                throw new \RuntimeException( "->raise(\$exception) failed in raising a failure." );
             }
 
         });
@@ -101,7 +101,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             });
 
             if( $this->exception_closure_executed === false ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise(\$exception, \$closure) failed in evaluating the expected exception closure."
                 );
             }
@@ -133,13 +133,13 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $this->exception_closure_executed === true ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise(\$exception, \$closure) incorrectly evaluated the expected exception closure."
                 );
             }
 
             if( $error_raised === false ) {
-                throw new Exception( "->raise(\$exception) failed in raising a failure." );
+                throw new \RuntimeException( "->raise(\$exception) failed in raising a failure." );
             }
 
         });
@@ -171,13 +171,13 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $this->exception_closure_executed === true ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise(\$exception, \$closure) incorrectly evaluated the expected exception closure."
                 );
             }
 
             if( $error_raised === false ) {
-                throw new Exception( "->raise(\$exception) failed in raising a failure." );
+                throw new \RuntimeException( "->raise(\$exception) failed in raising a failure." );
             }
 
         });
@@ -206,7 +206,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === true ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise($exception) failed in catching a non raised exception."
                 );
             }
@@ -233,7 +233,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === true ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise($exception) failed in catching a non raised exception."
                 );
             }
@@ -261,7 +261,7 @@ $spec->describe( "When expecting a closure to raise an Exception", function() {
             }
 
             if( $error_raised === false ) {
-                throw new Exception(
+                throw new \RuntimeException(
                     "->raise($exception) failed in not raising a failure."
                 );
             }
