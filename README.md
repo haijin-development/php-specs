@@ -7,7 +7,7 @@ A testing framework to replace PHPUnit using a simple DSL inspired by RSpec.
 [![Build Status](https://travis-ci.org/haijin-development/php-specs.svg?branch=master)](https://travis-ci.org/haijin-development/php-specs)
 [![License](https://poser.pugx.org/haijin/specs/license)](https://packagist.org/packages/haijin/specs)
 
-### Version 1.1.0
+### Version 1.1.1
 
 If you like it a lot you may contribute by [financing](https://github.com/haijin-development/support-haijin-development) its development.
 
@@ -734,30 +734,19 @@ composer specs tests/specs/variables-scope/variables-scope.php
 Run a single spec at a line number with:
 
 ```
-composer specs tests/specs/variables-scope/variables-scope.php:48
+composer specs tests/specs/variables-scope/variables-scope.php:49
 ```
 
 The line number must be in the scope of the spec.
 
-When specs are run from the command line failures are logged as
+When specs are run from the command line failures are logged with the file name and line number in the same format the runner expects to run that single spec:
+
+![Screenshort](docs/Screenshot.png)
+
+To run a single failing spec copy the failing spec line from the console summary and paste it in a new command:
 
 ```
-F
-
-1 failed expectation.
-Run: 1, Skipped: 0, Errors: 0, Fails: 1, Expectations: 1.
-
-0) When defining variables in before and after closures the variables are defined during the scope of the expression in which they were defined
-
-Expected value to equal [0 => 1], got [].
-
-at /home/haijin/php-specs/tests/specs/variables-scope/variables-scope.php:48
-```
-
-To run a single failing spec copy the failing spec `filename:line_number` from the console last line and paste it in a new command:
-
-```
-composer specs /home/haijin/php-specs/tests/specs/variables-scope/variables-scope.php:48
+composer specs /home/haijin/php-specs/tests/specs/variables-scope/variables-scope.php:49
 ```
 
 
