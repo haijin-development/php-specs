@@ -43,13 +43,9 @@ class Console_Report_Renderer
 
         $this->render_report_header();
 
-        foreach( $this->specs_statistics->get_invalid_expectations() as $i => $invalid_expectation ) {
-            $this->cr();
+        $this->render_invalid_expectations_details();
 
-            $this->render_invalid_expectation_details( $invalid_expectation, $i );
-
-            $this->cr(2);
-        }
+        $this->render_invalid_expectations_summary();
     }
 
     public function render_report_header()
@@ -78,6 +74,44 @@ class Console_Report_Renderer
         $this->cr();
     }
 
+    public function render_invalid_expectations_details()
+    {
+        foreach( $this->specs_statistics->get_invalid_expectations() as $i => $invalid_expectation ) {
+            $this->cr();
+
+            $this->render_invalid_expectation_details( $invalid_expectation, $i );
+
+            $this->cr(2);
+        }
+    }
+
+    public function render_invalid_expectations_summary()
+    {
+        if( $this->specs_statistics->invalid_expectations_count() == 0 ) {
+            return;
+        }
+
+        $this->output->render( "Failed specs summary:" );
+
+        foreach( $this->specs_statistics->get_invalid_expectations() as $i => $invalid_expectation ) {
+
+            if( is_a( $invalid_expectation, Expectation_Failure::class ) ) {
+                $this->output->yellow()->render( "composer specs ", false );
+                $this->output->yellow()->render( $invalid_expectation->get_spec_file_name(), false );
+                $this->output->yellow()->render( ":", false );
+                $this->output->yellow()->render( $invalid_expectation->get_spec_line_number() - 1 );
+            }
+
+            if( is_a( $invalid_expectation, Expectation_Error::class ) ) {
+                $this->output->red()->render( "composer specs ", false );
+                $this->output->red()->render( $invalid_expectation->get_spec_file_name(), false );
+                $this->output->red()->render( ":", false );
+                $this->output->red()->render( $invalid_expectation->get_spec_line_number() - 1 );
+            }
+
+        }
+    }
+
     public function render_invalid_expectation_details($invalid_expectation, $index)
     {
 
@@ -103,9 +137,9 @@ class Console_Report_Renderer
         $this->cr();
 
         $this->output->render( "at ", false );
-        $this->output->lightBlue()->render( $expectation_failure->get_file_name(), false );
+        $this->output->lightBlue()->render( $expectation_failure->get_spec_file_name(), false );
         $this->output->render( ":", false );
-        $this->output->lightBlue()->render( $expectation_failure->get_line() );
+        $this->output->lightBlue()->render( $expectation_failure->get_expectation_line() );
     }
 
     public function render_errored_expectation_details($expectation_error, $index)
@@ -117,7 +151,14 @@ class Console_Report_Renderer
         $this->cr();
 
         $this->output->red()->render( "Exception raised: ", false );
-        $this->output->red()->render( $expectation_error->get_message(), false );
+        $this->output->red()->render( $expectation_error->get_message() );
+
+        $this->cr();
+
+        $this->output->render( "at ", false );
+        $this->output->lightBlue()->render( $expectation_error->get_spec_file_name(), false );
+        $this->output->render( ":", false );
+        $this->output->lightBlue()->render( $expectation_error->get_spec_line_number() - 1 );
 
         $this->cr();
         $this->cr();

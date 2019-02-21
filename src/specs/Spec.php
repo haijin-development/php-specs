@@ -5,6 +5,7 @@ namespace Haijin\Specs;
 class Spec extends Spec_Base
 {
     protected $closure;
+    protected $file_name;
     protected $line_number;
 
     public function __construct($description, $nested_description, $context, $closure)
@@ -12,6 +13,7 @@ class Spec extends Spec_Base
         parent::__construct( $description, $nested_description, $context );
 
         $this->closure = $closure;
+        $this->file_name = null;
         $this->line_number = null;
     }
 
@@ -20,6 +22,16 @@ class Spec extends Spec_Base
     public function get_closure()
     {
         return $this->closure;
+    }
+
+    public function set_file_name($file_name)
+    {
+        $this->file_name = $file_name;
+    }
+
+    public function get_file_name()
+    {
+        return $this->file_name;
     }
 
     public function set_line_number($line_number)

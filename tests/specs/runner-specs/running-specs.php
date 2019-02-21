@@ -42,18 +42,18 @@ $spec->describe( "When running specs from a file", function() {
 
             $failed_expectations = $this->spec_runner->get_invalid_expectations();
 
-            $this->expect( $failed_expectations[0]->get_file_name() )
+            $this->expect( $failed_expectations[0]->get_spec_file_name() )
                 ->to() ->end_with( "specs-samples/single-spec-failure.php" );
 
         });
 
-        $this->it( "has the number of line in the file", function() {
+        $this->it( "has the number of line of the failed expectation in the file", function() {
 
             $this->spec_runner->run_spec_file( $this->spec_file );
 
             $failed_expectations = $this->spec_runner->get_invalid_expectations();
 
-            $this->expect( $failed_expectations[0]->get_line() ) ->to() ->equal( 7 );
+            $this->expect( $failed_expectations[0]->get_expectation_line() ) ->to() ->equal( 7 );
 
         });
 

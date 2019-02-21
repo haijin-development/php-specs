@@ -252,6 +252,8 @@ class Spec_Evaluator
             new Expectation_Failure(
                 $this->___current_description,
                 $failure_signal->get_message(),
+                $spec->get_file_name(),
+                $spec->get_line_number(),
                 $failure_signal->get_trace()
             )
         );
@@ -267,6 +269,8 @@ class Spec_Evaluator
             new Expectation_Error(
                 $this->___current_description,
                 $error->getMessage(),
+                $spec->get_file_name(),
+                $spec->get_line_number(),
                 $error->getTrace()
             )
         );

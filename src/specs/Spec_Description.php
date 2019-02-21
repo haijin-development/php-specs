@@ -134,6 +134,7 @@ class Spec_Description extends Spec_Base
             $closure
         );
 
+        $nested_spec->set_file_name( \debug_backtrace( 0, 1 )[ 0 ][ "file" ] );
         $nested_spec->set_line_number( \debug_backtrace( 0, 1 )[ 0 ][ "line" ] );
 
         $this->add_nested_spec( $nested_spec, false, null );
