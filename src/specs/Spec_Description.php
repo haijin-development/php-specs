@@ -6,6 +6,8 @@ class Spec_Description extends Spec_Base
 {
     protected $spec_closures;
     protected $nested_specs;
+    protected $file_name;
+    protected $line_number;
 
     public function __construct($description, $nested_description, $context)
     {
@@ -40,6 +42,26 @@ class Spec_Description extends Spec_Base
     public function get_after_each_closure()
     {
         return $this->spec_closures->after_each_closure;
+    }
+
+    public function set_file_name($file_name)
+    {
+        $this->file_name = $file_name;
+    }
+
+    public function get_file_name()
+    {
+        return $this->file_name;
+    }
+
+    public function set_line_number($line_number)
+    {
+        $this->line_number = $line_number;
+    }
+
+    public function get_line_number()
+    {
+        return $this->line_number;
     }
 
     public function restrict_to_line_number($line_number)
@@ -100,6 +122,9 @@ class Spec_Description extends Spec_Base
             $this->get_full_description(),
             $this->context
         );
+
+        $nested_spec_description->set_file_name( \debug_backtrace( 0, 1 )[ 0 ][ "file" ] );
+        $nested_spec_description->set_line_number( \debug_backtrace( 0, 1 )[ 0 ][ "line" ] );
 
         $this->add_nested_spec( $nested_spec_description, false, $closure );
     }

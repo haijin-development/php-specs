@@ -741,7 +741,7 @@ The line number must be in the scope of the spec.
 
 When specs are run from the command line failures are logged with the file name and line number in the same format the runner expects to run that single spec:
 
-![Screenshort](docs/Screenshot.png)
+![Screenshot](docs/Screenshot.png)
 
 To run a single failing spec copy the failing spec line from the console summary and paste it in a new command:
 
