@@ -64,6 +64,14 @@ class Spec extends Spec_Base
         throw new \RuntimeException( "See class Spec_Evaluator for this method implementation." );
     }
 
+    /**
+     * This method actually is neved called, but still documents the intention.
+     */
+    public function fail($message)
+    {
+        throw new \RuntimeException( "See class Spec_Evaluator for this method implementation." );
+    }
+
     /// Evaluating
 
     public function evaluate_with($spec_evaluator)

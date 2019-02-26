@@ -292,6 +292,11 @@ class Spec_Evaluator
         );
     }
 
+    public function fail($message)
+    {
+        throw new Expectation_Failure_Signal( $message, $this->___current_description );
+    }
+
     public function __get($property)
     {
         if( $this->___has_named_expression( $property ) ) {
