@@ -1,15 +1,17 @@
 #!/usr/bin/env php
 <?php
 
-use Haijin\Specs\Specs_CLI;
-
-require_once "vendor/autoload.php";
-
 /**
  * This script is the entry point to the command line to evaluate the specs files.
  */
 
+use Haijin\Specs\Runners\SpecsCLI;
 
-$cli = new Specs_CLI();
+require_once "vendor/autoload.php";
 
-$cli->evaluate( $argv );
+$testsFolder = getcwd() . "/tests/";
+$specsFolderName = 'specs';
+
+$cli = new SpecsCLI($testsFolder, $specsFolderName);
+
+$cli->evaluate();

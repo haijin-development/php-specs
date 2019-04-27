@@ -1,6 +1,6 @@
 {
     "name": "haijin/specs",
-    "description": "A testing framework to replace PHPUnit using a simple DSL inspired by RSpec.",
+    "description": "A testing framework that uses a simple DSL, inspired by RSpec.",
     "keywords": ["RSpec", "testing", "assertions", "expectations", "specs", "DSL", "PHPUnit"],
     "type": "library",
     "license": "MIT",
@@ -13,17 +13,17 @@
             "role": "developer"
         }
     ],
-    "config": {
-        "platform": {
-            "php": "7.1"
-        }
-    },
     "require": {
+        "php": ">=5.5.0",
+        "clue/commander": "^1.3",
         "questocat/console-color": "^1.0.0"
+    },
+    "require-dev": {
+        "phpunit/php-code-coverage": "^7.0"
     },
     "autoload": {
         "psr-4": {
-            "Haijin\\Specs\\": ["src/errors", "src/value-expectations", "src/runners", "src/specs", "src/failures", "src/report-renderers", "src/tools"]
+            "Haijin\\Specs\\": ["src/"]
         }
     },
     "bin": ["bin/specs"],
